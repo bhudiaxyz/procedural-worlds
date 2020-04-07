@@ -18,10 +18,9 @@ export default class AbstractApplication {
     this.setupControls();
     this.setupParamControls();
 
-    window.addEventListener('resize', () => this.onWindowResize, false);
-    window.addEventListener('keydown', (e) => {
-      this.onKeyDown(e)
-    }, false);
+    window.addEventListener('resize', () => this.onWindowResize);
+    window.addEventListener('orientationchange', () => this.onWindowResize);
+    window.addEventListener('keydown', (e) => this.onKeyDown(e));
   }
 
   prepareInit(opts = {}) {
