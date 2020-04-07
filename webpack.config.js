@@ -30,7 +30,20 @@ const config = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
+        include: [
+          path.resolve(__dirname, 'src')
+        ],
         loader: 'babel-loader',
+        options: {
+          presets: [
+            '@babel/preset-env',
+            {
+              plugins: [
+                '@babel/plugin-proposal-class-properties'
+              ]
+            }
+          ]
+        },
       },
       {
         test: /\.scss$/,
