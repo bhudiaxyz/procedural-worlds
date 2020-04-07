@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 import OrbitControls from 'orbit-controls-es6';
 
 import * as Stats from 'stats.js';
@@ -48,7 +48,7 @@ export default class AbstractApplication {
     this._scene = new THREE.Scene();
 
     this._renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-    this._renderer.setClearColor(0x222222);  // it's a dark gray
+    this._renderer.setClearColor(0x111111);  // it's a dark gray
     this._renderer.setPixelRatio(window.devicePixelRatio || 1);
     this._renderer.setSize(window.innerWidth, window.innerHeight);
     window.renderer = this._renderer;

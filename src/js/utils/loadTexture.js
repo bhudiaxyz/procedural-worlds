@@ -2,7 +2,7 @@ const loadImg = require('load-img');
 const noop = () => {
 };
 
-module.exports = function loadTexture(src, opt, cb) {
+export default function loadTexture(src, opt, cb) {
   if (typeof opt === 'function') {
     cb = opt;
     opt = {};

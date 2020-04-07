@@ -6,7 +6,7 @@ import fragShader from '!raw-loader!glslify-loader!../shaders/box.frag';
 export default class SpinningBox extends THREE.Object3D {
   constructor() {
     super();
-    this.add(new THREE.Mesh(
+    this.mesh = new THREE.Mesh(
       new THREE.BoxGeometry(0.65, 0.65, 0.65),
       new THREE.ShaderMaterial({
         vertexShader: vertShader,
@@ -17,7 +17,8 @@ export default class SpinningBox extends THREE.Object3D {
           colorB: {value: new THREE.Color('rgb(123, 131, 186)')}
         }
       })
-    ));
+    );
+    this.add(this.mesh);
   }
 
   update(dt = 0) {
