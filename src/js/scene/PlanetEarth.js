@@ -35,6 +35,7 @@ export default class PlanetEarth extends THREE.Object3D {
   setupPlanetEarth(radius, detail, widthSegments, heightSegments) {
     const atmosphere_radius = radius * 1.085;
     const clouds_radius = radius * 1.07;
+    const ocean_radius = radius * 1.0002;
     const image_resolution = 1024.0;
 
     const textureLoader = new THREE.TextureLoader();
@@ -56,7 +57,8 @@ export default class PlanetEarth extends THREE.Object3D {
           time: {type: "f", value: 0.0},
           radius: {type: "f", value: radius},
           roughness: {type: "f", value: this.params.earthRoughness},
-          lacunarity: {type: "f", value: this.params.earthLacunarity}
+          lacunarity: {type: "f", value: this.params.earthLacunarity},
+          seed: {type: "f", value: this.random() * 7}
         },
         vertexShader: terrainVertShader,
         fragmentShader: terrainFragShader
@@ -79,9 +81,10 @@ export default class PlanetEarth extends THREE.Object3D {
           lightColor: {type: 'v4', value: this.params.dirLightColorV4},
           lightIntensity: {type: 'f', value: this.params.dirLightIntensity},
           time: {type: "f", value: 0.0},
-          radius: {type: "f", value: radius * 1.0001},
+          radius: {type: "f", value: ocean_radius},
           roughness: {type: "f", value: this.params.earthRoughness * 2.7},
-          lacunarity: {type: "f", value: this.params.earthLacunarity * 3.14}
+          lacunarity: {type: "f", value: this.params.earthLacunarity * 3.14},
+          seed: {type: "f", value: this.random() * 7}
         },
         vertexShader: standardVertShader,
         fragmentShader: waterFragShader
@@ -103,7 +106,8 @@ export default class PlanetEarth extends THREE.Object3D {
           time: {type: "f", value: 0.0},
           radius: {type: "f", value: atmosphere_radius},
           roughness: {type: "f", value: this.params.earthRoughness},
-          lacunarity: {type: "f", value: this.params.earthLacunarity}
+          lacunarity: {type: "f", value: this.params.earthLacunarity},
+          seed: {type: "f", value: this.random() * 7}
         },
         vertexShader: standardVertShader,
         fragmentShader: atmosphereFragShader,
@@ -171,7 +175,8 @@ export default class PlanetEarth extends THREE.Object3D {
           time: {type: "f", value: 0.0},
           radius: {type: "f", value: moon_radius},
           roughness: {type: "f", value: this.params.moonRoughness},
-          lacunarity: {type: "f", value: this.params.moonLacunarity}
+          lacunarity: {type: "f", value: this.params.moonLacunarity},
+          seed: {type: "f", value: this.random() * 7}
         },
         vertexShader: terrainVertShader,
         fragmentShader: terrainFragShader
@@ -181,6 +186,14 @@ export default class PlanetEarth extends THREE.Object3D {
     this.moonMesh.rotation.y = -180.0; // so dark-side of moon is facing out from earth point of view
     this.add(this.moonMesh);
     this.earthPivotPoint.add(this.moonMesh); // Moon pivots around (and parented to) the earth.
+  }
+
+  randomize() {
+    this.earthMesh.material.uniforms.seed.value = this.random() * 7.0;
+    this.oceanMesh.material.uniforms.seed.value = this.random() * 7.0;
+    this.atmosphereMesh.material.uniforms.seed.value = this.random() * 7.0;
+    this.cloudsMesh.material.uniforms.seed.value = this.random() * 7.0;
+    this.moonMesh.material.uniforms.seed.value = this.random() * 7.0;
   }
 
   update(dt = 0) {

@@ -40,7 +40,6 @@ export default class Application {
     // Scene setup
     this.biome = new Biome(this.random);
     this.biome.generateTexture({waterLevel: this.params.waterLevel});
-    ;
 
     this.nebulaeGradient = new NebulaeGradient(this.random);
     this.nebulaeGradient.generateTexture();
@@ -76,6 +75,12 @@ export default class Application {
     // this.stars.render({
     //   nebulaeMap: this.nebulaeGradient.texture
     // });
+  }
+
+  randomize() {
+    this.biome.generateTexture({waterLevel: this.params.waterLevel});
+    this.nebulaeGradient.generateTexture();
+    this.planetEarth.randomize();
   }
 
   prepareInit() {
@@ -349,6 +354,8 @@ export default class Application {
       }
     });
     f.close();
+
+    this.gui.add(this, 'randomize');
   }
 
   setupParticleSystem() {
