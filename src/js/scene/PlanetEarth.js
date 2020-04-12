@@ -38,8 +38,7 @@ export default class PlanetEarth extends THREE.Object3D {
     const image_resolution = 1024.0;
 
     const textureLoader = new THREE.TextureLoader();
-    // this.earthPivotPoint = new THREE.Object3D();
-    this.earthPivotPoint = this;
+    this.earthPivotPoint = new THREE.Object3D();
 
     // Earth sphere
     this.earthMesh = new THREE.Mesh(
