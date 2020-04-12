@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import OrbitControls from 'orbit-controls-es6';
 
 import * as Stats from 'stats.js';
-import * as dat from 'dat.gui/build/dat.gui.js';
+const dat = require('dat.gui');
 
 import RenderQueue from "../utils/RenderQueue";
 
@@ -15,7 +15,6 @@ export default class AbstractApplication {
 
     // Standard scene stuff
     this.setupLights();
-    this.setupControls();
     this.setupParamControls();
 
     window.addEventListener('resize', () => this.onWindowResize);
@@ -24,6 +23,7 @@ export default class AbstractApplication {
   }
 
   prepareInit(opts = {}) {
+    this.stats = new Stats();
     this._rafID = null;
 
     if (opts.container) {
@@ -46,7 +46,10 @@ export default class AbstractApplication {
 
     this._scene = new THREE.Scene();
 
-    this._renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    this._renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true
+    });
     this._renderer.setClearColor(0x111111);  // it's a dark gray
     this._renderer.setPixelRatio(window.devicePixelRatio || 1);
     this._renderer.setSize(window.innerWidth, window.innerHeight);
@@ -57,8 +60,14 @@ export default class AbstractApplication {
     this._camera.lookAt(new THREE.Vector3(0, 0, 0));
     window.camera = this._camera;
 
-    // stats
-    this.stats = new Stats();
+    this._controls = new OrbitControls(this._camera, this._renderer.domElement);
+    this._controls.enabled = true;
+    this._controls.enableDamping = true;
+    this._controls.dampingFactor = 0.1;
+    this._controls.rotateSpeed = 0.1;
+    this._controls.autoRotate = true;
+    this._controls.autoRotateSpeed = 0.01;
+    this._controls.zoomSpeed = 0.1;
 
     this.container.appendChild(this.stats.dom);
     this.container.appendChild(this._renderer.domElement);
@@ -73,17 +82,6 @@ export default class AbstractApplication {
     this.directionalLight.position.set(-1, 1.0, 1);
     this._scene.add(this.directionalLight);
     window.light = this.directionalLight;
-  }
-
-  setupControls() {
-    this._controls = new OrbitControls(this._camera, this._renderer.domElement);
-    this._controls.enabled = true;
-    this._controls.enableDamping = true;
-    this._controls.dampingFactor = 0.1;
-    this._controls.rotateSpeed = 0.1;
-    this._controls.autoRotate = true;
-    this._controls.autoRotateSpeed = 0.01;
-    this._controls.zoomSpeed = 0.1;
   }
 
   setupParamControls() {
@@ -145,7 +143,7 @@ export default class AbstractApplication {
   }
 
   onKeyDown(e) {
-    if (e.keyCode == '72') {
+    if (e.keyCode === '72') {
       var infoBoxHolder = document.getElementById("infoBoxHolder");
       if (infoBoxHolder.style.visibility === "hidden") {
         infoBoxHolder.style.visibility = "visible";

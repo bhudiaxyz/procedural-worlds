@@ -2,8 +2,9 @@ import * as THREE from 'three';
 
 export default class NebulaeGradient {
 
-  constructor() {
+  constructor(random) {
 
+    this.random = random;
     this.canvas = document.createElement("canvas");
     this.canvas.id = "nebulaeCanvas";
     this.canvas.width = 512;
@@ -108,7 +109,7 @@ export default class NebulaeGradient {
 
   randRange(low, high) {
     let range = high - low;
-    let n = window.rng() * range;
+    let n = this.random() * range;
     return low + n;
   }
 

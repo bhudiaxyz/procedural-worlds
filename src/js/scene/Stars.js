@@ -3,16 +3,17 @@ import StarMap from '../tools/StarMap';
 
 export default class Stars extends THREE.Object3D {
 
-  constructor() {
+  constructor(random) {
     super();
 
+    this.random = random;
     this.materials = [];
     this.roughness = 0.8;
     this.metalness = 0.5;
     this.emissiveIntensity = 1.0;
 
     this.resolution = 1024;
-    this.size = 50000;
+    this.size = 1250;
 
     this.starMaps = [];
 
@@ -38,7 +39,7 @@ export default class Stars extends THREE.Object3D {
       this.materials[i] = material;
     }
 
-    let geo = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
+    let geo = new THREE.BoxGeometry(2048, 2048, 2048, 64, 64, 64);
     let radius = this.size;
     for (var i in geo.vertices) {
       var vertex = geo.vertices[i];
@@ -79,7 +80,7 @@ export default class Stars extends THREE.Object3D {
 
   randRange(low, high) {
     let range = high - low;
-    let n = window.rng() * range;
+    let n = this.random() * range;
     return low + n;
   }
 

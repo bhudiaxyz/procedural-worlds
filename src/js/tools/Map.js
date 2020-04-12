@@ -37,7 +37,7 @@ class Map {
 
     for (let i = 0; i < Map.NUM_MAPS; i++) {
 
-      window.renderQueue.addAction(() => {
+      //window.renderQueue.addAction(() => {
         this.textures[i].setSize(resolution, resolution);
         this.textures[i].needsUpdate = true;
         this.textureCameras[i].left = -resolution / 2;
@@ -47,10 +47,10 @@ class Map {
         this.textureCameras[i].updateProjectionMatrix();
         this.geos[i] = new THREE.PlaneGeometry(resolution, resolution);
         this.planes[i].geometry = this.geos[i];
-        window.renderer.render(this.textureScenes[i], this.textureCameras[i], this.textures[i], true);
+        //window.renderer.render(this.textureScenes[i], this.textureCameras[i], this.textures[i], true);
         this.geos[i].dispose();
 
-      });
+      //});
 
     }
   }

@@ -7,7 +7,7 @@ export default class SpinningBox extends THREE.Object3D {
   constructor() {
     super();
     this.mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(0.65, 0.65, 0.65),
+      new THREE.BoxGeometry(4, 4, 4),
       new THREE.ShaderMaterial({
         vertexShader: vertShader,
         fragmentShader: fragShader,
@@ -22,6 +22,6 @@ export default class SpinningBox extends THREE.Object3D {
   }
 
   update(dt = 0) {
-    this.rotation.z += dt * 0.2;
+    this.rotation.z += 0.0045;
   }
 };
