@@ -44,6 +44,7 @@
     "load-img": "^1.0.0",
     "orbit-controls-es6": "^2.0.1",
     "popper.js": "^1.15.0",
+    "random-lorem": "^1.0.4",
     "seed-random": "^2.2.0",
     "simple-line-icons": "^2.4.1",
     "simplex-noise": "^2.4.0",

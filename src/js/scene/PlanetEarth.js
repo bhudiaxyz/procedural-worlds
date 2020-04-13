@@ -215,14 +215,15 @@ export default class PlanetEarth extends THREE.Object3D {
     this.cloudsMesh.visible = this.params.cloudsVisible;
     this.cloudsMesh.material.uniforms.rangeFactor.value = this.params.cloudRangeFactor;
     this.cloudsMesh.material.uniforms.smoothness.value = this.params.cloudSmoothness;
-    this.cloudsMesh.rotation.x += this.params.cloudRotationX;
-    this.cloudsMesh.rotation.y += this.params.cloudRotationY;
-    this.cloudsMesh.rotation.z += this.params.cloudRotationZ;
+
+    this.cloudsMesh.rotation.x += this.params.cloudRotation.x;
+    this.cloudsMesh.rotation.y += this.params.cloudRotation.y;
+    this.cloudsMesh.rotation.z += this.params.cloudRotation.z;
 
     if (this.params.rotate) {
-      this.earthMesh.rotation.x += this.params.earthRotationX;
-      this.earthMesh.rotation.y += this.params.earthRotationY;
-      this.earthMesh.rotation.z += this.params.earthRotationZ;
+      this.earthMesh.rotation.x += this.params.earthRotation.x;
+      this.earthMesh.rotation.y += this.params.earthRotation.y;
+      this.earthMesh.rotation.z += this.params.earthRotation.z;
 
       this.earthPivotPoint.rotation.y += this.params.moonSpeed;
     }

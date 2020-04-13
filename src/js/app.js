@@ -1,12 +1,9 @@
+import * as THREE from "three";
 import OrbitControls from 'orbit-controls-es6';
 import * as Alea from 'alea';
 import * as SimplexNoise from 'simplex-noise';
 import * as Stats from 'stats.js';
 import * as dat from 'dat.gui/build/dat.gui.js';
-
-const imgSpaceStar = require('../assets/textures/space/star-cluster.png');
-
-// /* eslint import/no-webpack-loader-syntax: off */
 
 import SpinningBox from './scene/SpinningBox';
 import Nebula from './scene/Nebula';
@@ -15,7 +12,7 @@ import SkyBox from './scene/SkyBox';
 import NebulaeGradient from "./tools/NebulaeGradient";
 import Biome from "./tools/Biome";
 import PlanetEarth from "./scene/PlanetEarth";
-import * as THREE from "three";
+import SkyStars from "./scene/SkyStars";
 
 const N = 6;
 const TWO_N = Math.pow(2, N); // detail of the spheres
@@ -35,7 +32,7 @@ export default class Application {
     // Standard scene stuff
     this.setupRenderer();
     this.setupLights();
-    this.setupHelpers();
+    // this.setupHelpers();
 
     // Scene setup
     this.biome = new Biome(this.random);
@@ -45,13 +42,14 @@ export default class Application {
     this.nebulaeGradient.generateTexture();
 
     // this.setupSkyBox();
-    this.skybox = new SkyBox(EARTH_RADIUS * 150.0, TWO_N, TWO_N);
+    this.skybox = new SkyBox(EARTH_RADIUS * 400.0, TWO_N, TWO_N);
     this.scene.add(this.skybox);
 
     // this.nebula = new Nebula(this.random);
     // this.scene.add(this.nebula);
 
-    this.setupParticleSystem();
+    this.stars = new SkyStars(this.random, this.params, EARTH_RADIUS * 175, EARTH_RADIUS * 7, 500);
+    this.scene.add(this.stars);
     // this.stars = new Stars(this.random);
     // this.scene.add(this.stars);
 
@@ -112,17 +110,13 @@ export default class Application {
       earthSpeed: 0.00014,
       earthRoughness: 0.069,
       earthLacunarity: 0.076,
-      earthRotationX: 0.000,
-      earthRotationY: 0.003,
-      earthRotationZ: 0.000,
+      earthRotation: new THREE.Vector3(0.0, 0.003, 0.000),
       // Clouds
       cloudsVisible: true,
       cloudSpeed: 0.00002140,
       cloudRangeFactor: 0.29,
       cloudSmoothness: 2.6,
-      cloudRotationX: 0.000053,
-      cloudRotationY: -0.00138,
-      cloudRotationZ: 0.00003,
+      cloudRotation: new THREE.Vector3(0.000053, -0.00138, 0.00003),
       // Moon
       moonVisible: true,
       moonSpeed: 0.00015,
@@ -318,9 +312,9 @@ export default class Application {
     f.add(this.params, 'earthSpeed', -0.001, 0.001);
     f.add(this.params, 'earthRoughness', 0.0, 2.0);
     f.add(this.params, 'earthLacunarity', 0.0, 2.0);
-    f.add(this.params, 'earthRotationX', -0.05, 0.05);
-    f.add(this.params, 'earthRotationY', -0.05, 0.05);
-    f.add(this.params, 'earthRotationZ', -0.05, 0.05);
+    f.add(this.params.earthRotation, 'x').name('Earth Rotation X').min(-0.05).max(0.05);
+    f.add(this.params.earthRotation, 'y').name('Earth Rotation Y').min(-0.05).max(0.05);
+    f.add(this.params.earthRotation, 'z').name('Earth Rotation Z').min(-0.05).max(0.05);
     f.close();
 
     f = this.gui.addFolder("Clouds");
@@ -328,9 +322,9 @@ export default class Application {
     f.add(this.params, 'cloudSpeed', 0.0, 0.001);
     f.add(this.params, 'cloudRangeFactor', 0.0, 3.0);
     f.add(this.params, 'cloudSmoothness', 0.0, 3.0);
-    f.add(this.params, 'cloudRotationX', -0.05, 0.05);
-    f.add(this.params, 'cloudRotationY', -0.05, 0.05);
-    f.add(this.params, 'cloudRotationZ', -0.05, 0.05);
+    f.add(this.params.cloudRotation, 'x').name('Cloud Rotation X').min(-0.05).max(0.05);
+    f.add(this.params.cloudRotation, 'y').name('Cloud Rotation Y').min(-0.05).max(0.05);
+    f.add(this.params.cloudRotation, 'z').name('Cloud Rotation Z').min(-0.05).max(0.05);
     f.close();
 
     f = this.gui.addFolder("Moon");
@@ -341,14 +335,12 @@ export default class Application {
     f.close();
 
     f = this.gui.addFolder("Debug");
-    this.showNebulaMapControl = f.add(this.params, 'showNebulaMap');
-    this.showNebulaMapControl.onChange(value => {
+    f.add(this.params, 'showNebulaMap').onChange(value => {
       if (this.nebulaeGradient) {
         this.nebulaeGradient.toggleCanvasDisplay(value);
       }
     });
-    this.showBiomeMapControl = f.add(this.params, 'showBiomeMap');
-    this.showBiomeMapControl.onChange(value => {
+    f.add(this.params, 'showBiomeMap').onChange(value => {
       if (this.biome) {
         this.biome.toggleCanvasDisplay(value);
       }
@@ -358,48 +350,10 @@ export default class Application {
     this.gui.add(this, 'randomize');
   }
 
-  setupParticleSystem() {
-    const STAR_RADIUS = EARTH_RADIUS * 50;
-    const STAR_SPREAD = EARTH_RADIUS * 4;
-    const PARTICLE_COUNT = 500;
-
-    const textureLoader = new THREE.TextureLoader();
-    const bgTexture = textureLoader.load(imgSpaceStar);
-
-    const geometry = new THREE.Geometry();
-
-    for (let i = 0; i < PARTICLE_COUNT; i += 1) {
-      // Generate a random point around a (randomized) sphere (using polar co-ords) - http://corysimon.github.io/articles/uniformdistn-on-sphere/
-      const sphere = STAR_RADIUS + this.random() * STAR_SPREAD;
-      const theta = 2 * Math.PI * this.random();
-      const phi = Math.acos(1 - 2 * this.random());
-      const x = Math.sin(phi) * Math.cos(theta);
-      const y = Math.sin(phi) * Math.sin(theta);
-      const z = Math.cos(phi);
-
-      geometry.vertices.push(new THREE.Vector3(sphere * x, sphere * y, sphere * z));
-    }
-
-    const material = new THREE.PointsMaterial({
-      size: 32,
-      map: bgTexture,
-      transparent: true,
-      // alphaTest's default is 0 and the particles overlap. Any value > 0 prevents the particles from overlapping.
-      alphaTest: 0.5,
-    });
-
-    this.particleSystem = new THREE.Points(geometry, material);
-    this.particleSystem.position.set(0, 0, 0);
-    this.scene.add(this.particleSystem);
-  }
-
-
   update() {
     const delta = Date.now() - this.startTime;
 
-    this.particleSystem.rotation.y += this.params.starSpeed;
-    // this.spinningBox.update();
-
+    this.stars.update();
     this.planetEarth.update();
   }
 }
