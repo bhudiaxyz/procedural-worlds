@@ -31,7 +31,6 @@ export default class NebulaeGradient {
     this.drawShapes();
 
     this.texture = new THREE.CanvasTexture(this.canvas);
-
   }
 
   toggleCanvasDisplay(value) {

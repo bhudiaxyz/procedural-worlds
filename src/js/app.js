@@ -63,22 +63,17 @@ export default class Application {
     // UI controls setup
     this.setupParamsControl();
 
-    this.onResize();
-    window.addEventListener('resize', () => this.onResize, false);
-
     // window.renderer = this.renderer;
     // this.nebula.render({
     //   nebulaeMap: this.nebulaeGradient.texture
     // });
+    // this.nebula.resolution = this.params.resolution;
     // this.stars.render({
     //   nebulaeMap: this.nebulaeGradient.texture
     // });
-  }
-
-  randomize() {
-    this.biome.generateTexture({waterLevel: this.params.waterLevel});
-    this.nebulaeGradient.generateTexture();
-    this.planetEarth.randomize();
+    // this.stars.resolution = this.params.resolution;
+    this.onResize();
+    window.addEventListener('resize', () => this.onResize, false);
   }
 
   prepareInit() {
@@ -93,6 +88,7 @@ export default class Application {
       random: this.random,
       rotate: true,
       panRotate: true,
+      resolution: 1024,
       // Lighting
       pointLightColor: {r: 255, g: 255, b: 255},
       pointLightIntensity: 2,
@@ -143,6 +139,18 @@ export default class Application {
     this.renderer.setSize(this.width, this.height);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
+  }
+
+  randRange(low, high) {
+    let range = high - low;
+    let n = this.random() * range;
+    return low + n;
+  }
+
+  randomize() {
+    this.biome.generateTexture({waterLevel: this.params.waterLevel});
+    this.nebulaeGradient.generateTexture();
+    this.planetEarth.randomize();
   }
 
   animate() {
