@@ -32,12 +32,8 @@ export default class Planet extends THREE.Object3D {
     this.initSeed();
 
     this.materials = [];
-    this.roughness = 0.8;
-    this.metalness = 0.5;
-    this.normalScale = 3.0;
     this.resolution = 1024;
     this.size = 1000;
-    this.waterLevel = 0.0;
 
     this.heightMaps = [];
     this.moistureMaps = [];
@@ -45,19 +41,27 @@ export default class Planet extends THREE.Object3D {
     this.normalMaps = [];
     this.roughnessMaps = [];
 
+    this.waterLevel = 0.0;
+    this.roughness = 0.8;
+    this.metalness = 0.5;
+    this.normalScale = 3.0;
     this.rotate = true;
     this.autoGenerate = false;
     this.autoGenCountCurrent = 0;
     this.autoGenTime = 3 * 60;
     this.autoGenCountMax = this.autoGenTime * 60;
+    this.displayMap = "textureMap";
+    this.showBiomeMap = false;
+
+    this.createSpace();
+    this.createInnerPlanet();
+    this.createOuterPlanet();
+
+    this.loadSeedFromURL();
 
     let planetFolder = gui.addFolder('Planet');
 
     planetFolder.add(this, "rotate");
-
-    planetFolder.add(this, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
-      this.regenerate();
-    });
 
     planetFolder.add(this, "roughness", 0.0, 1.0).onChange(value => {
       this.updateMaterial();
@@ -71,50 +75,31 @@ export default class Planet extends THREE.Object3D {
       this.updateMaterial();
     });
 
-    this.createSpace();
-    this.createInnerPlanet();
-    this.createOuterPlanet();
+    planetFolder.add(this, "displayMap", ["textureMap", "heightMap", "moistureMap", "normalMap", "roughnessMap"]).onChange(value => {
+      this.updateMaterial();
+    });
 
-    this.loadSeedFromURL();
+    planetFolder.add(this, "showBiomeMap").onChange(value => {
+      if (this.biome) {
+        this.biome.toggleCanvasDisplay(value);
+      }
+    });
+
+    planetFolder.add(this, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
+      this.regenerate();
+    });
+
+    planetFolder.add(this, "autoGenerate");
+    planetFolder.add(this, "autoGenTime", 30, 300).step(1).onChange(value => {
+      this.autoGenCountMax = this.autoGenTime * 60
+    });
+
 
     let generalFolder = window.gui.addFolder('General');
 
     this.seedStringControl = generalFolder.add(this, "seedString").listen();
     this.seedStringControl.onFinishChange(value => {
       this.loadSeedFromTextfield();
-    });
-
-    // debug options
-    this.displayMap = "textureMap";
-    let debugFolder = window.gui.addFolder('Debug');
-    debugFolder.add(this, "displayMap", ["textureMap", "heightMap", "moistureMap", "normalMap", "roughnessMap"]).onChange(value => {
-      this.updateMaterial();
-    });
-
-    this.showBiomeMap = false;
-    debugFolder.add(this, "showBiomeMap").onChange(value => {
-      if (this.biome) {
-        this.biome.toggleCanvasDisplay(value);
-      }
-    });
-
-    this.showNebulaMap = false;
-    debugFolder.add(this, "showNebulaMap").onChange(value => {
-      if (this.nebulaeGradient) {
-        this.nebulaeGradient.toggleCanvasDisplay(value);
-      }
-    });
-
-    this.showSunMap = false;
-    debugFolder.add(this, "showSunMap").onChange(value => {
-      if (this.sun) {
-        this.sun.sunTexture.toggleCanvasDisplay(value);
-      }
-    });
-
-    debugFolder.add(this, "autoGenerate");
-    debugFolder.add(this, "autoGenTime", 30, 300).step(1).onChange(value => {
-      this.autoGenCountMax = this.autoGenTime * 60
     });
 
     window.gui.add(this, "randomize");
@@ -143,6 +128,21 @@ export default class Planet extends THREE.Object3D {
 
     this.sun = new Sun();
     this.add(this.sun);
+
+    let spaceFolder = window.gui.addFolder('Space');
+    this.showNebulaMap = false;
+    spaceFolder.add(this, "showNebulaMap").onChange(value => {
+      if (this.nebulaeGradient) {
+        this.nebulaeGradient.toggleCanvasDisplay(value);
+      }
+    });
+
+    this.showSunMap = false;
+    spaceFolder.add(this, "showSunMap").onChange(value => {
+      if (this.sun) {
+        this.sun.sunTexture.toggleCanvasDisplay(value);
+      }
+    });
   }
 
   createInnerPlanet() {
