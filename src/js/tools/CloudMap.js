@@ -4,7 +4,7 @@ import Map from './Map';
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/cloudMap.frag'
 
-class CloudMap extends Map {
+export default class CloudMap extends Map {
 
   constructor() {
     super();
@@ -58,4 +58,3 @@ class CloudMap extends Map {
 
 }
 
-export default CloudMap;

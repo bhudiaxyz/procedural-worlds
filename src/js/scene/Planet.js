@@ -51,17 +51,17 @@ export default class Planet extends THREE.Object3D {
     this.autoGenTime = 3 * 60;
     this.autoGenCountMax = this.autoGenTime * 60;
 
-    let matFolder = gui.addFolder('Material');
+    let planetFolder = gui.addFolder('Planet');
 
-    matFolder.add(this, "roughness", 0.0, 1.0).onChange(value => {
+    planetFolder.add(this, "roughness", 0.0, 1.0).onChange(value => {
       this.updateMaterial();
     });
 
-    matFolder.add(this, "metalness", 0.0, 1.0).onChange(value => {
+    planetFolder.add(this, "metalness", 0.0, 1.0).onChange(value => {
       this.updateMaterial();
     });
 
-    matFolder.add(this, "normalScale", -3.0, 6.0).onChange(value => {
+    planetFolder.add(this, "normalScale", -3.0, 6.0).onChange(value => {
       this.updateMaterial();
     });
 

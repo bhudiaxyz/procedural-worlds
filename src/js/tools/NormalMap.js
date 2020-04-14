@@ -4,7 +4,7 @@ import Map from './Map';
 import vertShader from '!raw-loader!glslify-loader!../shaders/normalMap.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/normalMap.frag'
 
-class NormalMap extends Map {
+export default class NormalMap extends Map {
 
   constructor() {
     super();
@@ -50,4 +50,3 @@ class NormalMap extends Map {
 
 }
 
-export default NormalMap;

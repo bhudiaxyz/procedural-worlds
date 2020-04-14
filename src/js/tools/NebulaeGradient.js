@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 
-class NebulaeGradient {
+export default class NebulaeGradient {
 
   constructor() {
 
@@ -118,4 +118,3 @@ class NebulaeGradient {
 
 }
 
-export default NebulaeGradient;

@@ -4,7 +4,7 @@ import Map from './Map';
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/roughnessMap.frag'
 
-class RoughnessMap extends Map {
+export default class RoughnessMap extends Map {
 
   constructor() {
     super();
@@ -47,4 +47,3 @@ class RoughnessMap extends Map {
 
 }
 
-export default RoughnessMap;

@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 
-class Biome {
+export default class Biome {
 
   constructor() {
 
@@ -385,5 +385,3 @@ class Biome {
   }
 
 }
-
-export default Biome;

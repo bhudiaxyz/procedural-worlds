@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-class Map {
+export default class Map {
 
   constructor() {
     //
@@ -54,5 +54,3 @@ class Map {
   }
 
 }
-
-export default Map;

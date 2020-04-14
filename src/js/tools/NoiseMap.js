@@ -4,7 +4,7 @@ import Map from './Map';
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/flowNoiseMap.frag'
 
-class NoiseMap extends Map {
+export default class NoiseMap extends Map {
 
   constructor() {
     super();
@@ -61,4 +61,3 @@ class NoiseMap extends Map {
 
 }
 
-export default NoiseMap;
