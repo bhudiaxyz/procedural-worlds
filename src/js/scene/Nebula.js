@@ -8,12 +8,29 @@ export default class Nebula extends THREE.Object3D {
 
     this.materials = [];
     this.roughness = 0.8;
-    this.metalness = 0.5;
-    this.emissiveIntensity = 1.0;
 
     this.resolution = 1024;
     this.size = 45000;
-    this.nebula = 1.0;
+
+    this.settings = {
+      speed: 0.1,
+      res1: this.randRange(1.0, 3.0),
+      res2: this.randRange(1.0, 3.0),
+      resMix: this.randRange(1.0, 3.0),
+      mixScale: this.randRange(1.0, 3.0),
+      opacity: 1.0
+    };
+
+    let nebulaFolder = window.gui.addFolder('Nebula');
+
+    nebulaFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
+    nebulaFolder.add(this.settings, "res1", 1.0, 3.0).step(0.001);
+    nebulaFolder.add(this.settings, "res2", 1.0, 3.0).step(0.001);
+    nebulaFolder.add(this.settings, "resMix", 1.0, 3.0).step(0.001);
+    nebulaFolder.add(this.settings, "mixScale", 1.0, 3.0).step(0.001);
 
     this.skyMaps = [];
 
@@ -33,7 +50,7 @@ export default class Nebula extends THREE.Object3D {
         color: new THREE.Color(0xFFFFFF),
         side: THREE.BackSide,
         transparent: true,
-        opacity: this.nebula
+        opacity: this.settings.opacity
       });
       this.materials[i] = material;
     }
@@ -53,19 +70,13 @@ export default class Nebula extends THREE.Object3D {
   render(props) {
     this.seed = this.randRange(0, 1000);
 
-    let min = 1.0;
-    let max = 3.0;
-
     this.skyMap.render({
       seed: this.seed,
       resolution: this.resolution,
-      res1: this.randRange(min, max),
-      res2: this.randRange(min, max),
-      resMix: this.randRange(min, max),
-      mixScale: this.randRange(min, max),
-      color1: this.color1,
-      color2: this.color2,
-      color3: this.color3,
+      res1: this.settings.res1,
+      res2: this.settings.res2,
+      resMix: this.settings.resMix,
+      mixScale: this.settings.mixScale,
       nebulaeMap: props.nebulaeMap
     });
 
@@ -76,7 +87,7 @@ export default class Nebula extends THREE.Object3D {
     for (let i = 0; i < 6; i++) {
       let material = this.materials[i];
       material.map = this.skyMaps[i];
-      material.opacity = this.nebula;
+      material.opacity = this.settings.opacity;
     }
   }
 
