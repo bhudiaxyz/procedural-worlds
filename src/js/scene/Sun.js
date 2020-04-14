@@ -14,7 +14,7 @@ export default class Sun {
     this.textureFlare = loader.load('assets/textures/lenseFlareSun.jpg');
     this.textureRing = loader.load('assets/textures/lenseFlareRing.jpg');
     this.textureBlur = loader.load('assets/textures/lenseFlareBlur.jpg');
-    this.textureSun = loader.load( 'assets/textures/lenseFlare.jpg' );
+    this.textureSun = loader.load('assets/textures/lenseFlare.jpg');
 
     this.sunTexture = new SunTexture();
 

@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import OrbitControls from 'orbit-controls-es6';
 
 import * as Stats from 'stats.js';
+
 const dat = require('dat.gui');
 
 import RenderQueue from "../utils/RenderQueue";
