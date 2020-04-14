@@ -93,11 +93,11 @@ class Clouds {
       material.roughness = this.roughness;
       material.metalness = this.metalness;
       material.opacity = this.clouds;
-      material.map = this.cloudMaps[i],
-      material.color = this.color,
-      material.alphaMap = this.cloudMaps[i],
-      material.bumpMap = this.cloudMaps[i],
-      material.bumpScale = 1.0
+      material.map = this.cloudMaps[i];
+      material.color = this.color;
+      material.alphaMap = this.cloudMaps[i];
+      material.bumpMap = this.cloudMaps[i];
+      material.bumpScale = 1.0;
     }
   }
 
