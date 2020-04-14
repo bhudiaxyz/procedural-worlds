@@ -11,7 +11,7 @@ import shaderFrag from 'src/js/shaders/custom.frag'
 class Main extends AbstractVRApplication {
   constructor(opts = {}) {
 
-    super();
+    super(opts);
 
     this.clock = new THREE.Clock();
     this.isMouseDown = false;

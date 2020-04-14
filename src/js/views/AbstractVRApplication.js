@@ -6,7 +6,7 @@ import * as webvrui from 'webvr-ui'
 
 
 class AbstractVRApplication {
-  constructor() {
+  constructor(opts = {}) {
 
     this._camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10);
 

@@ -6,7 +6,7 @@ import * as Stats from 'stats.js';
 
 class AbstractApplication {
 
-  constructor() {
+  constructor(opts = {}) {
 
     this._camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
     this._camera.position.z = 2700;
@@ -69,9 +69,7 @@ class AbstractApplication {
     let cameraFolder = this.gui.addFolder('Camera');
 
     cameraFolder.add(this._controls, "autoRotate");
-
-    this.fovControl = cameraFolder.add(this._camera, "fov", 20, 120);
-    this.fovControl.onChange(value => {
+    cameraFolder.add(this._camera, "fov", 20, 120).onChange(value => {
       this._camera.updateProjectionMatrix()
     });
 

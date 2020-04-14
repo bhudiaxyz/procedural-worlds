@@ -82,7 +82,6 @@ class AtmosphereRing {
     this.atmosphereUniforms.level.value = window.camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
   }
 
-
 }
 
 export default AtmosphereRing;

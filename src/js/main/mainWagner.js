@@ -13,7 +13,7 @@ class Main extends AbstractApplication {
 
   constructor(opts = {}) {
 
-    super();
+    super(opts);
     this.cubes = [];
 
     this.params = {

@@ -11,29 +11,24 @@ class Clouds {
     this.roughness = 0.9;
     this.metalness = 0.5;
     this.normalScale = 5.0;
-    this.clouds = 1.0;
-
+    this.clouds = 1;
 
     this.resolution = 1024;
     this.size = 1001;
 
-
     this.color = new THREE.Color(0xffffff);
-
     this.cloudColor = [this.color.r * 255, this.color.g * 255, this.color.b * 255];
-
     this.cloudMaps = [];
 
     this.setup();
 
+    let cloudsFolder = window.gui.addFolder('Clouds');
 
-    let cloudControl = window.gui.add(this, "clouds", 0.0, 1.0);
-    cloudControl.onChange(value => {
+    cloudsFolder.add(this, "clouds", 0.0, 1.0).onChange(value => {
       this.updateMaterial();
     });
 
-    let colorControl = window.gui.addColor(this, "cloudColor");
-    colorControl.onChange(value => {
+    cloudsFolder.addColor(this, "cloudColor").onChange(value => {
       this.color.r = value[0] / 255;
       this.color.g = value[1] / 255;
       this.color.b = value[2] / 255;
@@ -100,15 +95,14 @@ class Clouds {
       material.metalness = this.metalness;
       material.opacity = this.clouds;
       material.map = this.cloudMaps[i],
-        // material.alphaMap = this.cloudMaps[i],
-        // material.bumpMap = this.cloudMaps[i],
-        // material.bumpScale = 1.0,
-        material.color = this.color
+      material.color = this.color,
+      material.alphaMap = this.cloudMaps[i],
+      material.bumpMap = this.cloudMaps[i],
+      material.bumpScale = 1.0
     }
   }
 
   randomizeColor() {
-
     this.color.r = this.randRange(0.7, 1.0);
     this.color.g = this.randRange(0.7, 1.0);
     this.color.b = this.randRange(0.7, 1.0);

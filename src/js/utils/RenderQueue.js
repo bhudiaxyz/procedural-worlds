@@ -19,7 +19,7 @@ export default class RenderQueue {
   }
 
   update() {
-    if (this.startFrame == false) {
+    if (this.startFrame === false) {
       if (this.actions.length > 0) {
         this.doNextAction();
       } else {
@@ -33,12 +33,10 @@ export default class RenderQueue {
   }
 
   doNextAction() {
-
     let thisTime = Date.now();
     let totalTime = thisTime - this.lastTime;
 
     this.lastTime = thisTime;
-
     this.actions[0]();
     this.actions.shift();
 
@@ -64,11 +62,9 @@ export default class RenderQueue {
   executeCallbacks() {
     for (let i = 0; i < this.callbacks.length; i++) {
       this.callbacks[i]();
-      // console.log("rendering complete");
     }
 
     this.loadingBar.hide();
-
     this.callbacks = [];
   }
 

@@ -39,7 +39,6 @@ class Planet {
     this.resolution = 1024;
     this.size = 1000;
     this.waterLevel = 0.0;
-    // this.waterLevel = 0.5;
 
     this.heightMaps = [];
     this.moistureMaps = [];
@@ -47,97 +46,100 @@ class Planet {
     this.normalMaps = [];
     this.roughnessMaps = [];
 
-    let matFolder = gui.addFolder('Material');
-
-    this.roughnessControl = matFolder.add(this, "roughness", 0.0, 1.0);
-    this.roughnessControl.onChange(value => {
-      this.updateMaterial();
-    });
-
-    this.metalnessControl = matFolder.add(this, "metalness", 0.0, 1.0);
-    this.metalnessControl.onChange(value => {
-      this.updateMaterial();
-    });
-
-    this.normalScaleControl = matFolder.add(this, "normalScale", -3.0, 6.0).listen();
-    this.normalScaleControl.onChange(value => {
-      this.updateMaterial();
-    });
-
-    // debug options
-    this.displayMap = "textureMap";
-    let debugFolder = gui.addFolder('Debug');
-    this.displayMapControl = debugFolder.add(this, "displayMap", ["textureMap", "heightMap", "moistureMap", "normalMap", "roughnessMap"]);
-    this.displayMapControl.onChange(value => {
-      this.updateMaterial();
-    });
-
-    this.showBiomeMap = false;
-    this.showBiomeMapControl = debugFolder.add(this, "showBiomeMap");
-    this.showBiomeMapControl.onChange(value => {
-      if (this.biome) {
-        this.biome.toggleCanvasDisplay(value);
-      }
-    });
-
-    this.showNebulaMap = false;
-    this.showNebulaMapControl = debugFolder.add(this, "showNebulaMap");
-    this.showNebulaMapControl.onChange(value => {
-      if (this.nebulaeGradient) {
-        this.nebulaeGradient.toggleCanvasDisplay(value);
-      }
-    });
-
-
-    this.biome = new Biome();
-    this.nebulaeGradient = new NebulaeGradient();
-
-    this.createScene();
-    this.createStars();
-    this.createNebula();
-    this.createSun();
-    // this.createClouds();
-    // this.createGlow();
-
-    // this.atmosphereRing = new AtmosphereRing();
-    // this.view.add(this.atmosphereRing.view);
-
-    this.createAtmosphere();
-    this.loadSeedFromURL();
-
-
-    ////////////////// environment gui
-    let enviromentFolder = gui.addFolder('Environment');
-    enviromentFolder.add(this.atmosphere, "atmosphere", 0.0, 1.0).step(0.01);
-    enviromentFolder.add(this.nebula, "nebula", 0.0, 1.0).step(0.01).onChange(value => {
-      this.nebula.updateMaterial();
-    });
-
-
     this.rotate = true;
     this.autoGenerate = false;
     this.autoGenCountCurrent = 0;
     this.autoGenTime = 3 * 60;
     this.autoGenCountMax = this.autoGenTime * 60;
 
-    window.gui.add(this, "rotate");
+    let matFolder = gui.addFolder('Material');
 
-    this.resolutionControl = window.gui.add(this, "resolution", [256, 512, 1024, 2048, 4096]);
-    this.resolutionControl.onChange(value => {
+    matFolder.add(this, "roughness", 0.0, 1.0).onChange(value => {
+      this.updateMaterial();
+    });
+
+    matFolder.add(this, "metalness", 0.0, 1.0).onChange(value => {
+      this.updateMaterial();
+    });
+
+    matFolder.add(this, "normalScale", -3.0, 6.0).onChange(value => {
+      this.updateMaterial();
+    });
+
+    // debug options
+    this.displayMap = "textureMap";
+    let debugFolder = gui.addFolder('Debug');
+    debugFolder.add(this, "displayMap", ["textureMap", "heightMap", "moistureMap", "normalMap", "roughnessMap"]).onChange(value => {
+      this.updateMaterial();
+    });
+
+    this.showBiomeMap = false;
+    debugFolder.add(this, "showBiomeMap").onChange(value => {
+      if (this.biome) {
+        this.biome.toggleCanvasDisplay(value);
+      }
+    });
+
+    this.showNebulaMap = false;
+    debugFolder.add(this, "showNebulaMap").onChange(value => {
+      if (this.nebulaeGradient) {
+        this.nebulaeGradient.toggleCanvasDisplay(value);
+      }
+    });
+
+    this.biome = new Biome();
+    this.nebulaeGradient = new NebulaeGradient();
+
+    this.createScene();
+
+    this.stars = new Stars();
+    this.view.add(this.stars.view);
+
+    this.nebula = new Nebula();
+    this.view.add(this.nebula.view);
+
+    this.sun = new Sun();
+    this.view.add(this.sun.view);
+
+    this.clouds = new Clouds();
+    this.view.add(this.clouds.view);
+
+    this.glow = new Glow();
+    this.view.add(this.glow.view);
+
+    this.atmosphere = new Atmosphere();
+    this.view.add(this.atmosphere.view);
+
+    this.atmosphereRing = new AtmosphereRing();
+    this.view.add(this.atmosphereRing.view);
+
+    this.loadSeedFromURL();
+
+    let generalFolder = window.gui.addFolder('General');
+    generalFolder.add(this, "rotate");
+
+    generalFolder.add(this, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
       this.regenerate();
     });
 
-    debugFolder.add(this, "autoGenerate");
-    this.autoGenTimeControl = debugFolder.add(this, "autoGenTime", 30, 300).step(1);
-    this.autoGenTimeControl.onChange(value => {
-      this.autoGenCountMax = this.autoGenTime * 60
-    });
-
-    this.seedStringControl = window.gui.add(this, "seedString").listen();
+    this.seedStringControl = generalFolder.add(this, "seedString").listen();
     this.seedStringControl.onFinishChange(value => {
       this.loadSeedFromTextfield();
     });
-    // window.gui.add(this, "regenerate");
+
+    ////////////////// environment gui
+    let environmentFolder = window.gui.addFolder('Environment');
+    environmentFolder.add(this.atmosphere, "atmosphere", 0.0, 1.0).step(0.01);
+    environmentFolder.add(this.nebula, "nebula", 0.0, 1.0).step(0.01).onChange(value => {
+      this.nebula.updateMaterial();
+    });
+
+
+    debugFolder.add(this, "autoGenerate");
+    debugFolder.add(this, "autoGenTime", 30, 300).step(1).onChange(value => {
+      this.autoGenCountMax = this.autoGenTime * 60
+    });
+
     window.gui.add(this, "randomize");
 
     document.addEventListener('keydown', (event) => {
@@ -151,7 +153,6 @@ class Planet {
     };
 
     this.renderUI();
-
   }
 
   update() {
@@ -159,13 +160,11 @@ class Planet {
       this.ground.rotation.y += 0.0005;
       this.stars.view.rotation.y += 0.0003;
       this.nebula.view.rotation.y += 0.0003;
-      // this.clouds.view.rotation.y += 0.0007;
+      this.clouds.view.rotation.y += 0.0007;
     }
 
     this.atmosphere.update();
-
-
-    // this.glow.update();
+    this.glow.update();
 
     if (this.autoGenerate) {
       this.autoGenCountCurrent++;
@@ -177,8 +176,7 @@ class Planet {
     this.stars.view.position.copy(window.camera.position);
     this.nebula.view.position.copy(window.camera.position);
 
-    // this.atmosphereRing.update();
-
+    this.atmosphereRing.update();
   }
 
   renderUI() {
@@ -207,7 +205,7 @@ class Planet {
     // new planet button
     let newPlanetButtonHolder = document.createElement("div");
     newPlanetButtonHolder.setAttribute("id", "newPlanetButtonHolder");
-    newPlanetButtonHolder.innerHTML = "<div id='newPlanetButton'>New Planet</div>";
+    newPlanetButtonHolder.innerHTML = "<div id='newPlanetButton' class='btn btn-primary'>New Planet</div>";
     document.body.appendChild(newPlanetButtonHolder);
 
     let newPlanetButton = document.getElementById("newPlanetButton");
@@ -255,31 +253,33 @@ class Planet {
     this.renderScene();
   }
 
-  randomize() {
-    // this.seedString = randomString(10);
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
+  randomize() {
     let n = Math.random();
     let wordCount = 0;
-    if (n > 0.8) wordCount = 1;
-    else if (n > 0.4) wordCount = 2;
-    else wordCount = 3;
+    if (n > 0.8) {
+      wordCount = 1;
+    } else if (n > 0.4) {
+      wordCount = 2;
+    } else {
+      wordCount = 3;
+    }
 
     this.seedString = "";
     for (let i = 0; i < wordCount; i++) {
       this.seedString += this.capitalizeFirstLetter(randomLorem({min: 2, max: 8}));
-      if (i < wordCount - 1) this.seedString += " ";
+      if (i < wordCount - 1) {
+        this.seedString += " ";
+      }
     }
 
-    // this.seedString = randomLorem({ min: 2, max: 8 });
-    // this.seedString += " " + randomLorem({ min: 2, max: 8 });
     let url = this.updateQueryString("seed", this.seedString);
     window.history.pushState({seed: this.seedString}, this.seedString, url);
     this.autoGenCountCurrent = 0;
     this.renderScene();
-  }
-
-  capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
 
@@ -319,23 +319,24 @@ class Planet {
 
 
   renderScene() {
-
     this.initSeed();
     this.updatePlanetName();
 
     this.seed = this.randRange(0, 1) * 1000.0;
     this.waterLevel = this.randRange(0.1, 0.5);
-    // this.clouds.resolution = this.resolution;
+
+    this.stars.resolution = this.resolution;
+    this.nebula.resolution = this.resolution;
+    this.clouds.resolution = this.resolution;
 
     this.updateNormalScaleForRes(this.resolution);
     this.renderBiomeTexture();
     this.renderNebulaeGradient();
 
-    this.stars.resolution = this.resolution;
-    this.nebula.resolution = this.resolution;
     this.atmosphere.randomizeColor();
-    // this.clouds.randomizeColor();
-    // this.clouds.color = this.atmosphere.color;
+
+    this.clouds.clouds = this.randRange(0.25, 1.0);
+    this.clouds.randomizeColor();
 
     window.renderQueue.start();
 
@@ -350,7 +351,6 @@ class Planet {
       resMix: this.randRange(resMin, resMax),
       mixScale: this.randRange(0.5, 1.0),
       doesRidged: Math.floor(this.randRange(0, 4))
-      // doesRidged: 1
     });
 
     let resMod = this.randRange(3, 10);
@@ -365,7 +365,6 @@ class Planet {
       resMix: this.randRange(resMin, resMax),
       mixScale: this.randRange(0.5, 1.0),
       doesRidged: Math.floor(this.randRange(0, 4))
-      // doesRidged: 0
     });
 
     this.textureMap.render({
@@ -388,9 +387,9 @@ class Planet {
       waterLevel: this.waterLevel
     });
 
-    // this.clouds.render({
-    //   waterLevel: this.waterLevel
-    // });
+    this.clouds.render({
+      waterLevel: this.waterLevel
+    });
 
     this.stars.render({
       nebulaeMap: this.nebulaeGradient.texture
@@ -401,7 +400,6 @@ class Planet {
     });
 
     this.sun.render();
-
 
     window.renderQueue.addCallback(() => {
       this.updateMaterial();
@@ -448,38 +446,6 @@ class Planet {
 
   renderNebulaeGradient() {
     this.nebulaeGradient.generateTexture();
-  }
-
-  createAtmosphere() {
-    this.atmosphere = new Atmosphere();
-    // this.atmosphere.color = this.glow.color;
-    this.view.add(this.atmosphere.view);
-  }
-
-  createGlow() {
-    this.glow = new Glow();
-    // this.glow.color = this.atmosphere.color;
-    this.view.add(this.glow.view);
-  }
-
-  createClouds() {
-    this.clouds = new Clouds();
-    this.view.add(this.clouds.view);
-  }
-
-  createStars() {
-    this.stars = new Stars();
-    this.view.add(this.stars.view);
-  }
-
-  createNebula() {
-    this.nebula = new Nebula();
-    this.view.add(this.nebula.view);
-  }
-
-  createSun() {
-    this.sun = new Sun();
-    this.view.add(this.sun.view);
   }
 
   updateNormalScaleForRes(value) {

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import WAGNER from '@superguigui/wagner/'
+import WAGNER from '@superguigui/wagner'
 import MultiPassBloomPass from '@superguigui/wagner/src/passes/bloom/MultiPassBloomPass'
 import GodrayPass from '@superguigui/wagner/src/passes/godray/godraypass'
 import AbstractApplication from '../views/AbstractApplication'
@@ -12,10 +12,7 @@ import shaderFrag from '!raw-loader!glslify-loader!../shaders/custom.frag';
 class Main extends AbstractApplication {
 
   constructor(opts = {}) {
-    super();
-
-    // texture loading example
-    // var texture = new THREE.TextureLoader().load( 'assets/textures/crate.gif' );
+    super(opts);
 
     this.initPostprocessing();
     // this.createBrandTag();
@@ -34,19 +31,17 @@ class Main extends AbstractApplication {
       applyZoomBlur: true
     });
     this.godrayPass = new GodrayPass();
-
-    let folder = window.gui.addFolder("Post Processing");
     this.bloom = false;
+
+    let folder = this.gui.addFolder("Post Processing");
     folder.add(this, "bloom");
     folder.add(this.bloomPass.params, "blurAmount", 0, 5);
-
-
   }
 
   createBrandTag() {
     let a = document.createElement("a");
-    a.href = "http://www.colordodge.com";
-    a.innerHTML = "<div id='brandTag'>Colordodge</div>";
+    a.href = "http://www.bhudia.xyz";
+    a.innerHTML = "<div id='brandTag'>bhudia.xyz</div>";
     document.body.appendChild(a);
   }
 
