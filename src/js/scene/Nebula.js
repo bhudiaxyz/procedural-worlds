@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 import NebulaMap from '../tools/NebulaMap'
 
 export default class Nebula extends THREE.Object3D {

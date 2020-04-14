@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 import Map from './Map';
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'

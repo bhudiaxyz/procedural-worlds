@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 import shaderVert from '!raw-loader!glslify-loader!../shaders/glow.vert'
 import shaderFrag from '!raw-loader!glslify-loader!../shaders/glow.frag'

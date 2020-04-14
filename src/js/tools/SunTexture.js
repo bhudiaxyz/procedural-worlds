@@ -1,25 +1,12 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
+import AbstractCanvasTexture from "./AbstractCanvasTexture";
 
-export default class SunTexture {
+
+export default class SunTexture extends AbstractCanvasTexture {
 
   constructor() {
-    this.canvas = document.createElement("canvas");
-    this.canvas.id = "sunCanvas";
-    this.width = 1024;
-    this.height = 1024;
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
-    this.canvas.style.width = "200px";
-    this.canvas.style.height = "200px";
-    this.ctx = this.canvas.getContext("2d");
-
-    this.texture = new THREE.CanvasTexture(this.canvas);
-
-    document.body.appendChild(this.canvas);
-    this.toggleCanvasDisplay(false);
+    super("sunCanvas", 1024, "200px");
   }
-
-
   generateTexture() {
     let h = this.randRange(0.0, 1.0);
     let s = this.randRange(0.0, 0.5);
@@ -35,11 +22,6 @@ export default class SunTexture {
     this.drawHalo();
 
     this.texture = new THREE.CanvasTexture(this.canvas);
-  }
-
-  clear() {
-    this.ctx.fillStyle = "#000000";
-    this.ctx.fillRect(0, 0, this.width, this.height);
   }
 
   drawBaseGradient() {
@@ -87,7 +69,6 @@ export default class SunTexture {
   }
 
   drawBeams() {
-
     let x = this.width / 2;
     let y = this.width / 2;
     let r1 = 0;
@@ -190,20 +171,4 @@ export default class SunTexture {
     let colorString = "rgba(" + c.r + ", " + c.g + ", " + c.b + "," + color.a + ")";
     return colorString;
   }
-
-  toggleCanvasDisplay(value) {
-    if (value) {
-      this.canvas.style.display = "block";
-    } else {
-      this.canvas.style.display = "none";
-    }
-  }
-
-  randRange(low, high) {
-    let range = high - low;
-    let n = window.rng() * range;
-    return low + n;
-  }
-
-
 }

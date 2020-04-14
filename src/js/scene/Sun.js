@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 import SunTexture from '../tools/SunTexture'
 
@@ -12,10 +12,10 @@ export default class Sun extends THREE.Object3D {
 
   setup() {
     let loader = new THREE.TextureLoader();
-    this.textureFlare = loader.load('assets/textures/flare/lenseFlareSun.jpg');
-    this.textureRing = loader.load('assets/textures/flare/lenseFlareRing.jpg');
-    this.textureBlur = loader.load('assets/textures/flare/lenseFlareBlur.jpg');
-    this.textureSun = loader.load('assets/textures/flare/lenseFlare.jpg');
+    this.textureFlare = loader.load('assets/textures/flare/lensFlareSun.jpg');
+    this.textureRing = loader.load('assets/textures/flare/lensFlareRing.jpg');
+    this.textureBlur = loader.load('assets/textures/flare/lensFlareBlur.jpg');
+    this.textureSun = loader.load('assets/textures/flare/lensFlare.jpg');
 
     this.sunTexture = new SunTexture();
     this.lensFlare = null;
@@ -33,7 +33,7 @@ export default class Sun extends THREE.Object3D {
     this.lensFlare = new THREE.LensFlare(this.sunTexture.texture, sunSize, 0.0, THREE.AdditiveBlending, sunColor);
     this.lensFlare.add(this.sunTexture.texture, sunSize * 2, 0.1, THREE.AdditiveBlending, sunColor, 0.2);
 
-    const numLargeFlares = 15;
+    const numLargeFlares = this.randRange(15, 25);
     for (let i = 0; i < numLargeFlares; i++) {
       let size = this.randRange(5, 200);
       // size = Math.pow(size, 2) * 200;
@@ -43,7 +43,7 @@ export default class Sun extends THREE.Object3D {
       this.lensFlare.add(this.textureBlur, size, offset, THREE.AdditiveBlending, color, alpha);
     }
 
-    const numSmallFlares = 5;
+    const numSmallFlares = this.randRange(5, 15);
     for (let i = 0; i < numSmallFlares; i++) {
       let size = this.randRange(5, 200);
       // size = Math.pow(size, 2) * 200;
@@ -53,7 +53,7 @@ export default class Sun extends THREE.Object3D {
       this.lensFlare.add(this.textureBlur, size, offset, THREE.AdditiveBlending, color, alpha);
     }
 
-    const numRings = 5;
+    const numRings = this.randRange(5, 15);
     for (let i = 0; i < numRings; i++) {
       let size = this.randRange(200, 400);
       // size = Math.pow(size, 2) * 200;

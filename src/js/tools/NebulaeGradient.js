@@ -1,22 +1,11 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
+import AbstractCanvasTexture from "./AbstractCanvasTexture";
 
 
-export default class NebulaeGradient {
+export default class NebulaeGradient extends AbstractCanvasTexture {
 
   constructor() {
-
-    this.canvas = document.createElement("canvas");
-    this.canvas.id = "nebulaeCanvas";
-    this.canvas.width = 512;
-    this.canvas.height = 512;
-    this.canvas.style.width = "200px";
-    this.canvas.style.height = "200px";
-    this.width = this.canvas.width;
-    this.height = this.canvas.height;
-    this.ctx = this.canvas.getContext("2d");
-
-    document.body.appendChild(this.canvas);
-    this.toggleCanvasDisplay(false);
+    super("nebulaeCanvas", 512, "200px");
   }
 
   generateTexture() {
@@ -100,21 +89,5 @@ export default class NebulaeGradient {
     };
 
   }
-
-  toCanvasColor(c) {
-    return "rgba(" + Math.round(c.r * 255) + ", " + Math.round(c.g * 255) + ", " + Math.round(c.b * 255) + ", 1.0)";
-  }
-
-  randRange(low, high) {
-    let range = high - low;
-    let n = window.rng() * range;
-    return low + n;
-  }
-
-  mix(v1, v2, amount) {
-    let dist = v2 - v1;
-    return v1 + (dist * amount);
-  }
-
 }
 

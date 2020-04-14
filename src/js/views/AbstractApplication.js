@@ -5,10 +5,9 @@ import * as dat from 'dat.gui';
 import * as Stats from 'stats.js';
 import RenderQueue from "../utils/RenderQueue";
 
-class AbstractApplication {
+export default class AbstractApplication {
 
   constructor(opts = {}) {
-
     window.renderQueue = new RenderQueue();
 
     this._camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
@@ -94,21 +93,15 @@ class AbstractApplication {
   }
 
   get renderer() {
-
     return this._renderer;
-
   }
 
   get camera() {
-
     return this._camera;
-
   }
 
   get scene() {
-
     return this._scene;
-
   }
 
   onKeyDown(e) {
@@ -126,12 +119,10 @@ class AbstractApplication {
   }
 
   onWindowResize() {
-
     this._camera.aspect = window.innerWidth / window.innerHeight;
     this._camera.updateProjectionMatrix();
 
     this._renderer.setSize(window.innerWidth, window.innerHeight);
-
   }
 
   animate(timestamp) {
@@ -142,8 +133,5 @@ class AbstractApplication {
     this._renderer.render(this._scene, this._camera);
     this.stats.end();
   }
-
-
 }
 
-export default AbstractApplication;

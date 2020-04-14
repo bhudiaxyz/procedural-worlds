@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 import Biome from '../tools/Biome'
 import Atmosphere from './Atmosphere'
 import NoiseMap from '../tools/NoiseMap'
@@ -327,6 +327,16 @@ export default class Planet extends THREE.Object3D {
 
     window.renderQueue.start();
 
+    this.stars.render({
+      nebulaeMap: this.nebulaeGradient.texture
+    });
+
+    this.nebula.render({
+      nebulaeMap: this.nebulaeGradient.texture
+    });
+
+    this.sun.render();
+
     let resMin = 0.01;
     let resMax = 5.0;
 
@@ -377,16 +387,6 @@ export default class Planet extends THREE.Object3D {
     this.clouds.render({
       waterLevel: this.waterLevel
     });
-
-    this.stars.render({
-      nebulaeMap: this.nebulaeGradient.texture
-    });
-
-    this.nebula.render({
-      nebulaeMap: this.nebulaeGradient.texture
-    });
-
-    this.sun.render();
 
     window.renderQueue.addCallback(() => {
       this.updateMaterial();

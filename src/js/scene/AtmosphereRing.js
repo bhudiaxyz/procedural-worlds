@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/atmosRing.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/atmosRing.frag'

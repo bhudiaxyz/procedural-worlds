@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 import WAGNER from '@superguigui/wagner'
 import MultiPassBloomPass from '@superguigui/wagner/src/passes/bloom/MultiPassBloomPass'
 import GodrayPass from '@superguigui/wagner/src/passes/godray/godraypass'
@@ -20,7 +20,7 @@ class Main extends AbstractApplication {
   }
 
   initPostprocessing() {
-    this._renderer.autoClearColor = true;
+    this.renderer.autoClearColor = true;
     this.bloom = false;
     this.composer = new WAGNER.Composer(this._renderer);
     this.bloomPass = new MultiPassBloomPass({
@@ -42,7 +42,7 @@ class Main extends AbstractApplication {
 
     if (this.bloom) {
       this.composer.reset();
-      this.composer.render(this._scene, this._camera);
+      this.composer.render(this.scene, this.camera);
       this.composer.pass(this.bloomPass);
       this.composer.pass(this.godrayPass);
       this.composer.toScreen();
