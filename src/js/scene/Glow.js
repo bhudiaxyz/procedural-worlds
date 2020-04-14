@@ -9,22 +9,36 @@ export default class Glow extends THREE.Object3D {
     super();
 
     this.size = 1030;
-    this.glow = 1.0;
-    this.c = 0.33;
-    this.p = 1.27;
-    this.randomizeColor();
+    this.settings = {
+      glow: 1.0,
+      c: 0.33,
+      p: 1.27,
+      color: new THREE.Color(0x55ffff)
+    };
 
     let glowFolder = window.gui.addFolder('Glow');
-    glowFolder.add(this, "c", 0, 1).step(0.01);
-    glowFolder.add(this, "p", 0, 6).step(0.01);
+    glowFolder.add(this.settings, "glow", 0.0, 1.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
+    glowFolder.addColor(this.settings, "color").onChange(value => {
+      this.updateMaterial();
+    });
+
+    glowFolder.add(this.settings, "c", 0, 1).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    glowFolder.add(this.settings, "p", 0, 6).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
 
     this.mat = new THREE.ShaderMaterial({
       vertexShader: shaderVert,
       fragmentShader: shaderFrag,
       uniforms: {
-        "c": {type: "f", value: 1.0},
-        "p": {type: "f", value: 1.4},
-        glowColor: {type: "c", value: new THREE.Color(0x00ffff)},
+        c: {type: "f", value: this.settings.c},
+        p: {type: "f", value: this.settings.p},
+        glowColor: {type: "c", value: this.settings.color},
         viewVector: {type: "v3", value: new THREE.Vector3(window.camera.position)}
       }
     });
@@ -41,21 +55,28 @@ export default class Glow extends THREE.Object3D {
   }
 
   update() {
-    this.mat.uniforms.c.value = this.c;
-    this.mat.uniforms.p.value = this.p;
     this.mat.uniforms.viewVector.value.subVectors(window.camera.position, this.sphere.position);
   }
 
+  updateMaterial() {
+    this.mat.uniforms.c.value = this.settings.c;
+    this.mat.uniforms.p.value = this.settings.p;
+    this.mat.uniforms.glowColor.value = this.settings.color;
+  }
+
   randomize() {
+    this.settings.glow = this.randRange(0.25, 1.0);
     this.randomizeColor();
-    this.mat.uniforms.color.value = this.color;
   }
 
   randomizeColor() {
-    this.color = new THREE.Color();
-    this.color.r = window.rng();
-    this.color.g = window.rng();
-    this.color.b = window.rng();
+    this.settings.color.setRGB(
+      window.rng(),
+      window.rng(),
+      window.rng()
+    );
+
+    this.updateMaterial();
   }
 }
 
