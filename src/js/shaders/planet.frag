@@ -13,12 +13,10 @@ uniform float atmo4;
 uniform float atmo5;
 
 void main() {
-
     // float brightness = noise(gl_FragCoord.xx);
 
     // gl_FragColor = vec4(vec3(brightness), 1.0);
     //gl_FragColor = vec4(#ffff00, 1.0);
-
 
     float n1 = noise(vec4(vPosition*2.0, time));
     float n2 = noise(vec4(vPosition*4.0, time));
@@ -63,7 +61,6 @@ void main() {
     vec4 texelColor = vec4((directional + ambient) * newColor, 1.0);
 
     // gl_FragColor = texelColor;
-
     // gl_FragColor = vec4(1.0);
 
     ////////////////////////////
@@ -99,11 +96,7 @@ void main() {
 
     gl_FragColor = texelColor + min(atmColor, 1.0);
 
-
     /////////////////////////
 
-
     // gl_FragColor = texelColor;
-
-
 }

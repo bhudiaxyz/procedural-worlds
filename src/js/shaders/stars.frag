@@ -74,7 +74,6 @@ void main() {
     n *= sub1;
     vec3 starsColor = vec3(n);
 
-
     // float n;
     // float res = 200.0;
     // float mag = 0.7;
@@ -89,7 +88,6 @@ void main() {
     // n = 1.0-n;
     // n = pow(n, 3.0);
     // vec3 starsColor = vec3(n);
-
 
     gl_FragColor = vec4(starsColor, 1.0);
 }

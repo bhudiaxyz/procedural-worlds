@@ -17,7 +17,6 @@ uniform float alpha;
 uniform vec3 color;
 
 void main() {
-
     vec3 newColor = vec3(0.0);
 
     const float ambient = 0.1;
@@ -27,9 +26,7 @@ void main() {
     vec4 texelColor = vec4((directional + ambient) * newColor, 0.0);
 
     // gl_FragColor = texelColor;
-
     // gl_FragColor = vec4(1.0);
-
 
     ////////////////////////////
     // atmospheric scattering
@@ -66,7 +63,6 @@ void main() {
 
     /////////////////////////
 
-
     float PI = 3.14159265358979323846264;
     // light = light - vPosition;
     vec3 cameraDir = normalize(cameraVector);
@@ -96,6 +92,4 @@ void main() {
     // texelColor = newColor * min(asin(lightAngle), 1.0);
 
     gl_FragColor = texelColor + min(atmColor, alpha);
-
-
 }

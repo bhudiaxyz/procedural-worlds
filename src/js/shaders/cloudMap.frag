@@ -60,24 +60,16 @@ float baseNoise(vec3 pos, float frq, float seed) {
         // amp *= 2.0;
     }
 
-
     // n = fract(n*10.0);
-
-
     // n *= abs(sin(pos.y*10.0));
-
     // n += 0.4;
 
     // increase contrast
     n = ((n - 0.5) * 2.0) + 0.6;
 
     // n = pow(n, 3.0);
-
     // n = pow( (1.0-n), 2.0);
-
-
     // n = pow(n, 2.0);
-
 
     // n = 1.0-n;
     // n = pow(n, 6.0);
@@ -130,6 +122,7 @@ float cloud(vec3 pos, float seed) {
     n = sin(n*3.0);
 
     n = n*0.5 + 0.5;
+
     // n = abs(n);
     // n = 1.0-n;
     // n = n*1.2;
@@ -208,11 +201,8 @@ void main() {
     gl_FragColor = vec4(vec3(n1), n2);
     ///////////////////
 
-
     // float sub1 = perlinNoise(sphericalCoord, 1.0, seed);
     // float n1 = billowNoise(sphericalCoord + vec3(sub1*0.1), 0.5, seed+38.378);
     //
     // gl_FragColor = vec4(vec3(n1), n1);
-
-
 }

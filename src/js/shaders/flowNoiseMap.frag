@@ -72,7 +72,6 @@ float ridgedNoise(vec3 pos, float frq, float seed) {
 }
 
 float invRidgedNoise(vec3 pos, float frq, float seed) {
-
     float amp = 0.5;
 
     float n = 0.0;
@@ -104,7 +103,6 @@ float cloud(vec3 pos, float seed) {
 }
 
 float cloudNoise(vec3 pos, float frq, float seed) {
-
     float amp = 0.5;
 
     float n = 0.0;
@@ -164,6 +162,4 @@ void main() {
     }
 
     gl_FragColor = vec4(vec3(n), 1.0);
-
-
 }

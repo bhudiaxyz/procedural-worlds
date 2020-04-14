@@ -96,11 +96,9 @@ vec3 scalarField(float x, float y, float z) {
 
     if (c < 0.5) {
         return water;
-    }
-    else if (c < 0.8) {
+    } else if (c < 0.8) {
         return land;
-    }
-    else {
+    } else {
         return peak;
     }
 

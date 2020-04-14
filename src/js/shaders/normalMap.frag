@@ -13,19 +13,16 @@ float getBrightness(vec4 color) {
 }
 
 void main() {
-
     float x = vUv.x;
     float y = vUv.y;
     // float x = gl_FragCoord.x / 1024.0;
     // float y = gl_FragCoord.y / 1024.0;
     float pixelSize = 1.0 / resolution;
 
-
     // Value from trial & error.
     // Seems to work fine for the scales we are dealing with.
     // float strength = scale.Y / 16;
     float strength = 0.8;
-
 
     float level = texture2D(heightMap, vec2(x, y)).r;
     float water = waterLevel;
@@ -33,8 +30,6 @@ void main() {
     // if (level < water) {
     // 	mod = 0.1;
     // }
-
-
 
     float tl = getBrightness(texture2D(textureMap, vec2(x-pixelSize, y-pixelSize)));
     float l = getBrightness(texture2D(textureMap, vec2(x-pixelSize, y)));
@@ -73,7 +68,6 @@ void main() {
 
     // float level = getBrightness(texture2D(heightMap, vec2(x, y)));
 
-
     // smooth out the normal map for the water
     float factor = 0.01;
     float depth = 0.5;
@@ -89,7 +83,6 @@ void main() {
         t = mix(depth, t, factor);
     }
 
-
     // Compute dx using Sobel:
     //           -1 0 1
     //           -2 0 2
@@ -102,7 +95,6 @@ void main() {
     //            1  2  1
     float dY = bl + 2.0 * b + br - tl - 2.0 * t - tr;
 
-
     vec3 N = vec3(dX, dY, 1.0 / strength);
 
     //
@@ -112,7 +104,6 @@ void main() {
     // 	N.z = -0.5;
     //
     // }
-
     normalize(N);
 
     //convert (-1.0 , 1.0) to (0.0 , 1.0), if necessary
@@ -121,7 +112,6 @@ void main() {
     //Vector3.Add(ref N, ref scale, out N);
 
     N = N * 0.5 + 0.5;
-
 
     gl_FragColor = vec4(N, 1.0);
 }

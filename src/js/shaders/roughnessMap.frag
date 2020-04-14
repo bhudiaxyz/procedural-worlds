@@ -8,7 +8,6 @@ float getBrightness(vec4 color) {
 }
 
 void main() {
-
     float x = vUv.x;
     float y = vUv.y;
 
