@@ -53,6 +53,12 @@ export default class Planet extends THREE.Object3D {
 
     let planetFolder = gui.addFolder('Planet');
 
+    planetFolder.add(this, "rotate");
+
+    planetFolder.add(this, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
+      this.regenerate();
+    });
+
     planetFolder.add(this, "roughness", 0.0, 1.0).onChange(value => {
       this.updateMaterial();
     });
@@ -72,11 +78,6 @@ export default class Planet extends THREE.Object3D {
     this.loadSeedFromURL();
 
     let generalFolder = window.gui.addFolder('General');
-    generalFolder.add(this, "rotate");
-
-    generalFolder.add(this, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
-      this.regenerate();
-    });
 
     this.seedStringControl = generalFolder.add(this, "seedString").listen();
     this.seedStringControl.onFinishChange(value => {

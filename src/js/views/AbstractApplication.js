@@ -11,7 +11,7 @@ export default class AbstractApplication {
     window.renderQueue = new RenderQueue();
 
     this._camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
-    this._camera.position.z = 2700;
+    this._camera.position.z = 2900;
     this._camera.lookAt(new THREE.Vector3(0, 0, 0));
     window.camera = this._camera;
 
@@ -42,7 +42,7 @@ export default class AbstractApplication {
     this._controls.rotateSpeed = 0.1;
     this._controls.autoRotate = false;
     this._controls.autoRotateSpeed = 0.02;
-    this._controls.zoomSpeed = 0.2;
+    this._controls.zoomSpeed = 0.5;
     this._controls.enableZoom = true;
 
     // gui
@@ -71,7 +71,11 @@ export default class AbstractApplication {
 
     let cameraFolder = this.gui.addFolder('Camera');
 
-    cameraFolder.add(this._controls, "autoRotate");
+    cameraFolder.add(this._controls, "autoRotate").name('rotate');
+    cameraFolder.add(this._camera.position, 'x').name('Camera X').min(-10000).max(10000).step(0.5);
+    cameraFolder.add(this._camera.position, 'y').name('Camera Y').min(-10000).max(10000).step(0.5);
+    cameraFolder.add(this._camera.position, 'z').name('Camera Z').min(-10000).max(10000).step(0.5);
+
     cameraFolder.add(this._camera, "fov", 20, 120).onChange(value => {
       this._camera.updateProjectionMatrix()
     });
