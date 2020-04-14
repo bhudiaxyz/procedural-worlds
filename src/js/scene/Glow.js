@@ -25,7 +25,7 @@ export default class Glow extends THREE.Object3D {
         "c": {type: "f", value: 1.0},
         "p": {type: "f", value: 1.4},
         glowColor: {type: "c", value: new THREE.Color(0x00ffff)},
-        viewVector: {type: "v3", value: window.camera.position}
+        viewVector: {type: "v3", value: new THREE.Vector3(window.camera.position)}
       }
     });
 
@@ -43,7 +43,7 @@ export default class Glow extends THREE.Object3D {
   update() {
     this.mat.uniforms.c.value = this.c;
     this.mat.uniforms.p.value = this.p;
-    this.mat.uniforms.viewVector.value = new THREE.Vector3().subVectors(window.camera.position, this.sphere.position);
+    this.mat.uniforms.viewVector.value.subVectors(window.camera.position, this.sphere.position);
   }
 
   randomize() {

@@ -2,39 +2,48 @@ import * as THREE from 'three'
 import CloudMap from '../tools/CloudMap'
 import tinycolor from 'tinycolor2'
 
-export default class Clouds extends THREE.Object3D{
+export default class Clouds extends THREE.Object3D {
 
   constructor() {
     super();
 
     this.materials = [];
-    this.roughness = 0.9;
-    this.metalness = 0.5;
-    this.normalScale = 5.0;
-    this.clouds = 1;
-
+    this.cloudMaps = [];
     this.resolution = 1024;
     this.size = 1001;
 
-    this.color = new THREE.Color(0xffffff);
-    this.cloudColor = [this.color.r * 255, this.color.g * 255, this.color.b * 255];
-    this.cloudMaps = [];
+    this.settings = {
+      roughness: 0.9,
+      metalness: 0.5,
+      normalScale: 5.0,
+      opacity: 1,
+      color: new THREE.Color(0xffffff),
+
+    };
+    this.settings.cloudColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
 
     this.setup();
 
     let cloudsFolder = window.gui.addFolder('Clouds');
 
-    cloudsFolder.add(this, "clouds", 0.0, 1.0).onChange(value => {
+    cloudsFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
       this.updateMaterial();
     });
 
-    cloudsFolder.addColor(this, "cloudColor").onChange(value => {
-      this.color.r = value[0] / 255;
-      this.color.g = value[1] / 255;
-      this.color.b = value[2] / 255;
+    cloudsFolder.addColor(this.settings, "cloudColor").onChange(value => {
+      this.settings.color.r = value[0] / 255;
+      this.settings.color.g = value[1] / 255;
+      this.settings.color.b = value[2] / 255;
       this.updateMaterial();
     });
 
+    cloudsFolder.add(this.settings, "roughness", 0.0, 1.0).step(0.001).onChange(value => {
+      this.updateMaterial();
+    });
+
+    cloudsFolder.add(this.settings, "normalScale", 0.0, 10.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
   }
 
   update() {
@@ -47,7 +56,7 @@ export default class Clouds extends THREE.Object3D{
 
     for (let i = 0; i < 6; i++) {
       let material = new THREE.MeshStandardMaterial({
-        color: this.color,
+        color: this.settings.color,
         transparent: true,
       });
       this.materials[i] = material;
@@ -90,11 +99,11 @@ export default class Clouds extends THREE.Object3D{
   updateMaterial() {
     for (let i = 0; i < 6; i++) {
       let material = this.materials[i];
-      material.roughness = this.roughness;
-      material.metalness = this.metalness;
-      material.opacity = this.clouds;
+      material.roughness = this.settings.roughness;
+      material.metalness = this.settings.metalness;
+      material.opacity = this.settings.opacity;
       material.map = this.cloudMaps[i];
-      material.color = this.color;
+      material.color = this.settings.color;
       material.alphaMap = this.cloudMaps[i];
       material.bumpMap = this.cloudMaps[i];
       material.bumpScale = 1.0;
@@ -102,13 +111,19 @@ export default class Clouds extends THREE.Object3D{
   }
 
   randomizeColor() {
-    this.color.r = this.randRange(0.7, 1.0);
-    this.color.g = this.randRange(0.7, 1.0);
-    this.color.b = this.randRange(0.7, 1.0);
+    this.settings.color.setRGB(
+      this.randRange(0.5, 1.0),
+      this.randRange(0.5, 1.0),
+      this.randRange(0.5, 1.0)
+    );
 
     this.updateMaterial();
   }
 
+  randomize() {
+    this.settings.opacity = this.randRange(0.25, 1.0);
+    this.randomizeColor();
+  }
 
   randRange(low, high) {
     let range = high - low;

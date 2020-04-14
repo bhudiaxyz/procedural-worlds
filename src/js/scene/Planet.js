@@ -105,16 +105,9 @@ export default class Planet extends THREE.Object3D {
       this.loadSeedFromTextfield();
     });
 
-    ////////////////// environment gui
-    let environmentFolder = window.gui.addFolder('Environment');
-    environmentFolder.add(this.atmosphere, "atmosphere", 0.0, 1.0).step(0.01);
-    environmentFolder.add(this.nebula, "nebula", 0.0, 1.0).step(0.01).onChange(value => {
-      this.nebula.updateMaterial();
-    });
-
     // debug options
     this.displayMap = "textureMap";
-    let debugFolder = gui.addFolder('Debug');
+    let debugFolder = window.gui.addFolder('Debug');
     debugFolder.add(this, "displayMap", ["textureMap", "heightMap", "moistureMap", "normalMap", "roughnessMap"]).onChange(value => {
       this.updateMaterial();
     });
@@ -165,7 +158,7 @@ export default class Planet extends THREE.Object3D {
       this.ground.rotation.y += 0.0005;
       this.stars.rotation.y += 0.0004;
       this.nebula.rotation.y += 0.0003;
-      this.clouds.rotation.y += 0.0007;
+      this.clouds.rotation.y += 0.0008;
     }
 
     this.atmosphere.update();
@@ -328,10 +321,9 @@ export default class Planet extends THREE.Object3D {
     this.biome.generateTexture({waterLevel: this.waterLevel});
     this.nebulaeGradient.generateTexture();
 
-    this.atmosphere.randomizeColor();
+    this.atmosphere.randomize();
 
-    this.clouds.clouds = this.randRange(0.25, 1.0);
-    this.clouds.randomizeColor();
+    this.clouds.randomize();
 
     window.renderQueue.start();
 

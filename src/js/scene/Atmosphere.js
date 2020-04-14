@@ -9,36 +9,58 @@ export default class Atmosphere extends THREE.Object3D {
     super();
 
     this.time = 0.0;
-    this.speed = 0.1;
-    this.atmo1 = 0.5;
-    this.atmo2 = 0.5;
-    this.atmo3 = 1.0;
-    this.atmo4 = 0.5;
-    this.atmo5 = 0.1;
-
-    this.color = new THREE.Color(0x00ffff);
     this.size = 1002;
-    this.atmosphere = 0.3;
-    // window.gui.add(this, "atmosphere", 0.0, 1.0).step(0.01);
 
-    // window.gui.add(this, "atmo1", 0.0, 3.0);
-    // window.gui.add(this, "atmo2", 0.0, 3.0);
-    // window.gui.add(this, "atmo3", 0.0, 3.0);
-    // window.gui.add(this, "atmo4", 0.0, 3.0);
-    // window.gui.add(this, "atmo5", 0.0, 3.0);
+    this.settings = {
+      speed: 0.1,
+      atmo1: 0.5,
+      atmo2: 0.5,
+      atmo3: 1.0,
+      atmo4: 0.5,
+      atmo5: 0.1,
+      color: new THREE.Color(0x00ffff),
+      opacity: 0.3
+    };
+
+    let atmosFolder = window.gui.addFolder('Atmosphere');
+
+    atmosFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
+    atmosFolder.addColor(this.settings, "color").onChange(value => {
+      this.updateMaterial();
+    });
+
+    atmosFolder.add(this.settings, "atmo1", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    atmosFolder.add(this.settings, "atmo2", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    atmosFolder.add(this.settings, "atmo3", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    atmosFolder.add(this.settings, "atmo4", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    atmosFolder.add(this.settings, "atmo5", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
 
     this.mat = new THREE.ShaderMaterial({
       vertexShader: shaderVert,
       fragmentShader: shaderFrag,
       uniforms: {
         "time": {type: "f", value: this.time},
-        "atmo1": {type: "f", value: this.atmo1},
-        "atmo2": {type: "f", value: this.atmo2},
-        "atmo3": {type: "f", value: this.atmo3},
-        "atmo4": {type: "f", value: this.atmo4},
-        "atmo5": {type: "f", value: this.atmo5},
-        "alpha": {type: "f", value: this.atmosphere},
-        "color": {type: "c", value: this.color}
+        "atmo1": {type: "f", value: this.settings.atmo1},
+        "atmo2": {type: "f", value: this.settings.atmo2},
+        "atmo3": {type: "f", value: this.settings.atmo3},
+        "atmo4": {type: "f", value: this.settings.atmo4},
+        "atmo5": {type: "f", value: this.settings.atmo5},
+        "alpha": {type: "f", value: this.settings.opacity},
+        "color": {type: "c", value: this.settings.color}
       }
     });
 
@@ -53,29 +75,37 @@ export default class Atmosphere extends THREE.Object3D {
 
   update() {
     this.time += this.speed;
-    this.mat.uniforms.time.value = this.time;
-    this.mat.uniforms.atmo1.value = this.atmo1;
-    this.mat.uniforms.atmo2.value = this.atmo2;
-    this.mat.uniforms.atmo3.value = this.atmo3;
-    this.mat.uniforms.atmo4.value = this.atmo4;
-    this.mat.uniforms.atmo5.value = this.atmo5;
-    this.mat.uniforms.alpha.value = this.atmosphere;
-    this.mat.uniforms.color.value = this.color;
   }
 
-  randomize() {
-    this.randomizeColor();
-
+  updateMaterial() {
+    this.mat.uniforms.time.value = this.time;
+    this.mat.uniforms.atmo1.value = this.settings.atmo1;
+    this.mat.uniforms.atmo2.value = this.settings.atmo2;
+    this.mat.uniforms.atmo3.value = this.settings.atmo3;
+    this.mat.uniforms.atmo4.value = this.settings.atmo4;
+    this.mat.uniforms.atmo5.value = this.settings.atmo5;
+    this.mat.uniforms.alpha.value = this.settings.opacity;
+    this.mat.uniforms.color.value = this.settings.color;
   }
 
   randomizeColor() {
-    this.color = new THREE.Color();
+    this.settings.color.setRGB(
+      this.randRange(0.5, 1.0),
+      this.randRange(0.5, 1.0),
+      this.randRange(0.5, 1.0)
+    );
 
-    this.color.r = this.randRange(0.5, 1.0);
-    this.color.g = this.randRange(0.5, 1.0);
-    this.color.b = this.randRange(0.5, 1.0);
+    this.updateMaterial();
+  }
 
-    this.mat.uniforms.color.value = this.color;
+  randomize() {
+    this.settings.atmo1 = this.randRange(0.0, 3.0);
+    this.settings.atmo2 = this.randRange(0.0, 3.0);
+    this.settings.atmo3 = this.randRange(0.0, 3.0);
+    this.settings.atmo4 = this.randRange(0.0, 3.0);
+    this.settings.atmo5 = this.randRange(0.0, 3.0);
+
+    this.randomizeColor();
   }
 
   randRange(low, high) {
