@@ -1,79 +1,27 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import OrbitControls from 'orbit-controls-es6';
 
+import * as dat from 'dat.gui';
 import * as Stats from 'stats.js';
-const dat = require('dat.gui');
 
-import RenderQueue from "../utils/RenderQueue";
+class AbstractApplication {
 
-export default class AbstractApplication {
+  constructor() {
 
-  constructor(opts = {}) {
-
-    // Preamble of standard stuff expected everywhere
-    this.prepareInit(opts);
-
-    // Standard scene stuff
-    this.setupLights();
-    this.setupParamControls();
-
-    window.addEventListener('resize', () => this.onWindowResize);
-    window.addEventListener('orientationchange', () => this.onWindowResize);
-    window.addEventListener('keydown', (e) => this.onKeyDown(e));
-  }
-
-  prepareInit(opts = {}) {
-    this.stats = new Stats();
-    this._rafID = null;
-
-    if (opts.container) {
-      this.container = opts.container;
-    } else {
-      const div = document.createElement('div');
-      div.setAttribute('class', 'container');
-      div.setAttribute('id', 'canvas-container');
-      document.body.appendChild(div);
-      this.container = div;
-    }
-
-    window.renderQueue = new RenderQueue();
-
-    this.params = {
-      // General
-      rotate: true,
-      panRotate: true,
-    };
+    this._camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
+    this._camera.position.z = 2700;
+    window.camera = this._camera;
 
     this._scene = new THREE.Scene();
 
-    this._renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true
-    });
-    this._renderer.setClearColor(0x111111);  // it's a dark gray
-    this._renderer.setPixelRatio(window.devicePixelRatio || 1);
+    this._renderer = new THREE.WebGLRenderer({antialias: false, alpha: true});
+    this._renderer.setPixelRatio(window.devicePixelRatio);
+    this._renderer.sortObjects = false;
+    // this._renderer.setPixelRatio( 2.0 );
     this._renderer.setSize(window.innerWidth, window.innerHeight);
     window.renderer = this._renderer;
+    document.body.appendChild(this._renderer.domElement);
 
-    this._camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 10000);
-    this._camera.position.set(0, 2, 0);
-    this._camera.lookAt(new THREE.Vector3(0, 0, 0));
-    window.camera = this._camera;
-
-    this._controls = new OrbitControls(this._camera, this._renderer.domElement);
-    this._controls.enabled = true;
-    this._controls.enableDamping = true;
-    this._controls.dampingFactor = 0.1;
-    this._controls.rotateSpeed = 0.1;
-    this._controls.autoRotate = true;
-    this._controls.autoRotateSpeed = 0.01;
-    this._controls.zoomSpeed = 0.1;
-
-    this.container.appendChild(this.stats.dom);
-    this.container.appendChild(this._renderer.domElement);
-  }
-
-  setupLights() {
     // lights
     this.ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
     this._scene.add(this.ambientLight);
@@ -82,28 +30,23 @@ export default class AbstractApplication {
     this.directionalLight.position.set(-1, 1.0, 1);
     this._scene.add(this.directionalLight);
     window.light = this.directionalLight;
-  }
 
-  setupParamControls() {
-    this._gui = new dat.GUI();
+    this._controls = new OrbitControls(this._camera, this._renderer.domElement);
+    //this._controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
+    this._controls.enabled = true;
+    this._controls.enableDamping = true;
+    this._controls.dampingFactor = 0.1;
+    this._controls.rotateSpeed = 0.1;
+    this._controls.autoRotate = false;
+    this._controls.autoRotateSpeed = 0.01;
+    this._controls.zoomSpeed = 0.2;
+    // this._controls.enableZoom = false;
 
-    // camera
-    let cameraFolder = this._gui.addFolder('Camera');
+    // gui
+    this.gui = new dat.GUI();
+    window.gui = this.gui;
 
-    cameraFolder.add(this._controls, "autoRotate");
-
-    this.fovControl = cameraFolder.add(this._camera, "fov", 20, 120);
-    this.fovControl.onChange(value => {
-      this._camera.updateProjectionMatrix()
-    });
-
-    cameraFolder.add(this._camera.position, 'x').name('Camera X').min(-2000).max(2000);
-    cameraFolder.add(this._camera.position, 'y').name('Camera Y').min(-2000).max(2000);
-    cameraFolder.add(this._camera.position, 'z').name('Camera Z').min(-2000).max(2000);
-    cameraFolder.close();
-
-    // lighting
-    let lightFolder = this._gui.addFolder('Lighting');
+    let lightFolder = this.gui.addFolder('Lighting');
 
     this.sunColor = {r: 255, g: 255, b: 255};
     this.dirLightControl = lightFolder.addColor(this, "sunColor").onChange(value => {
@@ -111,6 +54,7 @@ export default class AbstractApplication {
       this.directionalLight.color.g = this.sunColor.g / 255;
       this.directionalLight.color.b = this.sunColor.b / 255;
     });
+
     lightFolder.add(this.directionalLight, "intensity", 0.0, 3.0);
 
     this.ambientColor = {r: 255, g: 255, b: 255};
@@ -119,74 +63,85 @@ export default class AbstractApplication {
       this.ambientLight.color.g = this.ambientColor.g / 255;
       this.ambientLight.color.b = this.ambientColor.b / 255;
     });
+
     lightFolder.add(this.ambientLight, "intensity", 0.0, 2.0);
-    lightFolder.close();
 
-    this._gui.open();
+    let cameraFolder = this.gui.addFolder('Camera');
 
+    cameraFolder.add(this._controls, "autoRotate");
+
+    this.fovControl = cameraFolder.add(this._camera, "fov", 20, 120);
+    this.fovControl.onChange(value => {
+      this._camera.updateProjectionMatrix()
+    });
+
+    // stats
+    this.stats = new Stats();
+    this.stats.setMode(0);
+    document.body.appendChild(this.stats.domElement);
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.left = '10px';
+    this.stats.domElement.style.top = '0px';
+
+    window.addEventListener('resize', this.onWindowResize.bind(this), false);
+    window.addEventListener('keydown', (e) => {
+      this.onKeyDown(e)
+    }, false);
+
+    this.gui.open();
   }
 
   get renderer() {
-    return this._renderer;
-  }
 
-  get controls() {
-    return this._controls;
+    return this._renderer;
+
   }
 
   get camera() {
+
     return this._camera;
+
   }
 
   get scene() {
+
     return this._scene;
+
   }
 
   onKeyDown(e) {
-    if (e.keyCode === '72') {
+    if (e.keyCode == '72') {
+      var brandTag = document.getElementById("brandTag");
       var infoBoxHolder = document.getElementById("infoBoxHolder");
-      if (infoBoxHolder.style.visibility === "hidden") {
+      if (brandTag.style.visibility == "hidden") {
+        brandTag.style.visibility = "visible";
         infoBoxHolder.style.visibility = "visible";
       } else {
+        brandTag.style.visibility = "hidden";
         infoBoxHolder.style.visibility = "hidden";
       }
     }
   }
 
   onWindowResize() {
+
     this._camera.aspect = window.innerWidth / window.innerHeight;
     this._camera.updateProjectionMatrix();
 
     this._renderer.setSize(window.innerWidth, window.innerHeight);
+
   }
 
-  start() {
-    this._rafID = requestAnimationFrame(() => this.animate);
-  }
+  animate(timestamp) {
+    this.stats.begin();
+    requestAnimationFrame(this.animate.bind(this));
 
-  stop() {
-    cancelAnimationFrame(this._rafID);
-    this._rafID = null;
-  }
-
-  update(dt = 0) {
-    // No-op
-  }
-
-  draw(dt = 0) {
-    this.stats.update();
     this._controls.update();
-    window.renderQueue.update();
-
-    this.update();
     this._renderer.render(this._scene, this._camera);
+    this.stats.end();
   }
 
-  animate(dt = 0) {
-    console.log("AbstractApplication::animate - ENTER");
-    this.draw();
-    this._rafID = requestAnimationFrame(() => this.animate);
-    console.log("AbstractApplication::animate - EXIT");
-  }
 
 }
+
+export default AbstractApplication;

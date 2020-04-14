@@ -1,11 +1,9 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 
 class Map {
 
-  static NUM_MAPS = 6;
-
   constructor() {
-    // No-op
+    //
   }
 
   setup() {
@@ -16,7 +14,7 @@ class Map {
     this.planes = [];
     this.geos = [];
 
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
       let tempRes = 1000;
       this.textures[i] = new THREE.WebGLRenderTarget(tempRes, tempRes, {minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBAFormat});
       this.textureCameras[i] = new THREE.OrthographicCamera(-tempRes / 2, tempRes / 2, tempRes / 2, -tempRes / 2, -100, 100);
@@ -35,9 +33,9 @@ class Map {
   render(props) {
     let resolution = props.resolution;
 
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
 
-      //window.renderQueue.addAction(() => {
+      window.renderQueue.addAction(() => {
         this.textures[i].setSize(resolution, resolution);
         this.textures[i].needsUpdate = true;
         this.textureCameras[i].left = -resolution / 2;
@@ -47,10 +45,10 @@ class Map {
         this.textureCameras[i].updateProjectionMatrix();
         this.geos[i] = new THREE.PlaneGeometry(resolution, resolution);
         this.planes[i].geometry = this.geos[i];
-        //window.renderer.render(this.textureScenes[i], this.textureCameras[i], this.textures[i], true);
+        window.renderer.render(this.textureScenes[i], this.textureCameras[i], this.textures[i], true);
         this.geos[i].dispose();
 
-      //});
+      });
 
     }
   }

@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 
 export default class SunTexture {
 
@@ -208,5 +208,6 @@ export default class SunTexture {
     let n = window.rng() * range;
     return low + n;
   }
+
 
 }

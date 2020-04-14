@@ -24,8 +24,10 @@
     "watch": "npm run dev"
   },
   "dependencies": {
+    "@superguigui/wagner": "^0.1.5",
     "alea": "^1.0.0",
     "bootstrap": "^4.3.1",
+    "crypto-random-string": "^1.0.0",
     "dat.gui": "^0.7.6",
     "font-awesome": "^4.7.0",
     "gl-matrix": "^2.8.1",
@@ -45,14 +47,17 @@
     "orbit-controls-es6": "^2.0.1",
     "popper.js": "^1.15.0",
     "random-lorem": "^1.0.4",
-    "seed-random": "^2.2.0",
+    "seedrandom": "^2.4.3",
     "simple-line-icons": "^2.4.1",
     "simplex-noise": "^2.4.0",
     "sprintf": "^0.1.5",
     "stats.js": "^0.17.0",
-    "three": "^0.115.0",
+    "three": "^0.85.2",
     "three-orbit-controls": "^82.1.0",
+    "tinycolor2": "^1.4.1",
     "vecmath": "^0.1.4",
+    "webvr-polyfill": "^0.9.29",
+    "webvr-ui": "^0.9.4",
     "worley-noise": "^2.0.1"
   },
   "devDependencies": {
@@ -88,7 +93,6 @@
     "html-webpack-plugin": "^4.0.0-beta.5",
     "husky": "^2.7.0",
     "image-webpack-loader": "^5.0.0",
-    "json-loader": "^0.5.7",
     "lint-staged": "^8.2.1",
     "lodash.template": ">=4.5.0",
     "mini-css-extract-plugin": "^0.7.0",

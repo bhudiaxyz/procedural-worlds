@@ -1,10 +1,10 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 import Map from './Map';
 
-import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert';
-import fragShader from '!raw-loader!glslify-loader!../shaders/cloudMap.frag';
+import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
+import fragShader from '!raw-loader!glslify-loader!../shaders/cloudMap.frag'
 
-export default class CloudMap extends Map {
+class CloudMap extends Map {
 
   constructor() {
     super();
@@ -15,7 +15,7 @@ export default class CloudMap extends Map {
   setup() {
     this.mats = [];
 
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
       this.mats[i] = new THREE.ShaderMaterial({
         uniforms: {
           index: {type: "i", value: i},
@@ -42,7 +42,7 @@ export default class CloudMap extends Map {
     // props.resMix
     // props.mixScale
 
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
       this.mats[i].uniforms.seed.value = props.seed;
       this.mats[i].uniforms.resolution.value = props.resolution;
       this.mats[i].uniforms.res1.value = props.res1;
@@ -57,3 +57,5 @@ export default class CloudMap extends Map {
 
 
 }
+
+export default CloudMap;

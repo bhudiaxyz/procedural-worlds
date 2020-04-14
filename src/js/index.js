@@ -1,10 +1,13 @@
 global.THREE = require('three');
+import * as THREE from "three";
 
 import 'bootstrap';
 import '../scss/index.scss';
 
 import WEBGL from './utils/WebGL';
-import Application from "./app";
+//import Main from './main/mainVR'
+//import Main from './main/mainWagner'
+import Main from './main/main'
 
 // wrap everything inside a function scope and invoke it (IIFE, a.k.a. SEAF)
 (() => {
@@ -22,7 +25,7 @@ import Application from "./app";
         opts.container = div;
       }
 
-      const app = new Application(opts);
+      const app = new Main(opts);
       app.animate();
     } else {
       const warning = WEBGL.getWebGLErrorMessage();

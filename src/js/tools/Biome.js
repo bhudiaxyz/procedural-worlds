@@ -3,9 +3,8 @@ import * as THREE from 'three'
 
 class Biome {
 
-  constructor(random) {
+  constructor() {
 
-    this.random = random;
     this.canvas = document.createElement("canvas");
     this.canvas.id = "biomeCanvas";
     this.canvas.width = 512;
@@ -33,10 +32,14 @@ class Biome {
     this.satRange = this.randRange(0.3, 0.5);
     this.lightRange = this.randRange(0.3, 0.5);
     this.circleSize = this.randRange(30, 250);
+    // this.circleSize = 100;
+
 
     this.drawBase();
 
-    let numCircles = Math.round(this.randRange(50, 150));
+    // circles
+    let numCircles = Math.round(this.randRange(50, 100));
+    numCircles = 100;
     for (let i = 0; i < numCircles; i++) {
       this.randomGradientCircle();
     }
@@ -45,6 +48,7 @@ class Biome {
     this.drawInland();
     this.drawBeach();
     this.drawWater();
+
 
     this.texture = new THREE.CanvasTexture(this.canvas);
   }
@@ -71,7 +75,9 @@ class Biome {
 
   drawDetail() {
     // land detail
-    const landDetail = Math.round(this.randRange(0, 15));
+    let landDetail = Math.round(this.randRange(0, 5));
+    // landDetail = 20;
+    // console.log("landDetail = " + landDetail);
     for (let i = 0; i < landDetail; i++) {
       let x1 = this.randRange(0, this.width);
       let y1 = this.randRange(0, this.height);
@@ -80,6 +86,7 @@ class Biome {
       let width = x2 - x1;
       let height = y2 - y1;
 
+      // this.randomGradientStrip(0, 0, this.width, this.height);
       this.randomGradientStrip(x1, y1, width, height);
     }
   }
@@ -94,8 +101,7 @@ class Biome {
     let prevX = x;
     let prevY = y;
 
-    const riverDetail = Math.round(this.randRange(0, 7));
-    for (let i = 0; i < riverDetail; i++) {
+    for (let i = 0; i < 5; i++) {
       x = this.randRange(0, this.width);
       y = this.randRange(0, this.height);
 
@@ -112,9 +118,11 @@ class Biome {
     let x = this.randRange(0, this.width);
     let y = this.randRange(0, this.height);
     let rad = this.randRange(0, 10);
+    // rad = 3;
 
     let c = this.randomColor();
     this.ctx.fillStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 0.5)";
+    // this.ctx.lineWidth = 1;
 
     this.ctx.beginPath();
     this.ctx.arc(x, y, rad, 0, 2 * Math.PI);
@@ -145,6 +153,7 @@ class Biome {
     let y2 = this.height;
 
     let gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
+
 
     gradient.addColorStop(0, "rgba(255, 255, 255, 1.0)");
     gradient.addColorStop(1, "rgba(0, 0, 0, 1.0)");
@@ -182,6 +191,7 @@ class Biome {
 
     let gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
 
+    // let c = this.randomColor();
     let c = this.randomWaterColor();
 
     let falloff = 1.3;
@@ -283,6 +293,7 @@ class Biome {
     c.l = this.randRange(0.1, 0.4);
 
     newColor.setHSL(c.h, c.s, c.l);
+
     // newColor.offsetHSL(hOffset, sOffset, lOffset);
 
     return {
@@ -337,13 +348,38 @@ class Biome {
 
   }
 
+  // randomColor() {
+  //
+  //   let newColor = this.baseColor.clone();
+  //
+  //   let hOffset = 0.0;
+  //   let range = 0.1;
+  //   let n = this.randRange(0,1);
+  //   if (n < 0.33) {
+  //     hOffset = 0.0 + this.randRange(-range, range);
+  //   } else if (n < 0.66) {
+  //     hOffset = this.colorAngle + this.randRange(-range, range);
+  //   } else {
+  //     hOffset = -this.colorAngle + this.randRange(-range, range);
+  //   }
+  //
+  //   newColor.offsetHSL(hOffset, 0, 0);
+  //   let c = newColor.getHSL();
+  //   newColor.setHSL(c.h, this.randRange(0.0, 0.8), this.randRange(0.0, 0.6));
+  //
+  //   return {r: Math.round(newColor.r*255),
+  //           g: Math.round(newColor.g*255),
+  //           b: Math.round(newColor.b*255)};
+  //
+  // }
+
   toCanvasColor(c) {
     return "rgba(" + Math.round(c.r * 255) + ", " + Math.round(c.g * 255) + ", " + Math.round(c.b * 255) + ", 1.0)";
   }
 
   randRange(low, high) {
     let range = high - low;
-    let n = this.random() * range;
+    let n = window.rng() * range;
     return low + n;
   }
 

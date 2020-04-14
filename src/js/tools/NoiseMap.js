@@ -1,10 +1,10 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 import Map from './Map';
 
-import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert';
-import fragShader from '!raw-loader!glslify-loader!../shaders/flowNoiseMap.frag';
+import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
+import fragShader from '!raw-loader!glslify-loader!../shaders/flowNoiseMap.frag'
 
-export default class NoiseMap extends Map {
+class NoiseMap extends Map {
 
   constructor() {
     super();
@@ -15,7 +15,7 @@ export default class NoiseMap extends Map {
   setup() {
     this.mats = [];
 
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
       this.mats[i] = new THREE.ShaderMaterial({
         uniforms: {
           index: {type: "i", value: i},
@@ -45,7 +45,7 @@ export default class NoiseMap extends Map {
 
     let resolution = props.resolution;
 
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
       this.mats[i].uniforms.seed.value = props.seed;
       this.mats[i].uniforms.resolution.value = props.resolution;
       this.mats[i].uniforms.res1.value = props.res1;
@@ -61,3 +61,4 @@ export default class NoiseMap extends Map {
 
 }
 
+export default NoiseMap;

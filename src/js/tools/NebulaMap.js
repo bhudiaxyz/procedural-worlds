@@ -1,8 +1,8 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 import Map from './Map';
 
-import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert';
-import fragShader from '!raw-loader!glslify-loader!../shaders/nebula.frag';
+import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
+import fragShader from '!raw-loader!glslify-loader!../shaders/nebula.frag'
 
 export default class NebulaMap extends Map {
 
@@ -15,7 +15,7 @@ export default class NebulaMap extends Map {
   setup() {
     this.mats = [];
 
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
       this.mats[i] = new THREE.ShaderMaterial({
         uniforms: {
           index: {type: "i", value: i},
@@ -43,7 +43,7 @@ export default class NebulaMap extends Map {
     // props.resMix
     // props.mixScale
 
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
       this.mats[i].uniforms.seed.value = props.seed;
       this.mats[i].uniforms.resolution.value = props.resolution;
       this.mats[i].uniforms.res1.value = props.res1;

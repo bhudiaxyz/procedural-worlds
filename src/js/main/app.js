@@ -5,14 +5,14 @@ import * as SimplexNoise from 'simplex-noise';
 import * as Stats from 'stats.js';
 import * as dat from 'dat.gui/build/dat.gui.js';
 
-import SpinningBox from './scene/SpinningBox';
-import Nebula from './scene/Nebula';
-import Stars from './scene/Stars';
-import SkyBox from './scene/SkyBox';
-import NebulaeGradient from "./tools/NebulaeGradient";
-import Biome from "./tools/Biome";
-import PlanetEarth from "./scene/PlanetEarth";
-import SkyStars from "./scene/SkyStars";
+import seedrandom from 'seedrandom'
+import Nebula from '../scene/Nebula';
+import Stars from '../scene/Stars';
+import SkyBox from '../scene/SkyBox';
+import NebulaeGradient from "../tools/NebulaeGradient";
+import Biome from "../tools/Biome";
+import PlanetEarth from "../scene/PlanetEarth";
+import SkyStars from "../scene/SkyStars";
 
 const N = 6;
 const TWO_N = Math.pow(2, N); // detail of the spheres
@@ -33,6 +33,7 @@ export default class Application {
     this.setupRenderer();
     this.setupLights();
     // this.setupHelpers();
+    // window.renderer = this.renderer;
 
     // Scene setup
     this.biome = new Biome(this.random);
@@ -40,38 +41,28 @@ export default class Application {
 
     this.nebulaeGradient = new NebulaeGradient(this.random);
     this.nebulaeGradient.generateTexture();
+    this.params.nebulaeMap = this.nebulaeGradient.texture;
 
-    // this.setupSkyBox();
     this.skybox = new SkyBox(EARTH_RADIUS * 400.0, TWO_N, TWO_N);
     this.scene.add(this.skybox);
-
     // this.nebula = new Nebula(this.random);
+    // this.nebula.resolution = this.params.resolution;
     // this.scene.add(this.nebula);
+    // this.nebula.render({nebulaeMap: this.nebulaeGradient.texture});
 
     this.stars = new SkyStars(this.random, this.params, EARTH_RADIUS * 175, EARTH_RADIUS * 7, 500);
     this.scene.add(this.stars);
     // this.stars = new Stars(this.random);
+    // this.stars.resolution = this.params.resolution;
+    // this.stars.render({nebulaeMap: this.nebulaeGradient.texture});
     // this.scene.add(this.stars);
 
     this.planetEarth = new PlanetEarth(this.random, this.params, EARTH_RADIUS, N, TWO_N, TWO_N);
     this.scene.add(this.planetEarth);
 
-    // this.spinningBox = new SpinningBox();
-    // this.spinningBox.position.set(EARTH_RADIUS * 1.5, 0, EARTH_RADIUS * 1.5);
-    // this.scene.add(this.spinningBox);
-
     // UI controls setup
     this.setupParamsControl();
 
-    // window.renderer = this.renderer;
-    // this.nebula.render({
-    //   nebulaeMap: this.nebulaeGradient.texture
-    // });
-    // this.nebula.resolution = this.params.resolution;
-    // this.stars.render({
-    //   nebulaeMap: this.nebulaeGradient.texture
-    // });
-    // this.stars.resolution = this.params.resolution;
     this.onResize();
     window.addEventListener('resize', () => this.onResize, false);
   }
@@ -85,10 +76,11 @@ export default class Application {
 
     this.params = {
       // General
+      seed: seedrandom('procedural-seed'),
+      resolution: 1024,
       random: this.random,
       rotate: true,
       panRotate: true,
-      resolution: 1024,
       // Lighting
       pointLightColor: {r: 255, g: 255, b: 255},
       pointLightIntensity: 2,
@@ -118,6 +110,8 @@ export default class Application {
       moonSpeed: 0.00015,
       moonRoughness: 0.031,
       moonLacunarity: 0.076,
+      // Nebular
+      nebulaOpacity: 1.0,
       // Stars
       starSpeed: 0.00035,
       // Debug
@@ -362,6 +356,6 @@ export default class Application {
     const delta = Date.now() - this.startTime;
 
     this.stars.update();
-    this.planetEarth.update();
+    // this.planetEarth.update();
   }
 }

@@ -1,19 +1,18 @@
-import * as THREE from 'three';
-import StarMap from '../tools/StarMap';
+import * as THREE from 'three'
+import StarMap from '../tools/StarMap'
 
-export default class Stars extends THREE.Object3D {
+export default class Stars {
 
-  constructor(random) {
-    super();
+  constructor() {
+    this.view = new THREE.Object3D();
 
-    this.random = random;
     this.materials = [];
     this.roughness = 0.8;
     this.metalness = 0.5;
     this.emissiveIntensity = 1.0;
 
     this.resolution = 1024;
-    this.size = 1250;
+    this.size = 50000;
 
     this.starMaps = [];
 
@@ -22,7 +21,7 @@ export default class Stars extends THREE.Object3D {
 
   }
 
-  update(dt = 0) {
+  update() {
     //
   }
 
@@ -31,7 +30,7 @@ export default class Stars extends THREE.Object3D {
     this.starMap = new StarMap();
     this.starMaps = this.starMap.maps;
 
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
       let material = new THREE.MeshBasicMaterial({
         color: new THREE.Color(0xFFFFFF),
         side: THREE.BackSide,
@@ -39,7 +38,7 @@ export default class Stars extends THREE.Object3D {
       this.materials[i] = material;
     }
 
-    let geo = new THREE.BoxGeometry(2048, 2048, 2048, 64, 64, 64);
+    let geo = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
     let radius = this.size;
     for (var i in geo.vertices) {
       var vertex = geo.vertices[i];
@@ -47,7 +46,7 @@ export default class Stars extends THREE.Object3D {
     }
     this.computeGeometry(geo);
     this.sphere = new THREE.Mesh(geo, this.materials);
-    this.add(this.sphere);
+    this.view.add(this.sphere);
   }
 
   render(props) {
@@ -71,7 +70,7 @@ export default class Stars extends THREE.Object3D {
   }
 
   updateMaterial() {
-    for (let i = 0; i < Map.NUM_MAPS; i++) {
+    for (let i = 0; i < 6; i++) {
       let material = this.materials[i];
       material.map = this.starMaps[i];
     }
@@ -80,7 +79,7 @@ export default class Stars extends THREE.Object3D {
 
   randRange(low, high) {
     let range = high - low;
-    let n = this.random() * range;
+    let n = window.rng() * range;
     return low + n;
   }
 
