@@ -199,9 +199,9 @@ export default class Planet extends THREE.Object3D {
   update() {
     if (this.rotate) {
       this.ground.rotation.y += 0.0005;
+      this.clouds.rotation.y += 0.0008;
       this.stars.rotation.y += 0.0004;
       this.nebula.rotation.y += 0.0003;
-      this.clouds.rotation.y += 0.0008;
     }
 
     this.atmosphere.update();
@@ -323,17 +323,10 @@ export default class Planet extends THREE.Object3D {
 
     this.stars.resolution = this.resolution;
     this.nebula.resolution = this.resolution;
-    this.clouds.resolution = this.resolution;
-
-    this.updateNormalScaleForRes(this.resolution);
-    this.biome.generateTexture({waterLevel: this.waterLevel});
-    this.nebulaeGradient.generateTexture();
-
-    this.atmosphere.randomize();
-
-    this.clouds.randomize();
 
     window.renderQueue.start();
+
+    this.nebulaeGradient.generateTexture();
 
     this.stars.render({
       nebulaeMap: this.nebulaeGradient.texture
@@ -344,6 +337,12 @@ export default class Planet extends THREE.Object3D {
     });
 
     this.sun.render();
+
+    this.clouds.resolution = this.resolution;
+    this.updateNormalScaleForRes(this.resolution);
+    this.biome.generateTexture({waterLevel: this.waterLevel});
+    this.atmosphere.randomize();
+    this.clouds.randomize();
 
     let resMin = 0.01;
     let resMax = 5.0;
@@ -451,7 +450,7 @@ export default class Planet extends THREE.Object3D {
 
   computeGeometry(geometry) {
     // geometry.makeGroups();
-    geometry.computeVertexNormals()
+    geometry.computeVertexNormals();
     geometry.computeFaceNormals();
     geometry.computeMorphNormals();
     geometry.computeBoundingSphere();

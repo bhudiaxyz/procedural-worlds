@@ -133,7 +133,7 @@ export default class Clouds extends THREE.Object3D {
 
   computeGeometry(geometry) {
     // geometry.makeGroups();
-    geometry.computeVertexNormals()
+    geometry.computeVertexNormals();
     geometry.computeFaceNormals();
     geometry.computeMorphNormals();
     geometry.computeBoundingSphere();

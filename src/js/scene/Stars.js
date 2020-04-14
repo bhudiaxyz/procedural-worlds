@@ -95,7 +95,7 @@ export default class Stars extends THREE.Object3D {
 
   computeGeometry(geometry) {
     // geometry.makeGroups();
-    geometry.computeVertexNormals()
+    geometry.computeVertexNormals();
     geometry.computeFaceNormals();
     geometry.computeMorphNormals();
     geometry.computeBoundingSphere();
