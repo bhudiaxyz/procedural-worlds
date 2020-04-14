@@ -65,31 +65,9 @@ export default class Planet extends THREE.Object3D {
       this.updateMaterial();
     });
 
-    this.biome = new Biome();
-    this.nebulaeGradient = new NebulaeGradient();
-
-    this.createScene();
-
-    this.stars = new Stars();
-    this.add(this.stars);
-
-    this.nebula = new Nebula();
-    this.add(this.nebula);
-
-    this.sun = new Sun();
-    this.add(this.sun);
-
-    this.clouds = new Clouds();
-    this.add(this.clouds);
-
-    this.glow = new Glow();
-    this.add(this.glow);
-
-    this.atmosphere = new Atmosphere();
-    this.add(this.atmosphere);
-
-    this.atmosphereRing = new AtmosphereRing();
-    this.add(this.atmosphereRing);
+    this.createSpace();
+    this.createInnerPlanet();
+    this.createOuterPlanet();
 
     this.loadSeedFromURL();
 
@@ -151,6 +129,70 @@ export default class Planet extends THREE.Object3D {
     };
 
     this.renderUI();
+  }
+
+  createSpace() {
+    this.nebulaeGradient = new NebulaeGradient();
+
+    this.stars = new Stars();
+    this.add(this.stars);
+
+    this.nebula = new Nebula();
+    this.add(this.nebula);
+
+    this.sun = new Sun();
+    this.add(this.sun);
+  }
+
+  createInnerPlanet() {
+    this.biome = new Biome();
+
+    this.heightMap = new NoiseMap();
+    this.heightMaps = this.heightMap.maps;
+
+    this.moistureMap = new NoiseMap();
+    this.moistureMaps = this.moistureMap.maps;
+
+    this.textureMap = new TextureMap();
+    this.textureMaps = this.textureMap.maps;
+
+    this.normalMap = new NormalMap();
+    this.normalMaps = this.normalMap.maps;
+
+    this.roughnessMap = new RoughnessMap();
+    this.roughnessMaps = this.roughnessMap.maps;
+
+    for (let i = 0; i < 6; i++) {
+      let material = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(0xFFFFFF)
+      });
+      this.materials[i] = material;
+    }
+
+    const geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
+    const radius = this.size;
+    for (var i in geo.vertices) {
+      var vertex = geo.vertices[i];
+      vertex.normalize().multiplyScalar(radius);
+    }
+    this.computeGeometry(geo);
+    this.ground = new THREE.Mesh(geo, this.materials);
+    this.add(this.ground);
+  }
+
+
+  createOuterPlanet() {
+    this.clouds = new Clouds();
+    this.add(this.clouds);
+
+    this.glow = new Glow();
+    this.add(this.glow);
+
+    this.atmosphere = new Atmosphere();
+    this.add(this.atmosphere);
+
+    this.atmosphereRing = new AtmosphereRing();
+    this.add(this.atmosphereRing);
   }
 
   update() {
@@ -268,41 +310,6 @@ export default class Planet extends THREE.Object3D {
     window.history.pushState({seed: this.seedString}, this.seedString, url);
     this.autoGenCountCurrent = 0;
     this.renderScene();
-  }
-
-
-  createScene() {
-    this.heightMap = new NoiseMap();
-    this.heightMaps = this.heightMap.maps;
-
-    this.moistureMap = new NoiseMap();
-    this.moistureMaps = this.moistureMap.maps;
-
-    this.textureMap = new TextureMap();
-    this.textureMaps = this.textureMap.maps;
-
-    this.normalMap = new NormalMap();
-    this.normalMaps = this.normalMap.maps;
-
-    this.roughnessMap = new RoughnessMap();
-    this.roughnessMaps = this.roughnessMap.maps;
-
-    for (let i = 0; i < 6; i++) {
-      let material = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(0xFFFFFF)
-      });
-      this.materials[i] = material;
-    }
-
-    let geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
-    let radius = this.size;
-    for (var i in geo.vertices) {
-      var vertex = geo.vertices[i];
-      vertex.normalize().multiplyScalar(radius);
-    }
-    this.computeGeometry(geo);
-    this.ground = new THREE.Mesh(geo, this.materials);
-    this.add(this.ground);
   }
 
 
