@@ -2,10 +2,10 @@ import * as THREE from 'three'
 import CloudMap from '../tools/CloudMap'
 import tinycolor from 'tinycolor2'
 
-class Clouds {
+export default class Clouds extends THREE.Object3D{
 
   constructor() {
-    this.view = new THREE.Object3D();
+    super();
 
     this.materials = [];
     this.roughness = 0.9;
@@ -38,11 +38,10 @@ class Clouds {
   }
 
   update() {
-    //
+    // No-op
   }
 
   setup() {
-
     this.cloudMap = new CloudMap();
     this.cloudMaps = this.cloudMap.maps;
 
@@ -62,7 +61,8 @@ class Clouds {
     }
     this.computeGeometry(geo);
     this.sphere = new THREE.Mesh(geo, this.materials);
-    this.view.add(this.sphere);
+
+    this.add(this.sphere);
   }
 
   render(props) {
@@ -138,4 +138,3 @@ class Clouds {
 
 }
 
-export default Clouds;

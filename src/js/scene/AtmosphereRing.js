@@ -3,10 +3,10 @@ import * as THREE from 'three'
 import vertShader from '!raw-loader!glslify-loader!../shaders/atmosRing.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/atmosRing.frag'
 
-class AtmosphereRing {
+export default class AtmosphereRing extends THREE.Object3D{
 
   constructor() {
-    this.view = new THREE.Object3D();
+    super();
 
     this.size = 1030;
     this.clock = new THREE.Clock();
@@ -64,7 +64,8 @@ class AtmosphereRing {
     this.geo = new THREE.IcosahedronGeometry(this.size, 6);
     this.sphere = new THREE.Mesh(this.geo, this.mat);
     // this.sphere.scale.set(this.size, this.size, this.size);
-    this.view.add(this.sphere);
+
+    this.add(this.sphere);
 
   }
 
@@ -84,4 +85,3 @@ class AtmosphereRing {
 
 }
 
-export default AtmosphereRing;

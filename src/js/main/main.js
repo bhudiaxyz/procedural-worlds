@@ -14,7 +14,7 @@ class Main extends AbstractApplication {
     super(opts);
 
     this.planet = new Planet();
-    this.scene.add(this.planet.view);
+    this.scene.add(this.planet);
 
     this.initPostprocessing();
   }

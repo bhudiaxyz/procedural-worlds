@@ -2,10 +2,11 @@ import * as THREE from 'three'
 
 import SunTexture from '../tools/SunTexture'
 
-export default class Sun {
+export default class Sun extends THREE.Object3D {
 
   constructor() {
-    this.view = new THREE.Object3D();
+    super();
+
     this.setup();
   }
 
@@ -17,10 +18,10 @@ export default class Sun {
     this.textureSun = loader.load('assets/textures/flare/lenseFlare.jpg');
 
     this.sunTexture = new SunTexture();
+    this.lensFlare = null;
   }
 
-  createLenseFlare() {
-
+  createLensFlare() {
     let h = this.randRange(0, 1);
     let s = 1.0;
     let l = 1.0;
@@ -28,6 +29,7 @@ export default class Sun {
     var sunColor2 = new THREE.Color().setHSL(this.randRange(0, 1), s, 0.5);
     let sunSize = this.randRange(1000, 2000);
     sunSize = 1500;
+
     this.lensFlare = new THREE.LensFlare(this.sunTexture.texture, sunSize, 0.0, THREE.AdditiveBlending, sunColor);
     this.lensFlare.add(this.sunTexture.texture, sunSize * 2, 0.1, THREE.AdditiveBlending, sunColor, 0.2);
 
@@ -62,9 +64,9 @@ export default class Sun {
       let alpha = this.randRange(0, 0.1);
       this.lensFlare.add(this.textureRing, size, offset, THREE.AdditiveBlending, color, alpha);
     }
-
     this.lensFlare.position.set(-20000, 20000, 20000);
-    this.view.add(this.lensFlare);
+
+    this.add(this.lensFlare);
   }
 
   randomColor() {
@@ -82,8 +84,9 @@ export default class Sun {
   }
 
   render() {
+    this.remove(this.lensFlare);
+
     this.sunTexture.generateTexture();
-    this.view.remove(this.lensFlare);
-    this.createLenseFlare();
+    this.createLensFlare();
   }
 }

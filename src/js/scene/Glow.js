@@ -3,18 +3,16 @@ import * as THREE from 'three'
 import shaderVert from '!raw-loader!glslify-loader!../shaders/glow.vert'
 import shaderFrag from '!raw-loader!glslify-loader!../shaders/glow.frag'
 
-class Glow {
+export default class Glow extends THREE.Object3D {
 
   constructor() {
-    this.view = new THREE.Object3D();
-
-    this.randomizeColor();
+    super();
 
     this.size = 1030;
     this.glow = 1.0;
-
     this.c = 0.33;
     this.p = 1.27;
+    this.randomizeColor();
 
     let glowFolder = window.gui.addFolder('Glow');
     glowFolder.add(this, "c", 0, 1).step(0.01);
@@ -38,7 +36,8 @@ class Glow {
     this.geo = new THREE.IcosahedronBufferGeometry(1, 6);
     this.sphere = new THREE.Mesh(this.geo, this.mat);
     this.sphere.scale.set(this.size, this.size, this.size);
-    this.view.add(this.sphere);
+
+    this.add(this.sphere);
   }
 
   update() {
@@ -60,4 +59,3 @@ class Glow {
   }
 }
 
-export default Glow;

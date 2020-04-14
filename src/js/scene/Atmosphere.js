@@ -1,11 +1,12 @@
 import * as THREE from 'three'
+
 import shaderVert from '!raw-loader!glslify-loader!../shaders/planet.vert'
 import shaderFrag from '!raw-loader!glslify-loader!../shaders/atmos.frag'
 
-class Atmosphere {
+export default class Atmosphere extends THREE.Object3D {
 
   constructor() {
-    this.view = new THREE.Object3D();
+    super();
 
     this.time = 0.0;
     this.speed = 0.1;
@@ -43,14 +44,11 @@ class Atmosphere {
 
     this.mat.transparent = true;
     this.mat.blending = THREE.AdditiveBlending;
-    // this.mat.side = THREE.DoubleSide;
-
-    // this.mat = new THREE.MeshStandardMaterial({color: 0xFFFFFF});
-
     this.geo = new THREE.IcosahedronBufferGeometry(1, 6);
     this.sphere = new THREE.Mesh(this.geo, this.mat);
     this.sphere.scale.set(this.size, this.size, this.size);
-    this.view.add(this.sphere);
+
+    this.add(this.sphere);
   }
 
   update() {
@@ -87,4 +85,3 @@ class Atmosphere {
   }
 }
 
-export default Atmosphere;

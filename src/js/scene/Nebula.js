@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import NebulaMap from '../tools/NebulaMap'
 
-export default class Nebula {
+export default class Nebula extends THREE.Object3D {
 
   constructor() {
-    this.view = new THREE.Object3D();
+    super();
 
     this.materials = [];
     this.roughness = 0.8;
@@ -18,16 +18,13 @@ export default class Nebula {
     this.skyMaps = [];
 
     this.setup();
-    // this.render();
-
   }
 
   update() {
-    //
+    // No-op
   }
 
   setup() {
-
     this.skyMap = new NebulaMap();
     this.skyMaps = this.skyMap.maps;
 
@@ -49,11 +46,11 @@ export default class Nebula {
     }
     this.computeGeometry(geo);
     this.sphere = new THREE.Mesh(geo, this.materials);
-    this.view.add(this.sphere);
+
+    this.add(this.sphere);
   }
 
   render(props) {
-
     this.seed = this.randRange(0, 1000);
 
     let min = 1.0;

@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import StarMap from '../tools/StarMap'
 
-export default class Stars {
+export default class Stars extends THREE.Object3D{
 
   constructor() {
-    this.view = new THREE.Object3D();
+    super();
 
     this.materials = [];
     this.roughness = 0.8;
@@ -17,16 +17,13 @@ export default class Stars {
     this.starMaps = [];
 
     this.setup();
-    // this.render();
-
   }
 
   update() {
-    //
+    // No-op
   }
 
   setup() {
-
     this.starMap = new StarMap();
     this.starMaps = this.starMap.maps;
 
@@ -46,11 +43,11 @@ export default class Stars {
     }
     this.computeGeometry(geo);
     this.sphere = new THREE.Mesh(geo, this.materials);
-    this.view.add(this.sphere);
+
+    this.add(this.sphere);
   }
 
   render(props) {
-
     this.seed = this.randRange(0, 1000);
 
     this.starMap.render({

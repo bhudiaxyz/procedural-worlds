@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Biome from '../tools/Biome'
-import Atmosphere from '../tools/Atmosphere'
+import Atmosphere from './Atmosphere'
 import NoiseMap from '../tools/NoiseMap'
 import TextureMap from '../tools/TextureMap'
 import NormalMap from '../tools/NormalMap'
@@ -9,11 +9,11 @@ import Clouds from './Clouds'
 import Stars from './Stars'
 import Nebula from './Nebula'
 import Sun from './Sun'
-import Glow from '../tools/Glow'
+import Glow from './Glow'
 import NebulaeGradient from '../tools/NebulaeGradient'
 import seedrandom from 'seedrandom'
 import randomString from 'crypto-random-string'
-import AtmosphereRing from '../tools/AtmosphereRing'
+import AtmosphereRing from './AtmosphereRing'
 import randomLorem from 'random-lorem'
 
 import textureVert from '!raw-loader!glslify-loader!../shaders/texture.vert'
@@ -23,14 +23,13 @@ import normalMapVert from '!raw-loader!glslify-loader!../shaders/normalMap.vert'
 import roughnessMapFrag from '!raw-loader!glslify-loader!../shaders/roughnessMap.frag'
 
 
-class Planet {
+export default class Planet extends THREE.Object3D {
 
   constructor() {
+    super();
 
     this.seedString = "Scarlett";
     this.initSeed();
-
-    this.view = new THREE.Object3D();
 
     this.materials = [];
     this.roughness = 0.8;
@@ -72,25 +71,25 @@ class Planet {
     this.createScene();
 
     this.stars = new Stars();
-    this.view.add(this.stars.view);
+    this.add(this.stars);
 
     this.nebula = new Nebula();
-    this.view.add(this.nebula.view);
+    this.add(this.nebula);
 
     this.sun = new Sun();
-    this.view.add(this.sun.view);
+    this.add(this.sun);
 
     this.clouds = new Clouds();
-    this.view.add(this.clouds.view);
+    this.add(this.clouds);
 
     this.glow = new Glow();
-    this.view.add(this.glow.view);
+    this.add(this.glow);
 
     this.atmosphere = new Atmosphere();
-    this.view.add(this.atmosphere.view);
+    this.add(this.atmosphere);
 
     this.atmosphereRing = new AtmosphereRing();
-    this.view.add(this.atmosphereRing.view);
+    this.add(this.atmosphereRing);
 
     this.loadSeedFromURL();
 
@@ -164,9 +163,9 @@ class Planet {
   update() {
     if (this.rotate) {
       this.ground.rotation.y += 0.0005;
-      this.stars.view.rotation.y += 0.0004;
-      this.nebula.view.rotation.y += 0.0003;
-      this.clouds.view.rotation.y += 0.0007;
+      this.stars.rotation.y += 0.0004;
+      this.nebula.rotation.y += 0.0003;
+      this.clouds.rotation.y += 0.0007;
     }
 
     this.atmosphere.update();
@@ -180,8 +179,8 @@ class Planet {
       }
     }
 
-    this.stars.view.position.copy(window.camera.position);
-    this.nebula.view.position.copy(window.camera.position);
+    this.stars.position.copy(window.camera.position);
+    this.nebula.position.copy(window.camera.position);
   }
 
   renderUI() {
@@ -310,7 +309,7 @@ class Planet {
     }
     this.computeGeometry(geo);
     this.ground = new THREE.Mesh(geo, this.materials);
-    this.view.add(this.ground);
+    this.add(this.ground);
   }
 
 
@@ -510,4 +509,3 @@ class Planet {
 
 }
 
-export default Planet;
