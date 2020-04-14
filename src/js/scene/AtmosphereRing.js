@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import vertShader from '!raw-loader!glslify-loader!../shaders/atmosRing.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/atmosRing.frag'
 
-export default class AtmosphereRing extends THREE.Object3D{
+export default class AtmosphereRing extends THREE.Object3D {
 
   constructor() {
     super();

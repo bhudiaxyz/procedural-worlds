@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import StarMap from '../tools/StarMap'
 
-export default class Stars extends THREE.Object3D{
+export default class Stars extends THREE.Object3D {
 
   constructor() {
     super();

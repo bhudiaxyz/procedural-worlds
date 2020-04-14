@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 export default class AbstractCanvasTexture {
 
-  constructor(id, size, styleSize = "200px", tagName="canvas") {
+  constructor(id, size, styleSize = "200px", tagName = "canvas") {
 
     this.canvas = document.createElement(tagName);
     this.canvas.id = id;
