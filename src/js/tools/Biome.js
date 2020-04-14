@@ -17,11 +17,9 @@ class Biome {
 
     document.body.appendChild(this.canvas);
     this.toggleCanvasDisplay(false);
-
   }
 
   generateTexture(props) {
-
     this.waterLevel = props.waterLevel;
 
     let h = this.randRange(0.0, 1.0);
@@ -33,7 +31,6 @@ class Biome {
     this.lightRange = this.randRange(0.3, 0.5);
     this.circleSize = this.randRange(30, 250);
     // this.circleSize = 100;
-
 
     this.drawBase();
 
@@ -48,7 +45,6 @@ class Biome {
     this.drawInland();
     this.drawBeach();
     this.drawWater();
-
 
     this.texture = new THREE.CanvasTexture(this.canvas);
   }

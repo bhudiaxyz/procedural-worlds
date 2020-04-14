@@ -20,7 +20,6 @@ class NebulaeGradient {
   }
 
   generateTexture() {
-
     let h = this.randRange(0.0, 1.0);
     let s = this.randRange(0.2, 0.8);
     let l = this.randRange(0.2, 0.6);
@@ -31,7 +30,6 @@ class NebulaeGradient {
     this.drawShapes();
 
     this.texture = new THREE.CanvasTexture(this.canvas);
-
   }
 
   toggleCanvasDisplay(value) {

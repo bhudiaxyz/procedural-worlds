@@ -71,7 +71,6 @@ class Clouds {
 
     let mixScale = this.map_range(props.waterLevel * props.waterLevel, 0, 0.8, 0.0, 3.0);
 
-
     this.cloudMap.render({
       seed: this.seed,
       resolution: this.resolution,

@@ -3,13 +3,17 @@ import OrbitControls from 'orbit-controls-es6';
 
 import * as dat from 'dat.gui';
 import * as Stats from 'stats.js';
+import RenderQueue from "../utils/RenderQueue";
 
 class AbstractApplication {
 
   constructor(opts = {}) {
 
+    window.renderQueue = new RenderQueue();
+
     this._camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
     this._camera.position.z = 2700;
+    this._camera.lookAt(new THREE.Vector3(0, 0, 0));
     window.camera = this._camera;
 
     this._scene = new THREE.Scene();
@@ -38,9 +42,9 @@ class AbstractApplication {
     this._controls.dampingFactor = 0.1;
     this._controls.rotateSpeed = 0.1;
     this._controls.autoRotate = false;
-    this._controls.autoRotateSpeed = 0.01;
+    this._controls.autoRotateSpeed = 0.02;
     this._controls.zoomSpeed = 0.2;
-    // this._controls.enableZoom = false;
+    this._controls.enableZoom = true;
 
     // gui
     this.gui = new dat.GUI();

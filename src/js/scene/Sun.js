@@ -11,13 +11,12 @@ export default class Sun {
 
   setup() {
     let loader = new THREE.TextureLoader();
-    this.textureFlare = loader.load('assets/textures/lenseFlareSun.jpg');
-    this.textureRing = loader.load('assets/textures/lenseFlareRing.jpg');
-    this.textureBlur = loader.load('assets/textures/lenseFlareBlur.jpg');
-    this.textureSun = loader.load('assets/textures/lenseFlare.jpg');
+    this.textureFlare = loader.load('assets/textures/flare/lenseFlareSun.jpg');
+    this.textureRing = loader.load('assets/textures/flare/lenseFlareRing.jpg');
+    this.textureBlur = loader.load('assets/textures/flare/lenseFlareBlur.jpg');
+    this.textureSun = loader.load('assets/textures/flare/lenseFlare.jpg');
 
     this.sunTexture = new SunTexture();
-
   }
 
   createLenseFlare() {
@@ -83,28 +82,8 @@ export default class Sun {
   }
 
   render() {
-
     this.sunTexture.generateTexture();
     this.view.remove(this.lensFlare);
     this.createLenseFlare();
-
-    // this.sunTexture.generateTexture();
-    //
-    // this.view.remove(this.lenseFlare);
-    //
-    // var flareColor = new THREE.Color( 0xffffff );
-    // this.lensFlare = new THREE.LensFlare( this.sunTexture.texture, 700, 0.0, THREE.AdditiveBlending, flareColor );
-    // this.lensFlare.position.set(-20000, 20000, 20000);
-    // this.view.add( this.lensFlare );
-
-    // this.lensFlare.texture = this.sunTexture.texture;
-    // this.lenseFlare.texture.needsUpdate = true;
-    // this.sunTexture.texture.needsUpdate = true;
-
-    // this.view.remove(this.lenseFlare);
-
-    // var textureFlare = new THREE.TextureLoader().load( 'assets/textures/lenseFlare.jpg' );
-
   }
-
 }

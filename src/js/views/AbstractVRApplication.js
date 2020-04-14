@@ -3,10 +3,13 @@ import 'three/examples/js/controls/VRControls'
 import 'three/examples/js/effects/VREffect'
 import 'webvr-polyfill'
 import * as webvrui from 'webvr-ui'
+import RenderQueue from "../utils/RenderQueue";
 
 
 class AbstractVRApplication {
   constructor(opts = {}) {
+
+    window.renderQueue = new RenderQueue();
 
     this._camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10);
 

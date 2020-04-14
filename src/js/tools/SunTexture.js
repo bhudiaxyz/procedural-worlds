@@ -9,8 +9,8 @@ export default class SunTexture {
     this.height = 1024;
     this.canvas.width = this.width;
     this.canvas.height = this.height;
-    this.canvas.style.width = "500px";
-    this.canvas.style.height = "500px";
+    this.canvas.style.width = "200px";
+    this.canvas.style.height = "200px";
     this.ctx = this.canvas.getContext("2d");
 
     this.texture = new THREE.CanvasTexture(this.canvas);
@@ -21,7 +21,6 @@ export default class SunTexture {
 
 
   generateTexture() {
-
     let h = this.randRange(0.0, 1.0);
     let s = this.randRange(0.0, 0.5);
     let l = this.randRange(0.2, 0.5);
@@ -29,14 +28,11 @@ export default class SunTexture {
 
     this.baseHue = this.randRange(0.0, 1.0);
 
-
     this.clear();
     this.drawBaseGradient();
     this.drawStarGradient();
     this.drawBeams();
     this.drawHalo();
-    // this.drawBaseGradient2();
-
 
     this.texture = new THREE.CanvasTexture(this.canvas);
   }

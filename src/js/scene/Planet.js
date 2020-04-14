@@ -66,27 +66,6 @@ class Planet {
       this.updateMaterial();
     });
 
-    // debug options
-    this.displayMap = "textureMap";
-    let debugFolder = gui.addFolder('Debug');
-    debugFolder.add(this, "displayMap", ["textureMap", "heightMap", "moistureMap", "normalMap", "roughnessMap"]).onChange(value => {
-      this.updateMaterial();
-    });
-
-    this.showBiomeMap = false;
-    debugFolder.add(this, "showBiomeMap").onChange(value => {
-      if (this.biome) {
-        this.biome.toggleCanvasDisplay(value);
-      }
-    });
-
-    this.showNebulaMap = false;
-    debugFolder.add(this, "showNebulaMap").onChange(value => {
-      if (this.nebulaeGradient) {
-        this.nebulaeGradient.toggleCanvasDisplay(value);
-      }
-    });
-
     this.biome = new Biome();
     this.nebulaeGradient = new NebulaeGradient();
 
@@ -134,6 +113,33 @@ class Planet {
       this.nebula.updateMaterial();
     });
 
+    // debug options
+    this.displayMap = "textureMap";
+    let debugFolder = gui.addFolder('Debug');
+    debugFolder.add(this, "displayMap", ["textureMap", "heightMap", "moistureMap", "normalMap", "roughnessMap"]).onChange(value => {
+      this.updateMaterial();
+    });
+
+    this.showBiomeMap = false;
+    debugFolder.add(this, "showBiomeMap").onChange(value => {
+      if (this.biome) {
+        this.biome.toggleCanvasDisplay(value);
+      }
+    });
+
+    this.showNebulaMap = false;
+    debugFolder.add(this, "showNebulaMap").onChange(value => {
+      if (this.nebulaeGradient) {
+        this.nebulaeGradient.toggleCanvasDisplay(value);
+      }
+    });
+
+    this.showSunMap = false;
+    debugFolder.add(this, "showSunMap").onChange(value => {
+      if (this.sun) {
+        this.sun.sunTexture.toggleCanvasDisplay(value);
+      }
+    });
 
     debugFolder.add(this, "autoGenerate");
     debugFolder.add(this, "autoGenTime", 30, 300).step(1).onChange(value => {
@@ -158,12 +164,13 @@ class Planet {
   update() {
     if (this.rotate) {
       this.ground.rotation.y += 0.0005;
-      this.stars.view.rotation.y += 0.0003;
+      this.stars.view.rotation.y += 0.0004;
       this.nebula.view.rotation.y += 0.0003;
       this.clouds.view.rotation.y += 0.0007;
     }
 
     this.atmosphere.update();
+    this.atmosphereRing.update();
     this.glow.update();
 
     if (this.autoGenerate) {
@@ -175,14 +182,24 @@ class Planet {
 
     this.stars.view.position.copy(window.camera.position);
     this.nebula.view.position.copy(window.camera.position);
-
-    this.atmosphereRing.update();
   }
 
   renderUI() {
     let infoBoxHolder = document.createElement("div");
     infoBoxHolder.setAttribute("id", "infoBoxHolder");
     document.body.appendChild(infoBoxHolder);
+
+    // new planet button
+    let newPlanetButtonHolder = document.createElement("div");
+    newPlanetButtonHolder.setAttribute("id", "newPlanetButtonHolder");
+    newPlanetButtonHolder.setAttribute("class", "text-center");
+    newPlanetButtonHolder.innerHTML = "<button id='newPlanetButton' class='btn btn-primary'>New</button>";
+    infoBoxHolder.appendChild(newPlanetButtonHolder);
+
+    let newPlanetButton = document.getElementById("newPlanetButton");
+    newPlanetButton.addEventListener('click', (e) => {
+      this.randomize()
+    });
 
     let infoBox = document.createElement("div");
     infoBox.setAttribute("id", "infoBox");
@@ -192,37 +209,16 @@ class Planet {
     let line = document.createElement("div");
     line.setAttribute("id", "line");
     infoBoxHolder.appendChild(line);
+
     infoBoxHolder.appendChild(window.gui.domElement);
 
-    // mobile info box
-    let mobileInfoBox = document.createElement("div");
-    mobileInfoBox.setAttribute("id", "infoBoxHolderMobile");
-    mobileInfoBox.innerHTML = "<div id='infoBoxMobile'>Planet<br><div id='planetNameMobile'></div></div>";
-    document.body.appendChild(mobileInfoBox);
-
     this.updatePlanetName();
-
-    // new planet button
-    let newPlanetButtonHolder = document.createElement("div");
-    newPlanetButtonHolder.setAttribute("id", "newPlanetButtonHolder");
-    newPlanetButtonHolder.innerHTML = "<div id='newPlanetButton' class='btn btn-primary'>New Planet</div>";
-    document.body.appendChild(newPlanetButtonHolder);
-
-    let newPlanetButton = document.getElementById("newPlanetButton");
-    newPlanetButton.addEventListener('click', (e) => {
-      this.randomize()
-    });
   }
 
   updatePlanetName() {
     let planetName = document.getElementById("planetName");
     if (planetName != null) {
       planetName.innerHTML = this.seedString;
-    }
-
-    let planetNameMobile = document.getElementById("planetNameMobile");
-    if (planetNameMobile != null) {
-      planetNameMobile.innerHTML = this.seedString;
     }
   }
 
@@ -330,8 +326,8 @@ class Planet {
     this.clouds.resolution = this.resolution;
 
     this.updateNormalScaleForRes(this.resolution);
-    this.renderBiomeTexture();
-    this.renderNebulaeGradient();
+    this.biome.generateTexture({waterLevel: this.waterLevel});
+    this.nebulaeGradient.generateTexture();
 
     this.atmosphere.randomizeColor();
 
@@ -412,25 +408,25 @@ class Planet {
       material.roughness = this.roughness;
       material.metalness = this.metalness;
 
-      if (this.displayMap == "textureMap") {
+      if (this.displayMap === "textureMap") {
         material.map = this.textureMaps[i];
         material.normalMap = this.normalMaps[i];
         material.normalScale = new THREE.Vector2(this.normalScale, this.normalScale);
         material.roughnessMap = this.roughnessMaps[i];
         // material.metalnessMap = this.roughnessMaps[i];
-      } else if (this.displayMap == "heightMap") {
+      } else if (this.displayMap === "heightMap") {
         material.map = this.heightMaps[i];
         material.normalMap = null;
         material.roughnessMap = null;
-      } else if (this.displayMap == "moistureMap") {
+      } else if (this.displayMap === "moistureMap") {
         material.map = this.moistureMaps[i];
         material.normalMap = null;
         material.roughnessMap = null;
-      } else if (this.displayMap == "normalMap") {
+      } else if (this.displayMap === "normalMap") {
         material.map = this.normalMaps[i];
         material.normalMap = null;
         material.roughnessMap = null;
-      } else if (this.displayMap == "roughnessMap") {
+      } else if (this.displayMap === "roughnessMap") {
         material.map = this.roughnessMaps[i];
         material.normalMap = null;
         material.roughnessMap = null;
@@ -440,20 +436,12 @@ class Planet {
     }
   }
 
-  renderBiomeTexture() {
-    this.biome.generateTexture({waterLevel: this.waterLevel});
-  }
-
-  renderNebulaeGradient() {
-    this.nebulaeGradient.generateTexture();
-  }
-
   updateNormalScaleForRes(value) {
-    if (value == 256) this.normalScale = 0.25;
-    if (value == 512) this.normalScale = 0.5;
-    if (value == 1024) this.normalScale = 1.0;
-    if (value == 2048) this.normalScale = 1.5;
-    if (value == 4096) this.normalScale = 3.0;
+    if (value === 256) this.normalScale = 0.25;
+    if (value === 512) this.normalScale = 0.5;
+    if (value === 1024) this.normalScale = 1.0;
+    if (value === 2048) this.normalScale = 1.5;
+    if (value === 4096) this.normalScale = 3.0;
   }
 
   randRange(low, high) {

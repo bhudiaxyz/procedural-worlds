@@ -136,9 +136,9 @@ section {
 
 
 #newPlanetButtonHolder {
-  position: absolute;
+  //position: absolute;
   z-index: 1000;
-  bottom: 0px;
+  //top: 5px;
   width: 100%;
 }
 
@@ -165,22 +165,22 @@ section {
 #biomeCanvas {
   position: absolute;
   z-index: 1000;
-  bottom: 0px;
-  right: 0px;
+  top: 100px;
+  left: 0px;
 }
 
 #nebulaeCanvas {
   position: absolute;
   z-index: 1000;
-  bottom: 0px;
+  top: 301px;
   left: 0px;
 }
 
 #sunCanvas {
   position: absolute;
   z-index: 1000;
-  bottom: 0px;
-  right: 0px;
+  top: 501px;
+  left: 0px;
 }
 
 /* Position the button VR on the bottom of the page. */
@@ -219,6 +219,7 @@ a#magic-window {
   /* border: 1px solid #222222; */
   padding: 20px;
   padding-top: 30px;
+  color: white;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 2000;
 }

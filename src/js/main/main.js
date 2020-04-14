@@ -4,7 +4,6 @@ import MultiPassBloomPass from '@superguigui/wagner/src/passes/bloom/MultiPassBl
 import GodrayPass from '@superguigui/wagner/src/passes/godray/godraypass'
 import AbstractApplication from '../views/AbstractApplication'
 import Planet from '../scene/Planet'
-import RenderQueue from '../utils/RenderQueue'
 
 import shaderVert from '!raw-loader!glslify-loader!../shaders/custom.vert';
 import shaderFrag from '!raw-loader!glslify-loader!../shaders/custom.frag';
@@ -14,35 +13,25 @@ class Main extends AbstractApplication {
   constructor(opts = {}) {
     super(opts);
 
-    this.initPostprocessing();
-    // this.createBrandTag();
-
-    window.renderQueue = new RenderQueue();
-
     this.planet = new Planet();
     this.scene.add(this.planet.view);
+
+    this.initPostprocessing();
   }
 
   initPostprocessing() {
     this._renderer.autoClearColor = true;
+    this.bloom = false;
     this.composer = new WAGNER.Composer(this._renderer);
     this.bloomPass = new MultiPassBloomPass({
       blurAmount: 3,
       applyZoomBlur: true
     });
     this.godrayPass = new GodrayPass();
-    this.bloom = false;
 
-    let folder = this.gui.addFolder("Post Processing");
-    folder.add(this, "bloom");
-    folder.add(this.bloomPass.params, "blurAmount", 0, 5);
-  }
-
-  createBrandTag() {
-    let a = document.createElement("a");
-    a.href = "http://www.bhudia.xyz";
-    a.innerHTML = "<div id='brandTag'>bhudia.xyz</div>";
-    document.body.appendChild(a);
+    let postProcessFolder = window.gui.addFolder("Post Processing");
+    postProcessFolder.add(this, "bloom");
+    postProcessFolder.add(this.bloomPass.params, "blurAmount", 0, 5);
   }
 
   animate() {
