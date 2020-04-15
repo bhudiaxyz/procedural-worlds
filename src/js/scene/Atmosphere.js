@@ -22,32 +22,7 @@ export default class Atmosphere extends THREE.Object3D {
       opacity: 0.3
     };
 
-    let atmosFolder = window.gui.addFolder('Atmosphere');
-
-    atmosFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-
-    atmosFolder.addColor(this.settings, "color").onChange(value => {
-      this.updateMaterial();
-    });
-
-    atmosFolder.add(this.settings, "atmo1", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-    atmosFolder.add(this.settings, "atmo2", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-    atmosFolder.add(this.settings, "atmo3", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-    atmosFolder.add(this.settings, "atmo4", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-    atmosFolder.add(this.settings, "atmo5", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-
+    this.createControls();
 
     this.mat = new THREE.ShaderMaterial({
       vertexShader: shaderVert,
@@ -73,6 +48,38 @@ export default class Atmosphere extends THREE.Object3D {
     this.add(this.sphere);
   }
 
+  createControls() {
+    let atmosFolder = window.gui.addFolder('Atmosphere');
+
+    this.settings.atmosColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
+    atmosFolder.addColor(this.settings, "atmosColor").name('color').onChange(value => {
+      this.settings.color.r = value[0] / 255;
+      this.settings.color.g = value[1] / 255;
+      this.settings.color.b = value[2] / 255;
+      this.updateMaterial();
+    });
+
+    atmosFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
+    atmosFolder.add(this.settings, "atmo1", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    atmosFolder.add(this.settings, "atmo2", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    atmosFolder.add(this.settings, "atmo3", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    atmosFolder.add(this.settings, "atmo4", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    atmosFolder.add(this.settings, "atmo5", 0.0, 3.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+  }
+
   update() {
     this.time += this.speed;
   }
@@ -94,6 +101,7 @@ export default class Atmosphere extends THREE.Object3D {
       this.randRange(0.5, 1.0),
       this.randRange(0.5, 1.0)
     );
+    this.settings.atmosColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
 
     this.updateMaterial();
   }

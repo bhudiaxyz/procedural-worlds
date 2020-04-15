@@ -6,7 +6,6 @@ import randomLorem from "random-lorem";
 
 import AbstractApplication from '../views/AbstractApplication'
 import Planet from '../scene/Planet'
-import NebulaeGradient from "../tools/NebulaeGradient";
 import Stars from "../scene/Stars";
 import Nebula from "../scene/Nebula";
 import Sun from "../scene/Sun";
@@ -43,7 +42,7 @@ class Main extends AbstractApplication {
     this.initPostprocessing();
     this.setupControlsUI();
 
-    this.loadSeedFromURL();
+    this.initFromURL();
   }
 
 
@@ -72,7 +71,7 @@ class Main extends AbstractApplication {
     });
 
     window.onpopstate = (event) => {
-      this.loadSeedFromURL();
+      this.initFromURL();
     };
   }
 
@@ -135,13 +134,13 @@ class Main extends AbstractApplication {
     window.rng = seedrandom(this.seedString);
   }
 
-  loadSeedFromURL() {
+  initFromURL() {
     this.seedString = this.getParameterByName("seed");
     if (this.seedString) {
-      console.log("seed string exists");
+      console.log("Using seed string: " + this.seedString);
       this.regenerate();
     } else {
-      console.log("no seed string");
+      console.log("No seed string - using random");
       this.randomize();
     }
   }
@@ -207,7 +206,7 @@ class Main extends AbstractApplication {
 
   renderScene() {
     this.initSeed();
-    this.updatePlanetName();
+    this.updateWorldName();
 
     this.stars.resolution = this.resolution;
     this.nebula.resolution = this.resolution;
@@ -227,7 +226,7 @@ class Main extends AbstractApplication {
     infoBoxHolder.setAttribute("id", "infoBoxHolder");
     document.body.appendChild(infoBoxHolder);
 
-    // new planet button
+    // New world button
     let newPlanetButtonHolder = document.createElement("div");
     newPlanetButtonHolder.setAttribute("id", "newPlanetButtonHolder");
     newPlanetButtonHolder.setAttribute("class", "text-center");
@@ -239,9 +238,10 @@ class Main extends AbstractApplication {
       this.randomize()
     });
 
+    // World info + help
     let infoBox = document.createElement("div");
     infoBox.setAttribute("id", "infoBox");
-    infoBox.innerHTML = "Planet<br><div id='planetName'></div><br><div id='instructions'>H - Show/Hide UI<br>SPACEBAR - New Planet</div>";
+    infoBox.innerHTML = "World<br><div id='planetName'></div><br><div id='instructions'>H - Show/Hide UI<br>SPACEBAR - New Planet</div>";
     infoBoxHolder.appendChild(infoBox);
 
     let line = document.createElement("div");
@@ -250,12 +250,12 @@ class Main extends AbstractApplication {
 
     infoBoxHolder.appendChild(window.gui.domElement);
 
-    this.updatePlanetName();
+    this.updateWorldName();
 
     window.gui.add(this, "randomize");
   }
 
-  updatePlanetName() {
+  updateWorldName() {
     let planetName = document.getElementById("planetName");
     if (planetName != null) {
       planetName.innerHTML = this.seedString;

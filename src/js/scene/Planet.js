@@ -26,16 +26,19 @@ export default class Planet extends THREE.Object3D {
     this.normalMaps = [];
     this.roughnessMaps = [];
 
-    this.waterLevel = 0.0;
-    this.roughness = 0.8;
-    this.metalness = 0.5;
-    this.normalScale = 3.0;
-    this.rotate = true;
-    this.displayMap = "textureMap";
-    this.showBiomeMap = false;
+    this.settings = {
+      waterLevel: 0.0,
+      roughness: 0.8,
+      metalness: 0.5,
+      normalScale: 3.0,
+      rotate: true,
+      displayMap: "textureMap",
+      showBiomeMap: false
+    };
 
     this.createInnerPlanet();
     this.createOuterPlanet();
+
     this.createControls();
   }
 
@@ -93,25 +96,25 @@ export default class Planet extends THREE.Object3D {
   createControls() {
     let planetFolder = gui.addFolder('Planet');
 
-    planetFolder.add(this, "rotate");
+    planetFolder.add(this.settings, "rotate");
 
-    planetFolder.add(this, "roughness", 0.0, 1.0).onChange(value => {
+    planetFolder.add(this.settings, "roughness", 0.0, 1.0).onChange(value => {
       this.updateMaterial();
     });
 
-    planetFolder.add(this, "metalness", 0.0, 1.0).onChange(value => {
+    planetFolder.add(this.settings, "metalness", 0.0, 1.0).onChange(value => {
       this.updateMaterial();
     });
 
-    planetFolder.add(this, "normalScale", -3.0, 6.0).onChange(value => {
+    planetFolder.add(this.settings, "normalScale", -3.0, 6.0).onChange(value => {
       this.updateMaterial();
     });
 
-    planetFolder.add(this, "displayMap", ["textureMap", "heightMap", "moistureMap", "normalMap", "roughnessMap"]).onChange(value => {
+    planetFolder.add(this.settings, "displayMap", ["textureMap", "heightMap", "moistureMap", "normalMap", "roughnessMap"]).onChange(value => {
       this.updateMaterial();
     });
 
-    planetFolder.add(this, "showBiomeMap").onChange(value => {
+    planetFolder.add(this.settings, "showBiomeMap").onChange(value => {
       if (this.biome) {
         this.biome.toggleCanvasDisplay(value);
       }
@@ -119,7 +122,7 @@ export default class Planet extends THREE.Object3D {
   }
 
   update() {
-    if (this.rotate) {
+    if (this.settings.rotate) {
       this.ground.rotation.y += 0.0005;
       this.clouds.rotation.y += 0.0008;
     }
@@ -135,13 +138,16 @@ export default class Planet extends THREE.Object3D {
 
   renderScene() {
     this.seed = this.randRange(0, 1) * 1000.0;
-    this.waterLevel = this.randRange(0.1, 0.5);
+    this.settings.waterLevel = this.randRange(0.1, 0.5);
 
     this.clouds.resolution = this.resolution;
     this.updateNormalScaleForRes(this.resolution);
-    this.biome.generateTexture({waterLevel: this.waterLevel});
-    this.atmosphere.randomize();
+
+    this.biome.generateTexture({waterLevel: this.settings.waterLevel});
     this.clouds.randomize();
+    this.atmosphere.randomize();
+    this.atmosphereRing.randomize();
+    this.glow.randomize();
 
     let resMin = 0.01;
     let resMax = 5.0;
@@ -156,7 +162,7 @@ export default class Planet extends THREE.Object3D {
       doesRidged: Math.floor(this.randRange(0, 4))
     });
 
-    let resMod = this.randRange(3, 10);
+    const resMod = this.randRange(3, 10);
     resMax *= resMod;
     resMin *= resMod;
 
@@ -179,7 +185,7 @@ export default class Planet extends THREE.Object3D {
 
     this.normalMap.render({
       resolution: this.resolution,
-      waterLevel: this.waterLevel,
+      waterLevel: this.settings.waterLevel,
       heightMaps: this.heightMaps,
       textureMaps: this.textureMaps
     });
@@ -187,11 +193,11 @@ export default class Planet extends THREE.Object3D {
     this.roughnessMap.render({
       resolution: this.resolution,
       heightMaps: this.heightMaps,
-      waterLevel: this.waterLevel
+      waterLevel: this.settings.waterLevel
     });
 
     this.clouds.render({
-      waterLevel: this.waterLevel
+      waterLevel: this.settings.waterLevel
     });
 
     window.renderQueue.addCallback(() => {
@@ -202,28 +208,28 @@ export default class Planet extends THREE.Object3D {
   updateMaterial() {
     for (let i = 0; i < 6; i++) {
       let material = this.materials[i];
-      material.roughness = this.roughness;
-      material.metalness = this.metalness;
+      material.roughness = this.settings.roughness;
+      material.metalness = this.settings.metalness;
 
-      if (this.displayMap === "textureMap") {
+      if (this.settings.displayMap === "textureMap") {
         material.map = this.textureMaps[i];
         material.normalMap = this.normalMaps[i];
-        material.normalScale = new THREE.Vector2(this.normalScale, this.normalScale);
+        material.normalScale = new THREE.Vector2(this.settings.normalScale, this.settings.normalScale);
         material.roughnessMap = this.roughnessMaps[i];
         // material.metalnessMap = this.roughnessMaps[i];
-      } else if (this.displayMap === "heightMap") {
+      } else if (this.settings.displayMap === "heightMap") {
         material.map = this.heightMaps[i];
         material.normalMap = null;
         material.roughnessMap = null;
-      } else if (this.displayMap === "moistureMap") {
+      } else if (this.settings.displayMap === "moistureMap") {
         material.map = this.moistureMaps[i];
         material.normalMap = null;
         material.roughnessMap = null;
-      } else if (this.displayMap === "normalMap") {
+      } else if (this.settings.displayMap === "normalMap") {
         material.map = this.normalMaps[i];
         material.normalMap = null;
         material.roughnessMap = null;
-      } else if (this.displayMap === "roughnessMap") {
+      } else if (this.settings.displayMap === "roughnessMap") {
         material.map = this.roughnessMaps[i];
         material.normalMap = null;
         material.roughnessMap = null;
@@ -234,11 +240,11 @@ export default class Planet extends THREE.Object3D {
   }
 
   updateNormalScaleForRes(value) {
-    if (value === 256) this.normalScale = 0.25;
-    if (value === 512) this.normalScale = 0.5;
-    if (value === 1024) this.normalScale = 1.0;
-    if (value === 2048) this.normalScale = 1.5;
-    if (value === 4096) this.normalScale = 3.0;
+    if (value === 256) this.settings.normalScale = 0.25;
+    if (value === 512) this.settings.normalScale = 0.5;
+    if (value === 1024) this.settings.normalScale = 1.0;
+    if (value === 2048) this.settings.normalScale = 1.5;
+    if (value === 4096) this.settings.normalScale = 3.0;
   }
 
   randRange(low, high) {

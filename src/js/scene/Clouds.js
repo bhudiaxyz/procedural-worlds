@@ -18,19 +18,22 @@ export default class Clouds extends THREE.Object3D {
       normalScale: 5.0,
       opacity: 1,
       color: new THREE.Color(0xffffff),
-
     };
-    this.settings.cloudColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
+
+    this.createControls();
 
     this.setup();
+  }
 
+  createControls() {
     let cloudsFolder = window.gui.addFolder('Clouds');
 
     cloudsFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
       this.updateMaterial();
     });
 
-    cloudsFolder.addColor(this.settings, "cloudColor").onChange(value => {
+    this.settings.cloudColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
+    cloudsFolder.addColor(this.settings, "cloudColor").name('color').onChange(value => {
       this.settings.color.r = value[0] / 255;
       this.settings.color.g = value[1] / 255;
       this.settings.color.b = value[2] / 255;
@@ -116,6 +119,7 @@ export default class Clouds extends THREE.Object3D {
       this.randRange(0.5, 1.0),
       this.randRange(0.5, 1.0)
     );
+    this.settings.cloudColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
 
     this.updateMaterial();
   }

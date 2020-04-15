@@ -16,21 +16,7 @@ export default class Glow extends THREE.Object3D {
       color: new THREE.Color(0x55ffff)
     };
 
-    let glowFolder = window.gui.addFolder('Glow');
-    glowFolder.add(this.settings, "glow", 0.0, 1.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-
-    glowFolder.addColor(this.settings, "color").onChange(value => {
-      this.updateMaterial();
-    });
-
-    glowFolder.add(this.settings, "c", 0, 1).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-    glowFolder.add(this.settings, "p", 0, 6).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
+    this.createControls();
 
     this.mat = new THREE.ShaderMaterial({
       vertexShader: shaderVert,
@@ -54,6 +40,29 @@ export default class Glow extends THREE.Object3D {
     this.add(this.sphere);
   }
 
+  createControls() {
+    let glowFolder = window.gui.addFolder('Glow');
+    glowFolder.add(this.settings, "glow", 0.0, 1.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
+    this.settings.glowColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
+    glowFolder.addColor(this.settings, "glowColor").name('color').onChange(value => {
+      this.settings.color.r = value[0] / 255;
+      this.settings.color.g = value[1] / 255;
+      this.settings.color.b = value[2] / 255;
+      this.updateMaterial();
+    });
+
+    glowFolder.add(this.settings, "c", 0, 1).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+    glowFolder.add(this.settings, "p", 0, 6).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
+  }
+
   update() {
     this.mat.uniforms.viewVector.value.subVectors(window.camera.position, this.sphere.position);
   }
@@ -62,6 +71,12 @@ export default class Glow extends THREE.Object3D {
     this.mat.uniforms.c.value = this.settings.c;
     this.mat.uniforms.p.value = this.settings.p;
     this.mat.uniforms.glowColor.value = this.settings.color;
+  }
+
+  randRange(low, high) {
+    let range = high - low;
+    let n = window.rng() * range;
+    return low + n;
   }
 
   randomize() {
@@ -75,6 +90,7 @@ export default class Glow extends THREE.Object3D {
       window.rng(),
       window.rng()
     );
+    this.settings.glowColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
 
     this.updateMaterial();
   }

@@ -48,7 +48,25 @@ export default class AbstractApplication {
     // gui
     this.gui = new dat.GUI();
     window.gui = this.gui;
+    this._createControls();
 
+    // stats
+    this.stats = new Stats();
+    this.stats.setMode(0);
+    document.body.appendChild(this.stats.domElement);
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.left = '10px';
+    this.stats.domElement.style.top = '0px';
+
+    window.addEventListener('resize', this.onWindowResize.bind(this), false);
+    window.addEventListener('keydown', (e) => {
+      this.onKeyDown(e)
+    }, false);
+
+    this.gui.open();
+  }
+
+  _createControls() {
     let lightFolder = this.gui.addFolder('Lighting');
 
     this.sunColor = {r: 255, g: 255, b: 255};
@@ -79,21 +97,6 @@ export default class AbstractApplication {
     cameraFolder.add(this._camera, "fov", 20, 120).onChange(value => {
       this._camera.updateProjectionMatrix()
     });
-
-    // stats
-    this.stats = new Stats();
-    this.stats.setMode(0);
-    document.body.appendChild(this.stats.domElement);
-    this.stats.domElement.style.position = 'absolute';
-    this.stats.domElement.style.left = '10px';
-    this.stats.domElement.style.top = '0px';
-
-    window.addEventListener('resize', this.onWindowResize.bind(this), false);
-    window.addEventListener('keydown', (e) => {
-      this.onKeyDown(e)
-    }, false);
-
-    this.gui.open();
   }
 
   get renderer() {

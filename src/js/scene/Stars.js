@@ -7,10 +7,7 @@ export default class Stars extends THREE.Object3D {
     super();
 
     this.materials = [];
-    this.roughness = 0.8;
-    this.metalness = 0.5;
-    this.emissiveIntensity = 1.0;
-
+    this.starMaps = [];
     this.resolution = 1024;
     this.size = 50000;
 
@@ -23,16 +20,18 @@ export default class Stars extends THREE.Object3D {
       opacity: 1.0
     };
 
+    this.createControls();
+
+    this.setup();
+  }
+
+  createControls() {
     let starsFolder = window.gui.addFolder('Stars');
 
     starsFolder.add(this.settings, "res1", 0.5, 2.0).step(0.001);
     starsFolder.add(this.settings, "res2", 0.5, 2.00).step(0.001);
     starsFolder.add(this.settings, "resMix", 0.5, 2.0).step(0.001);
     starsFolder.add(this.settings, "mixScale", 0.5, 2.0).step(0.001);
-
-    this.starMaps = [];
-
-    this.setup();
   }
 
   update() {

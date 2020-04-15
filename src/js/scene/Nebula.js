@@ -8,7 +8,7 @@ export default class Nebula extends THREE.Object3D {
     super();
 
     this.materials = [];
-    this.roughness = 0.8;
+    this.skyMaps = [];
 
     this.resolution = 1024;
     this.size = 45000;
@@ -24,6 +24,12 @@ export default class Nebula extends THREE.Object3D {
     };
     this.nebulaeGradient = new NebulaeGradient();
 
+    this.createControls();
+
+    this.setup();
+  }
+
+  createControls() {
     let nebulaFolder = window.gui.addFolder('Nebula');
 
     nebulaFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
@@ -40,10 +46,6 @@ export default class Nebula extends THREE.Object3D {
         this.nebulaeGradient.toggleCanvasDisplay(value);
       }
     });
-
-    this.skyMaps = [];
-
-    this.setup();
   }
 
   update() {
