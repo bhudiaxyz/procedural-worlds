@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import NebulaMap from '../tools/NebulaMap'
+import NebulaeGradient from "../tools/NebulaeGradient";
 
 export default class Nebula extends THREE.Object3D {
 
@@ -18,8 +19,10 @@ export default class Nebula extends THREE.Object3D {
       res2: this.randRange(1.0, 3.0),
       resMix: this.randRange(1.0, 3.0),
       mixScale: this.randRange(1.0, 3.0),
-      opacity: 1.0
+      opacity: 1.0,
+      showNebulaMap: false
     };
+    this.nebulaeGradient = new NebulaeGradient();
 
     let nebulaFolder = window.gui.addFolder('Nebula');
 
@@ -31,6 +34,12 @@ export default class Nebula extends THREE.Object3D {
     nebulaFolder.add(this.settings, "res2", 1.0, 3.0).step(0.001);
     nebulaFolder.add(this.settings, "resMix", 1.0, 3.0).step(0.001);
     nebulaFolder.add(this.settings, "mixScale", 1.0, 3.0).step(0.001);
+
+    nebulaFolder.add(this.settings, "showNebulaMap").onChange(value => {
+      if (this.nebulaeGradient) {
+        this.nebulaeGradient.toggleCanvasDisplay(value);
+      }
+    });
 
     this.skyMaps = [];
 
@@ -67,7 +76,11 @@ export default class Nebula extends THREE.Object3D {
     this.add(this.sphere);
   }
 
-  render(props) {
+  generateTexture() {
+    this.nebulaeGradient.generateTexture();
+  }
+
+  render(props = {}) {
     this.seed = this.randRange(0, 1000);
 
     this.skyMap.render({
@@ -77,7 +90,7 @@ export default class Nebula extends THREE.Object3D {
       res2: this.settings.res2,
       resMix: this.settings.resMix,
       mixScale: this.settings.mixScale,
-      nebulaeMap: props.nebulaeMap
+      nebulaeMap: this.nebulaeGradient.texture
     });
 
     this.updateMaterial();

@@ -7,16 +7,26 @@ export default class Sun extends THREE.Object3D {
   constructor() {
     super();
 
-    this.setup();
-  }
-
-  setup() {
     let loader = new THREE.TextureLoader();
     this.textureFlare = loader.load('assets/textures/flare/lensFlareSun.jpg');
     this.textureRing = loader.load('assets/textures/flare/lensFlareRing.jpg');
     this.textureBlur = loader.load('assets/textures/flare/lensFlareBlur.jpg');
     this.textureSun = loader.load('assets/textures/flare/lensFlare.jpg');
+    this.showSunMap = false;
 
+    let sunFolder = window.gui.addFolder('Sun');
+
+    sunFolder.add(this, "showSunMap").onChange(value => {
+      if (this.sunTexture) {
+        this.sunTexture.toggleCanvasDisplay(value);
+      }
+    });
+
+
+    this.setup();
+  }
+
+  setup() {
     this.sunTexture = new SunTexture();
     this.lensFlare = null;
   }
@@ -80,10 +90,14 @@ export default class Sun extends THREE.Object3D {
     return low + n;
   }
 
+  generateTexture() {
+    this.sunTexture.generateTexture();
+  }
+
   render() {
     this.remove(this.lensFlare);
 
-    this.sunTexture.generateTexture();
+    this.generateTexture();
     this.createLensFlare();
   }
 }
