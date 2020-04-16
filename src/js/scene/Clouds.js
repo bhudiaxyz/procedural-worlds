@@ -13,6 +13,7 @@ export default class Clouds extends THREE.Object3D {
     this.size = 1001;
 
     this.settings = {
+      rotationSpeed: 0.0008,
       roughness: 0.9,
       metalness: 0.5,
       normalScale: 5.0,
@@ -27,6 +28,8 @@ export default class Clouds extends THREE.Object3D {
 
   createControls() {
     let cloudsFolder = window.gui.addFolder('Clouds');
+
+    cloudsFolder.add(this.settings, 'rotationSpeed', -0.01, 0.01);
 
     cloudsFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
       this.updateMaterial();
@@ -50,7 +53,8 @@ export default class Clouds extends THREE.Object3D {
   }
 
   update() {
-    // No-op
+    this.rotation.y += this.settings.rotationSpeed;
+    this.rotation.z += 0.0001;
   }
 
   setup() {

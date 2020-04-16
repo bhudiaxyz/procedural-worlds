@@ -32,14 +32,14 @@ export default class Planet extends THREE.Object3D {
       metalness: 0.5,
       normalScale: 3.0,
       rotate: true,
+      rotationSpeed: 0.0005,
       displayMap: "textureMap",
       showBiomeMap: false
     };
 
     this.createInnerPlanet();
-    this.createOuterPlanet();
-
     this.createControls();
+    this.createOuterPlanet();
   }
 
   createInnerPlanet() {
@@ -83,20 +83,22 @@ export default class Planet extends THREE.Object3D {
     this.clouds = new Clouds();
     this.add(this.clouds);
 
-    this.glow = new Glow();
-    this.add(this.glow);
-
     this.atmosphere = new Atmosphere();
     this.add(this.atmosphere);
 
     this.atmosphereRing = new AtmosphereRing();
     this.add(this.atmosphereRing);
+
+    this.glow = new Glow();
+    this.add(this.glow);
   }
 
   createControls() {
     let planetFolder = gui.addFolder('Planet');
 
     planetFolder.add(this.settings, "rotate");
+
+    planetFolder.add(this.settings, 'rotationSpeed', -0.01, 0.01);
 
     planetFolder.add(this.settings, "roughness", 0.0, 1.0).onChange(value => {
       this.updateMaterial();
@@ -123,8 +125,8 @@ export default class Planet extends THREE.Object3D {
 
   update() {
     if (this.settings.rotate) {
-      this.ground.rotation.y += 0.0005;
-      this.clouds.rotation.y += 0.0008;
+      this.ground.rotation.y += this.settings.rotationSpeed;
+      this.clouds.update();
     }
 
     this.atmosphere.update();

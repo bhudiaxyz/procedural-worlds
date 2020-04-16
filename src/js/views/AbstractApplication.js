@@ -40,7 +40,7 @@ export default class AbstractApplication {
     this._controls.enableDamping = true;
     this._controls.dampingFactor = 0.1;
     this._controls.rotateSpeed = 0.1;
-    this._controls.autoRotate = false;
+    this._controls.autoRotate = true;
     this._controls.autoRotateSpeed = 0.02;
     this._controls.zoomSpeed = 0.5;
     this._controls.enableZoom = true;
