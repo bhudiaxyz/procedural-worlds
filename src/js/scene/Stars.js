@@ -11,7 +11,7 @@ export default class Stars extends THREE.Object3D {
     this.resolution = 1024;
     this.size = 50000;
 
-    this.settings = {
+    this.params = {
       speed: 0.1,
       res1: this.randRange(0.5, 2.0),
       res2: this.randRange(0.5, 2.0),
@@ -28,10 +28,10 @@ export default class Stars extends THREE.Object3D {
   createControls() {
     let starsFolder = window.gui.addFolder('Stars');
 
-    starsFolder.add(this.settings, "res1", 0.5, 2.0).step(0.001);
-    starsFolder.add(this.settings, "res2", 0.5, 2.00).step(0.001);
-    starsFolder.add(this.settings, "resMix", 0.5, 2.0).step(0.001);
-    starsFolder.add(this.settings, "mixScale", 0.5, 2.0).step(0.001);
+    starsFolder.add(this.params, "res1", 0.5, 2.0).step(0.001);
+    starsFolder.add(this.params, "res2", 0.5, 2.00).step(0.001);
+    starsFolder.add(this.params, "resMix", 0.5, 2.0).step(0.001);
+    starsFolder.add(this.params, "mixScale", 0.5, 2.0).step(0.001);
   }
 
   update() {
@@ -68,10 +68,10 @@ export default class Stars extends THREE.Object3D {
     this.starMap.render({
       seed: this.seed,
       resolution: this.resolution,
-      res1: this.settings.res1,
-      res2: this.settings.res2,
-      resMix: this.settings.resMix,
-      mixScale: this.settings.mixScale,
+      res1: this.params.res1,
+      res2: this.params.res2,
+      resMix: this.params.resMix,
+      mixScale: this.params.mixScale,
       nebulaeMap: props.nebulaeMap
     });
 

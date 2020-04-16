@@ -12,7 +12,7 @@ export default class Clouds extends THREE.Object3D {
     this.resolution = 1024;
     this.size = 1001;
 
-    this.settings = {
+    this.params = {
       rotationSpeed: 0.0008,
       roughness: 0.9,
       metalness: 0.5,
@@ -29,31 +29,31 @@ export default class Clouds extends THREE.Object3D {
   createControls() {
     let cloudsFolder = window.gui.addFolder('Clouds');
 
-    cloudsFolder.add(this.settings, 'rotationSpeed', -0.01, 0.01);
+    cloudsFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
 
-    cloudsFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+    cloudsFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
       this.updateMaterial();
     });
 
-    this.settings.cloudColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
-    cloudsFolder.addColor(this.settings, "cloudColor").name('color').onChange(value => {
-      this.settings.color.r = value[0] / 255;
-      this.settings.color.g = value[1] / 255;
-      this.settings.color.b = value[2] / 255;
+    this.params.cloudColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
+    cloudsFolder.addColor(this.params, "cloudColor").name('color').onChange(value => {
+      this.params.color.r = value[0] / 255;
+      this.params.color.g = value[1] / 255;
+      this.params.color.b = value[2] / 255;
       this.updateMaterial();
     });
 
-    cloudsFolder.add(this.settings, "roughness", 0.0, 1.0).step(0.001).onChange(value => {
+    cloudsFolder.add(this.params, "roughness", 0.0, 1.0).step(0.001).onChange(value => {
       this.updateMaterial();
     });
 
-    cloudsFolder.add(this.settings, "normalScale", 0.0, 10.0).step(0.01).onChange(value => {
+    cloudsFolder.add(this.params, "normalScale", 0.0, 10.0).step(0.01).onChange(value => {
       this.updateMaterial();
     });
   }
 
   update() {
-    this.rotation.y += this.settings.rotationSpeed;
+    this.rotation.y += this.params.rotationSpeed;
     this.rotation.z += 0.0001;
   }
 
@@ -63,7 +63,7 @@ export default class Clouds extends THREE.Object3D {
 
     for (let i = 0; i < 6; i++) {
       let material = new THREE.MeshStandardMaterial({
-        color: this.settings.color,
+        color: this.params.color,
         transparent: true,
       });
       this.materials[i] = material;
@@ -106,11 +106,11 @@ export default class Clouds extends THREE.Object3D {
   updateMaterial() {
     for (let i = 0; i < 6; i++) {
       let material = this.materials[i];
-      material.roughness = this.settings.roughness;
-      material.metalness = this.settings.metalness;
-      material.opacity = this.settings.opacity;
+      material.roughness = this.params.roughness;
+      material.metalness = this.params.metalness;
+      material.opacity = this.params.opacity;
       material.map = this.cloudMaps[i];
-      material.color = this.settings.color;
+      material.color = this.params.color;
       material.alphaMap = this.cloudMaps[i];
       material.bumpMap = this.cloudMaps[i];
       material.bumpScale = 1.0;
@@ -118,18 +118,18 @@ export default class Clouds extends THREE.Object3D {
   }
 
   randomizeColor() {
-    this.settings.color.setRGB(
+    this.params.color.setRGB(
       this.randRange(0.5, 1.0),
       this.randRange(0.5, 1.0),
       this.randRange(0.5, 1.0)
     );
-    this.settings.cloudColor = [this.settings.color.r * 255, this.settings.color.g * 255, this.settings.color.b * 255];
+    this.params.cloudColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
 
     this.updateMaterial();
   }
 
   randomize() {
-    this.settings.opacity = this.randRange(0.25, 1.0);
+    this.params.opacity = this.randRange(0.25, 1.0);
     this.randomizeColor();
   }
 

@@ -16,15 +16,16 @@ class Main extends AbstractApplication {
   constructor(opts = {}) {
     super(opts);
 
-    this.seedString = "Scarlett";
-    this.initSeed();
-
-    this.resolution = 1024;
-    this.autoGenerate = false;
+    this.params = {
+      seedString : "Scarlett",
+      resolution : 1024,
+      autoGenerate : false,
+      autoGenTime : 3 * 60,
+    };
     this.autoGenCountCurrent = 0;
-    this.autoGenTime = 3 * 60;
-    this.autoGenCountMax = this.autoGenTime * 60;
+    this.autoGenCountMax = this.params.autoGenTime * 60;
 
+    this.initSeed();
     this.createControls();
     this.initPostprocessing();
 
@@ -49,18 +50,18 @@ class Main extends AbstractApplication {
   createControls() {
     let generalFolder = window.gui.addFolder('General');
 
-    generalFolder.add(this, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
+    generalFolder.add(this.params, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
       this.regenerate();
     });
 
-    generalFolder.add(this, "autoGenerate");
-    generalFolder.add(this, "autoGenTime", 30, 300).step(1).onChange(value => {
-      this.autoGenCountMax = this.autoGenTime * 60
+    generalFolder.add(this.params, "autoGenerate");
+    generalFolder.add(this.params, "autoGenTime", 30, 300).step(1).onChange(value => {
+      this.autoGenCountMax = this.params.autoGenTime * 60
     });
 
 
-    this.seedStringControl = generalFolder.add(this, "seedString").listen();
-    this.seedStringControl.onFinishChange(value => {
+    let seedStringControl = generalFolder.add(this.params, "seedString").listen();
+    seedStringControl.onFinishChange(value => {
       this.loadSeedFromTextfield();
     });
 
@@ -133,14 +134,14 @@ class Main extends AbstractApplication {
   }
 
   initSeed() {
-    window.seedString = this.seedString;
-    window.rng = seedrandom(this.seedString);
+    window.seedString = this.params.seedString;
+    window.rng = seedrandom(this.params.seedString);
   }
 
   initFromURL() {
-    this.seedString = this.getParameterByName("seed");
-    if (this.seedString) {
-      console.log("Using seed string: " + this.seedString);
+    this.params.seedString = this.getParameterByName("seed");
+    if (this.params.seedString) {
+      console.log("Using seed string: " + this.params.seedString);
       this.regenerate();
     } else {
       console.log("No seed string - using random");
@@ -149,8 +150,8 @@ class Main extends AbstractApplication {
   }
 
   loadSeedFromTextfield() {
-    let url = this.updateQueryString("seed", this.seedString);
-    window.history.pushState({seed: this.seedString}, this.seedString, url);
+    let url = this.updateQueryString("seed", this.params.seedString);
+    window.history.pushState({seed: this.params.seedString}, this.params.seedString, url);
     this.regenerate();
   }
 
@@ -174,16 +175,16 @@ class Main extends AbstractApplication {
       wordCount = 3;
     }
 
-    this.seedString = "";
+    this.params.seedString = "";
     for (let i = 0; i < wordCount; i++) {
-      this.seedString += this.capitalizeFirstLetter(randomLorem({min: 2, max: 8}));
+      this.params.seedString += this.capitalizeFirstLetter(randomLorem({min: 2, max: 8}));
       if (i < wordCount - 1) {
-        this.seedString += " ";
+        this.params.seedString += " ";
       }
     }
 
-    let url = this.updateQueryString("seed", this.seedString);
-    window.history.pushState({seed: this.seedString}, this.seedString, url);
+    let url = this.updateQueryString("seed", this.params.seedString);
+    window.history.pushState({seed: this.params.seedString}, this.params.seedString, url);
     this.autoGenCountCurrent = 0;
     this.renderScene();
   }
@@ -196,7 +197,7 @@ class Main extends AbstractApplication {
 
     this.planet.update();
 
-    if (this.autoGenerate) {
+    if (this.params.autoGenerate) {
       this.autoGenCountCurrent++;
       if (this.autoGenCountCurrent > this.autoGenCountMax) {
         this.randomize();
@@ -211,8 +212,8 @@ class Main extends AbstractApplication {
     this.initSeed();
     this.updateWorldName();
 
-    this.stars.resolution = this.resolution;
-    this.nebula.resolution = this.resolution;
+    this.stars.resolution = this.params.resolution;
+    this.nebula.resolution = this.params.resolution;
 
     window.renderQueue.start();
 
@@ -261,7 +262,7 @@ class Main extends AbstractApplication {
   updateWorldName() {
     let planetName = document.getElementById("planetName");
     if (planetName != null) {
-      planetName.innerHTML = this.seedString;
+      planetName.innerHTML = this.params.seedString;
     }
   }
 

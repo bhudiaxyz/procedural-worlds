@@ -13,7 +13,7 @@ export default class Nebula extends THREE.Object3D {
     this.resolution = 1024;
     this.size = 45000;
 
-    this.settings = {
+    this.params = {
       speed: 0.1,
       res1: this.randRange(1.0, 3.0),
       res2: this.randRange(1.0, 3.0),
@@ -32,16 +32,16 @@ export default class Nebula extends THREE.Object3D {
   createControls() {
     let nebulaFolder = window.gui.addFolder('Nebula');
 
-    nebulaFolder.add(this.settings, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+    nebulaFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
       this.updateMaterial();
     });
 
-    nebulaFolder.add(this.settings, "res1", 1.0, 3.0).step(0.001);
-    nebulaFolder.add(this.settings, "res2", 1.0, 3.0).step(0.001);
-    nebulaFolder.add(this.settings, "resMix", 1.0, 3.0).step(0.001);
-    nebulaFolder.add(this.settings, "mixScale", 1.0, 3.0).step(0.001);
+    nebulaFolder.add(this.params, "res1", 1.0, 3.0).step(0.001);
+    nebulaFolder.add(this.params, "res2", 1.0, 3.0).step(0.001);
+    nebulaFolder.add(this.params, "resMix", 1.0, 3.0).step(0.001);
+    nebulaFolder.add(this.params, "mixScale", 1.0, 3.0).step(0.001);
 
-    nebulaFolder.add(this.settings, "showNebulaMap").onChange(value => {
+    nebulaFolder.add(this.params, "showNebulaMap").onChange(value => {
       if (this.nebulaeGradient) {
         this.nebulaeGradient.toggleCanvasDisplay(value);
       }
@@ -61,7 +61,7 @@ export default class Nebula extends THREE.Object3D {
         color: new THREE.Color(0xFFFFFF),
         side: THREE.BackSide,
         transparent: true,
-        opacity: this.settings.opacity
+        opacity: this.params.opacity
       });
       this.materials[i] = material;
     }
@@ -88,10 +88,10 @@ export default class Nebula extends THREE.Object3D {
     this.skyMap.render({
       seed: this.seed,
       resolution: this.resolution,
-      res1: this.settings.res1,
-      res2: this.settings.res2,
-      resMix: this.settings.resMix,
-      mixScale: this.settings.mixScale,
+      res1: this.params.res1,
+      res2: this.params.res2,
+      resMix: this.params.resMix,
+      mixScale: this.params.mixScale,
       nebulaeMap: this.nebulaeGradient.texture
     });
 
@@ -102,7 +102,7 @@ export default class Nebula extends THREE.Object3D {
     for (let i = 0; i < 6; i++) {
       let material = this.materials[i];
       material.map = this.skyMaps[i];
-      material.opacity = this.settings.opacity;
+      material.opacity = this.params.opacity;
     }
   }
 
