@@ -21,6 +21,7 @@ class Main extends AbstractApplication {
       resolution : 1024,
       autoGenerate : false,
       autoGenTime : 3 * 60,
+      bloom : false
     };
     this.autoGenCountCurrent = 0;
     this.autoGenCountMax = this.params.autoGenTime * 60;
@@ -79,7 +80,6 @@ class Main extends AbstractApplication {
 
   initPostprocessing() {
     this.renderer.autoClearColor = true;
-    this.bloom = false;
     this.composer = new WAGNER.Composer(this.renderer);
     this.bloomPass = new MultiPassBloomPass({
       blurAmount: 0.1,
@@ -89,7 +89,7 @@ class Main extends AbstractApplication {
     this.godrayPass = new GodrayPass();
 
     let postProcessFolder = window.gui.addFolder("Post Processing");
-    postProcessFolder.add(this, "bloom");
+    postProcessFolder.add(this.params, "bloom");
     postProcessFolder.add(this.bloomPass.params, "blurAmount", 0, 5);
     postProcessFolder.add(this.bloomPass.params, "applyZoomBlur");
     postProcessFolder.add(this.bloomPass.params, "zoomBlurStrength", 0, 5);
@@ -273,7 +273,7 @@ class Main extends AbstractApplication {
     window.renderQueue.update();
     this.update();
 
-    if (this.bloom) {
+    if (this.params.bloom) {
       this.composer.reset();
       this.composer.render(this.scene, this.camera);
       this.composer.pass(this.bloomPass);
