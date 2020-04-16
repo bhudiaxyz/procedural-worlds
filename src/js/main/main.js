@@ -26,6 +26,7 @@ class Main extends AbstractApplication {
     this.autoGenCountMax = this.autoGenTime * 60;
 
     this.createControls();
+    this.initPostprocessing();
 
     this.nebula = new Nebula();
     this.scene.add(this.nebula);
@@ -39,7 +40,6 @@ class Main extends AbstractApplication {
     this.planet = new Planet();
     this.scene.add(this.planet);
 
-    this.initPostprocessing();
     this.setupControlsUI();
 
     this.initFromURL();
@@ -47,19 +47,19 @@ class Main extends AbstractApplication {
 
 
   createControls() {
-    let spaceFolder = window.gui.addFolder('Space');
+    let generalFolder = window.gui.addFolder('General');
 
-    spaceFolder.add(this, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
+    generalFolder.add(this, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
       this.regenerate();
     });
 
-    spaceFolder.add(this, "autoGenerate");
-    spaceFolder.add(this, "autoGenTime", 30, 300).step(1).onChange(value => {
+    generalFolder.add(this, "autoGenerate");
+    generalFolder.add(this, "autoGenTime", 30, 300).step(1).onChange(value => {
       this.autoGenCountMax = this.autoGenTime * 60
     });
 
 
-    this.seedStringControl = spaceFolder.add(this, "seedString").listen();
+    this.seedStringControl = generalFolder.add(this, "seedString").listen();
     this.seedStringControl.onFinishChange(value => {
       this.loadSeedFromTextfield();
     });
@@ -79,16 +79,19 @@ class Main extends AbstractApplication {
   initPostprocessing() {
     this.renderer.autoClearColor = true;
     this.bloom = false;
-    this.composer = new WAGNER.Composer(this._renderer);
+    this.composer = new WAGNER.Composer(this.renderer);
     this.bloomPass = new MultiPassBloomPass({
-      blurAmount: 3,
-      applyZoomBlur: true
+      blurAmount: 0.1,
+      applyZoomBlur: true,
+      zoomBlurStrength: 3.3
     });
     this.godrayPass = new GodrayPass();
 
     let postProcessFolder = window.gui.addFolder("Post Processing");
     postProcessFolder.add(this, "bloom");
     postProcessFolder.add(this.bloomPass.params, "blurAmount", 0, 5);
+    postProcessFolder.add(this.bloomPass.params, "applyZoomBlur");
+    postProcessFolder.add(this.bloomPass.params, "zoomBlurStrength", 0, 5);
   }
 
   updateQueryString(key, value, url) {

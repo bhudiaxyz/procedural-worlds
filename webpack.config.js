@@ -87,6 +87,7 @@ const config = {
           },
         ],
       },
+      { test: /node_modules/, loader: 'ify-loader' },
       {
         test: /\.(glsl|frag|vert)$/,
         include: [path.join(__dirname, 'src', 'js', 'shaders')],
