@@ -19,17 +19,10 @@ export default class Biome extends AbstractCanvasTexture {
     this.satRange = this.randRange(0.3, 0.5);
     this.lightRange = this.randRange(0.3, 0.5);
     this.circleSize = this.randRange(30, 250);
-    // this.circleSize = 100;
 
+    // this.blackWhiteGradient();
     this.drawBase();
-
-    // circles
-    let numCircles = Math.round(this.randRange(50, 100));
-    numCircles = 100;
-    for (let i = 0; i < numCircles; i++) {
-      this.randomGradientCircle();
-    }
-
+    this.drawCircles();
     this.drawDetail();
     this.drawInland();
     this.drawBeach();
@@ -38,10 +31,18 @@ export default class Biome extends AbstractCanvasTexture {
     this.texture = new THREE.CanvasTexture(this.canvas);
   }
 
+  drawCircles() {
+    let numCircles = Math.round(this.randRange(50, 150));
+    for (let i = 0; i <  numCircles; i++) {
+      this.randomGradientCircle();
+    }
+  }
+
   drawBase() {
     this.fillBaseColor();
 
-    for (let i = 0; i < 5; i++) {
+    let baseDetail = Math.round(this.randRange(5, 10));
+    for (let i = 0; i < baseDetail; i++) {
       let x = 0;
       let y = 0;
       let width = this.width;
@@ -51,10 +52,7 @@ export default class Biome extends AbstractCanvasTexture {
   }
 
   drawDetail() {
-    // land detail
-    let landDetail = Math.round(this.randRange(0, 5));
-    // landDetail = 20;
-    // console.log("landDetail = " + landDetail);
+    let landDetail = Math.round(this.randRange(5, 20));
     for (let i = 0; i < landDetail; i++) {
       let x1 = this.randRange(0, this.width);
       let y1 = this.randRange(0, this.height);
@@ -63,13 +61,12 @@ export default class Biome extends AbstractCanvasTexture {
       let width = x2 - x1;
       let height = y2 - y1;
 
-      // this.randomGradientStrip(0, 0, this.width, this.height);
+      this.randomGradientStrip(0, 0, this.width, this.height);
       this.randomGradientStrip(x1, y1, width, height);
     }
   }
 
   drawRivers() {
-    // rivers
     let c = this.randomColor();
     this.ctx.strokeStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 0.5)";
 
@@ -78,7 +75,8 @@ export default class Biome extends AbstractCanvasTexture {
     let prevX = x;
     let prevY = y;
 
-    for (let i = 0; i < 5; i++) {
+    let riverDetail = Math.round(this.randRange(5, 10));
+    for (let i = 0; i < riverDetail; i++) {
       x = this.randRange(0, this.width);
       y = this.randRange(0, this.height);
 
@@ -95,11 +93,9 @@ export default class Biome extends AbstractCanvasTexture {
     let x = this.randRange(0, this.width);
     let y = this.randRange(0, this.height);
     let rad = this.randRange(0, 10);
-    // rad = 3;
 
     let c = this.randomColor();
     this.ctx.fillStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 0.5)";
-    // this.ctx.lineWidth = 1;
 
     this.ctx.beginPath();
     this.ctx.arc(x, y, rad, 0, 2 * Math.PI);
@@ -130,7 +126,6 @@ export default class Biome extends AbstractCanvasTexture {
     let y2 = this.height;
 
     let gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
-
 
     gradient.addColorStop(0, "rgba(255, 255, 255, 1.0)");
     gradient.addColorStop(1, "rgba(0, 0, 0, 1.0)");
@@ -168,9 +163,7 @@ export default class Biome extends AbstractCanvasTexture {
 
     let gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
 
-    // let c = this.randomColor();
     let c = this.randomWaterColor();
-
     let falloff = 1.3;
     let falloff2 = 1.0;
     let falloff3 = 0.7;
@@ -185,10 +178,10 @@ export default class Biome extends AbstractCanvasTexture {
   }
 
   drawBeach() {
-    this.beachSize = 7;
+    let beachSize = Math.round(this.randRange(5, 12));
 
     let x1 = 0;
-    let y1 = this.height - (this.height * this.waterLevel) - this.beachSize;
+    let y1 = this.height - (this.height * this.waterLevel) - beachSize;
     let x2 = 0;
     let y2 = this.height - (this.height * this.waterLevel);
 
@@ -202,14 +195,14 @@ export default class Biome extends AbstractCanvasTexture {
     gradient.addColorStop(1.0, "rgba(" + Math.round(c.r * falloff2) + ", " + Math.round(c.g * falloff2) + ", " + Math.round(c.b * falloff2) + ", " + 0.3 + ")");
 
     this.ctx.fillStyle = gradient;
-    this.ctx.fillRect(x1, y1, this.width, this.beachSize);
+    this.ctx.fillRect(x1, y1, this.width, beachSize);
   }
 
   drawInland() {
-    this.inlandSize = 100;
+    let inlandSize = Math.round(this.randRange(75, 125));
 
     let x1 = 0;
-    let y1 = this.height - (this.height * this.waterLevel) - this.inlandSize;
+    let y1 = this.height - (this.height * this.waterLevel) - inlandSize;
     let x2 = 0;
     let y2 = this.height - (this.height * this.waterLevel);
 
@@ -223,7 +216,7 @@ export default class Biome extends AbstractCanvasTexture {
     gradient.addColorStop(1.0, "rgba(" + Math.round(c.r * falloff2) + ", " + Math.round(c.g * falloff2) + ", " + Math.round(c.b * falloff2) + ", " + 0.5 + ")");
 
     this.ctx.fillStyle = gradient;
-    this.ctx.fillRect(x1, y1, this.width, this.inlandSize);
+    this.ctx.fillRect(x1, y1, this.width, inlandSize);
   }
 
   randomGradientCircle() {
@@ -238,7 +231,6 @@ export default class Biome extends AbstractCanvasTexture {
     let gradient = this.ctx.createRadialGradient(x1, y1, r1, x2, y2, r2);
 
     let c = this.randomColor();
-
     gradient.addColorStop(0, "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 1.0)");
     gradient.addColorStop(1, "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 0.0)");
 
@@ -266,11 +258,9 @@ export default class Biome extends AbstractCanvasTexture {
     let c = newColor.getHSL();
     c.h += hOffset;
     c.s = this.randRange(0.0, 0.6);
-    // console.log("sat = " + c.s);
     c.l = this.randRange(0.1, 0.4);
 
     newColor.setHSL(c.h, c.s, c.l);
-
     // newColor.offsetHSL(hOffset, sOffset, lOffset);
 
     return {

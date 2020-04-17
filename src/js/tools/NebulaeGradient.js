@@ -35,7 +35,7 @@ export default class NebulaeGradient extends AbstractCanvasTexture {
   }
 
   drawShapes() {
-    let numCircles = Math.round(this.randRange(20, 50));
+    let numCircles = Math.round(this.randRange(20, 70));
     for (let i = 0; i < numCircles; i++) {
       this.randomGradientCircle();
     }
@@ -53,7 +53,6 @@ export default class NebulaeGradient extends AbstractCanvasTexture {
     let gradient = this.ctx.createRadialGradient(x1, y1, r1, x2, y2, r2);
 
     let c = this.randomColor();
-
     gradient.addColorStop(0, "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 1.0)");
     gradient.addColorStop(1, "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 0.0)");
 
@@ -63,7 +62,6 @@ export default class NebulaeGradient extends AbstractCanvasTexture {
 
 
   randomColor() {
-
     let newColor = this.baseColor.clone();
 
     let hOffset = 0.0;
@@ -87,7 +85,6 @@ export default class NebulaeGradient extends AbstractCanvasTexture {
       g: Math.round(newColor.g * 255),
       b: Math.round(newColor.b * 255)
     };
-
   }
 }
 

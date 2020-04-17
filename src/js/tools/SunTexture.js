@@ -13,7 +13,6 @@ export default class SunTexture extends AbstractCanvasTexture {
     let s = this.randRange(0.0, 0.5);
     let l = this.randRange(0.2, 0.5);
     this.baseColor = new THREE.Color().setHSL(h, s, l);
-
     this.baseHue = this.randRange(0.0, 1.0);
 
     this.clear();
@@ -31,7 +30,8 @@ export default class SunTexture extends AbstractCanvasTexture {
     let r1 = 0;
     let r2 = this.width / 2;
 
-    let h = this.baseHue;
+    // let h = this.baseHue;
+    let h = this.baseHue + this.randRange(-0.2, 0.2);
     let s = 0.8;
     let l = 0.1;
     // console.log("h = " + h);
@@ -51,7 +51,8 @@ export default class SunTexture extends AbstractCanvasTexture {
     let r1 = 0;
     let r2 = this.width / 2;
 
-    let h = this.baseHue - 0.1;
+    let h = this.baseHue + this.randRange(-0.1, 0.1);
+    // let h = this.baseHue - 0.1;
     let s = 0.6;
     let l = 0.4;
     // console.log("h = " + h);
@@ -75,7 +76,8 @@ export default class SunTexture extends AbstractCanvasTexture {
     let r1 = 0;
     let r2 = this.width / 2;
 
-    let h = this.baseHue;
+    // let h = this.baseHue;
+    let h = this.baseHue + this.randRange(-0.05, 0.05);
     let s = 1.0;
     let l = 0.9;
     // console.log("h = " + h);
@@ -87,7 +89,7 @@ export default class SunTexture extends AbstractCanvasTexture {
     this.addColorToGradient(0.15, {h: h, s: s, l: l, a: 0.025}, gradient);
     this.addColorToGradient(dist, {h: h, s: s, l: l, a: 0.0}, gradient);
 
-    let numBeams = Math.floor(this.randRange(1, 5));
+    let numBeams = Math.floor(this.randRange(2, 7));
     numBeams *= 2;
     let size = this.randRange(0.05, 0.2);
     let angleStep = Math.PI * 2 / numBeams;
@@ -109,7 +111,7 @@ export default class SunTexture extends AbstractCanvasTexture {
     // numBeams = Math.floor(this.randRange(2, 8));
     // numBeams *= 2;
     // l = this.randRange(0.5, 1.0);
-    size = this.randRange(0.01, 0.1);
+    size = this.randRange(0.01, 0.15);
     gradient = this.ctx.createRadialGradient(x, y, r1, x, y, r2);
     this.addColorToGradient(0, {h: h, s: s, l: l, a: 0.1}, gradient);
     this.addColorToGradient(0.15, {h: h, s: s, l: l, a: 0.025}, gradient);
@@ -138,16 +140,12 @@ export default class SunTexture extends AbstractCanvasTexture {
     let r2 = this.width / 2;
 
     let h = this.baseHue + this.randRange(-0.2, 0.2);
-
-    // h = this.randRange(0,1);
     let s = 1.0;
     let l = 0.7;
     // console.log("h = " + h);
 
-    let pos = 0.23;
-    pos = this.randRange(0.1, 0.2);
-    let width = 0.05;
-    // width = this.randRange(0.01, 0.03);
+    let pos = this.randRange(0.1, 0.25);
+    let width = this.randRange(0.02, 0.07);
 
     let gradient = this.ctx.createRadialGradient(x, y, r1, x, y, r2);
     this.addColorToGradient(pos - width, {h: h, s: s, l: l, a: 0.0}, gradient);

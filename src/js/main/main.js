@@ -17,7 +17,7 @@ class Main extends AbstractApplication {
     super(opts);
 
     this.params = {
-      seedString : "Scarlett",
+      seedString : "Pavojz Recerg",
       resolution : 1024,
       autoGenerate : false,
       autoGenTime : 3 * 60,
