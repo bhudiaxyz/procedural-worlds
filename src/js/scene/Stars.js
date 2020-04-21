@@ -69,7 +69,7 @@ export default class Stars extends THREE.Object3D {
       res2: this.params.res2,
       resMix: this.params.resMix,
       mixScale: this.params.mixScale,
-      nebulaeMap: props.nebulaeMap
+      nebulaMap: props.nebulaMap
     });
 
     this.updateMaterial();

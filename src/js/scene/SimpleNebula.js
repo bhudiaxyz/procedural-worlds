@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import NebulaeGradient from "../tools/NebulaeGradient";
+import NebulaTexture from "../tools/NebulaTexture";
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/nebula.frag'
@@ -25,13 +25,13 @@ export default class SimpleNebula extends THREE.Object3D {
       showNebulaMap: false
     };
 
-    this.nebulaeGradient = new NebulaeGradient();
+    this.nebulaTexture = new NebulaTexture();
     this.generateTexture();
 
     this.materials = [];
     for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.MeshBasicMaterial({
-        map: this.nebulaeGradient.texture,
+        map: this.nebulaTexture.texture,
         side: THREE.BackSide,
         transparent: true,
         opacity: this.params.opacity
@@ -53,19 +53,19 @@ export default class SimpleNebula extends THREE.Object3D {
     });
 
     nebulaFolder.add(this.params, "showNebulaMap").onChange(value => {
-      if (this.nebulaeGradient) {
-        this.nebulaeGradient.toggleCanvasDisplay(value);
+      if (this.nebulaTexture) {
+        this.nebulaTexture.toggleCanvasDisplay(value);
       }
     });
   }
 
   generateTexture() {
-    this.nebulaeGradient.generateTexture();
+    this.nebulaTexture.generateTexture();
   }
 
   updateMaterial() {
     for (let i = 0; i < 6; ++i) {
-      this.materials[i].map = this.nebulaeGradient.texture;
+      this.materials[i].map = this.nebulaTexture.texture;
       this.materials[i].needsUpdate = true;
     }
   }

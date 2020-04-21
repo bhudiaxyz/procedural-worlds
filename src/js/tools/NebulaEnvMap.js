@@ -23,7 +23,7 @@ export default class NebulaEnvMap extends AbstractEnvMap {
           res2: {type: "f", value: 0},
           resMix: {type: "f", value: 0},
           mixScale: {type: "f", value: 0},
-          nebulaeMap: {type: "t", value: new THREE.Texture()}
+          nebulaMap: {type: "t", value: new THREE.Texture()}
         },
         vertexShader: vertShader,
         fragmentShader: fragShader,
@@ -49,7 +49,7 @@ export default class NebulaEnvMap extends AbstractEnvMap {
       this.materials[i].uniforms.res2.value = props.res2;
       this.materials[i].uniforms.resMix.value = props.resMix;
       this.materials[i].uniforms.mixScale.value = props.mixScale;
-      this.materials[i].uniforms.nebulaeMap.value = props.nebulaeMap;
+      this.materials[i].uniforms.nebulaMap.value = props.nebulaMap;
       this.materials[i].needsUpdate = true;
     }
   }

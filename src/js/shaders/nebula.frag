@@ -9,7 +9,7 @@ uniform float res1;
 uniform float res2;
 uniform float resMix;
 uniform float mixScale;
-uniform sampler2D nebulaeMap;
+uniform sampler2D nebulaMap;
 const int octaves = 16;
 
 
@@ -189,7 +189,7 @@ void main() {
 
     float nebulaStrength = 2.0 * pow(c2, 3.0);
     // float nebulaStrength = 1.0;
-    vec3 nColor = texture2D(nebulaeMap, vec2(c3, c1)).rgb * nebulaStrength;
+    vec3 nColor = texture2D(nebulaMap, vec2(c3, c1)).rgb * nebulaStrength;
     // float c4 = cloudNoise(sphericalCoord, resMix, seed + 61.684);
     // c4 = pow(c4, 3.0) * 1.0;
     // nColor = mix(nColor, nColor*0.3, c4*1.0);

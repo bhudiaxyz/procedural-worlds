@@ -227,7 +227,7 @@ class Main extends AbstractApplication {
 
     this.nebula.generateTexture();
     this.nebula.render();
-    this.stars.render({nebulaeMap: this.nebula.nebulaeGradient.texture});
+    this.stars.render({nebulaMap: this.nebula.nebulaTexture.texture});
     this.sun.render();
     this.planet.renderScene();
   }

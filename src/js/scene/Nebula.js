@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import NebulaEnvMap from '../tools/NebulaEnvMap'
-import NebulaeGradient from "../tools/NebulaeGradient";
+import NebulaTexture from "../tools/NebulaTexture";
 
 export default class Nebula extends THREE.Object3D {
 
@@ -21,7 +21,7 @@ export default class Nebula extends THREE.Object3D {
       showNebulaMap: false
     };
 
-    this.nebulaeGradient = new NebulaeGradient();
+    this.nebulaTexture = new NebulaTexture();
     this.skyMap = new NebulaEnvMap();
     this.skyMaps = this.skyMap.maps;
 
@@ -61,8 +61,8 @@ export default class Nebula extends THREE.Object3D {
     }
 
     nebulaFolder.add(this.params, "showNebulaMap").onChange(value => {
-      if (this.nebulaeGradient) {
-        this.nebulaeGradient.toggleCanvasDisplay(value);
+      if (this.nebulaTexture) {
+        this.nebulaTexture.toggleCanvasDisplay(value);
       }
     });
   }
@@ -74,7 +74,7 @@ export default class Nebula extends THREE.Object3D {
   }
 
   generateTexture() {
-    this.nebulaeGradient.generateTexture();
+    this.nebulaTexture.generateTexture();
   }
 
   render(props = {}) {
@@ -87,7 +87,7 @@ export default class Nebula extends THREE.Object3D {
       res2: this.params.res2,
       resMix: this.params.resMix,
       mixScale: this.params.mixScale,
-      nebulaeMap: this.nebulaeGradient.texture
+      nebulaMap: this.nebulaTexture.texture
     });
 
     this.updateMaterial();

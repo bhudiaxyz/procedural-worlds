@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-import Biome from "../tools/Biome";
-import NebulaeGradient from "../tools/NebulaeGradient";
+import BiomeTexture from "../tools/BiomeTexture";
+import NebulaTexture from "../tools/NebulaTexture";
 
 import terrainVertShader from '!raw-loader!glslify-loader!../shaders/terrain.vert';
 import terrainFragShader from '!raw-loader!glslify-loader!../shaders/terrain.frag';
@@ -23,21 +23,21 @@ export default class SimplePlanet extends THREE.Object3D {
       earthRotation: new THREE.Vector3(0.0, 0.003, 0.000),
     };
 
-    this.waterBiome = new Biome();
-    this.sandBiome = new NebulaeGradient();
-    this.grassBiome = new NebulaeGradient();
-    this.stoneBiome = new NebulaeGradient();
+    this.waterTexture = new BiomeTexture();
+    this.sandTexture = new NebulaTexture();
+    this.grassTexture = new NebulaTexture();
+    this.stoneTexture = new NebulaTexture();
 
     this.generateTexture();
 
     this.geometry = new THREE.IcosahedronBufferGeometry(radius, detail);
     this.material = new THREE.ShaderMaterial({
       uniforms: {
-        texWater: {type: "t", value: this.waterBiome.texture},
-        texSand: {type: "t", value: this.sandBiome.texture},
-        texGrass: {type: "t", value: this.grassBiome.texture},
-        texStone: {type: "t", value: this.stoneBiome.texture},
-        texSnow: {type: "t", value: this.waterBiome.texture},
+        texWater: {type: "t", value: this.waterTexture.texture},
+        texSand: {type: "t", value: this.sandTexture.texture},
+        texGrass: {type: "t", value: this.grassTexture.texture},
+        texStone: {type: "t", value: this.stoneTexture.texture},
+        texSnow: {type: "t", value: this.waterTexture.texture},
         lightPosition: {type: 'v3', value: new THREE.Vector3(window.light.position.x * radius, window.light.position.y * radius, window.light.position.z * radius)},
         lightColor: {type: 'v4', value: new THREE.Vector4(1.0, 1.0, 1.0, 1.0)},
         lightIntensity: {type: 'f', value: 1.0},
@@ -56,18 +56,18 @@ export default class SimplePlanet extends THREE.Object3D {
   }
 
   generateTexture() {
-    this.waterBiome.generateTexture({waterLevel: this.params.waterLevel});
-    this.sandBiome.generateTexture();
-    this.grassBiome.generateTexture();
-    this.stoneBiome.generateTexture();
+    this.waterTexture.generateTexture({waterLevel: this.params.waterLevel});
+    this.sandTexture.generateTexture();
+    this.grassTexture.generateTexture();
+    this.stoneTexture.generateTexture();
   }
 
   updateMaterial() {
-    this.material.uniforms.texWater.value = this.waterBiome.texture;
-    this.material.uniforms.texSand.value = this.sandBiome.texture;
-    this.material.uniforms.texGrass.value = this.grassBiome.texture;
-    this.material.uniforms.texStone.value = this.stoneBiome.texture;
-    this.material.uniforms.texSnow.value = this.waterBiome.texture;
+    this.material.uniforms.texWater.value = this.waterTexture.texture;
+    this.material.uniforms.texSand.value = this.sandTexture.texture;
+    this.material.uniforms.texGrass.value = this.grassTexture.texture;
+    this.material.uniforms.texStone.value = this.stoneTexture.texture;
+    this.material.uniforms.texSnow.value = this.waterTexture.texture;
     this.material.needsUpdate = true;
   }
 

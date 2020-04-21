@@ -9,7 +9,7 @@ uniform float res1;
 uniform float res2;
 uniform float resMix;
 uniform float mixScale;
-uniform sampler2D nebulaeMap;
+uniform sampler2D nebulaMap;
 
 
 vec3 getSphericalCoord(int index, float x, float y, float width) {

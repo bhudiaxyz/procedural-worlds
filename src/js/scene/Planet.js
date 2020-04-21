@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import Biome from '../tools/Biome'
+import BiomeTexture from '../tools/BiomeTexture'
 import Atmosphere from './Atmosphere'
 import NoiseEnvMap from '../tools/NoiseEnvMap'
 import TextureEnvMap from '../tools/TextureEnvMap'
@@ -48,7 +48,7 @@ export default class Planet extends THREE.Object3D {
   }
 
   createInnerPlanet() {
-    this.biome = new Biome();
+    this.biome = new BiomeTexture();
 
     this.heightMap = new NoiseEnvMap();
     this.heightMaps = this.heightMap.maps;

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import AbstractCanvasTexture from "./AbstractCanvasTexture";
 
 
-export default class NebulaeGradient extends AbstractCanvasTexture {
+export default class NebulaTexture extends AbstractCanvasTexture {
 
   constructor() {
     super("nebulaeCanvas", 512, "200px");

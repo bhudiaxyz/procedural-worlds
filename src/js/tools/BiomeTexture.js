@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import AbstractCanvasTexture from "./AbstractCanvasTexture";
 
 
-export default class Biome extends AbstractCanvasTexture {
+export default class BiomeTexture extends AbstractCanvasTexture {
 
   constructor() {
     super("biomeCanvas", 512, "200px");
