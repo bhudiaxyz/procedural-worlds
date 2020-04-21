@@ -286,4 +286,11 @@ export default class PlanetEarth extends THREE.Object3D {
       this.earthPivotPoint.rotation.y += this.params.moonSpeed;
     }
   }
+
+  renderUI() {
+    // No-op
+  }
+
+  renderScene() {
+  }
 };

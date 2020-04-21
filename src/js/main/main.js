@@ -11,7 +11,11 @@ import Planet from '../scene/Planet'
 import Stars from "../scene/Stars";
 import Nebula from "../scene/Nebula";
 import Sun from "../scene/Sun";
+import PlanetEarth from "../scene/PlanetEarth";
 
+const N = 6;
+const TWO_N = Math.pow(2, N); // detail of the spheres
+const EARTH_RADIUS = 1000.0;
 
 class Main extends AbstractApplication {
 
@@ -42,6 +46,7 @@ class Main extends AbstractApplication {
     this.scene.add(this.sun);
 
     this.planet = new Planet();
+    // this.planet = new PlanetEarth(this.random, EARTH_RADIUS, N, TWO_N, TWO_N);
     this.scene.add(this.planet);
 
     this.setupControlsUI();
@@ -221,10 +226,9 @@ class Main extends AbstractApplication {
     window.renderQueue.start();
 
     this.nebula.generateTexture();
-    this.stars.render({nebulaeMap: this.nebula.nebulaeGradient.texture});
     this.nebula.render();
+    this.stars.render({nebulaeMap: this.nebula.nebulaeGradient.texture});
     this.sun.render();
-
     this.planet.renderScene();
   }
 
