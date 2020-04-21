@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import CloudMap from '../tools/CloudMap'
+import CloudEnvMap from '../tools/CloudEnvMap'
 import tinycolor from 'tinycolor2'
 
 export default class Clouds extends THREE.Object3D {
@@ -24,7 +24,7 @@ export default class Clouds extends THREE.Object3D {
 
     this.createControls();
 
-    this.cloudMap = new CloudMap();
+    this.cloudMap = new CloudEnvMap();
     this.cloudMaps = this.cloudMap.maps;
 
     this.materials = [];

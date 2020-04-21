@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import NebulaMap from '../tools/NebulaMap'
+import NebulaEnvMap from '../tools/NebulaEnvMap'
 import NebulaeGradient from "../tools/NebulaeGradient";
 
 export default class Nebula extends THREE.Object3D {
@@ -27,7 +27,7 @@ export default class Nebula extends THREE.Object3D {
 
     this.createControls();
 
-    this.skyMap = new NebulaMap();
+    this.skyMap = new NebulaEnvMap();
     this.skyMaps = this.skyMap.maps;
 
     this.materials = [];

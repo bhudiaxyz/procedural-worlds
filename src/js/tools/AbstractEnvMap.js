@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 const texResolution = 1024;
 
-export default class AbstractMapTexture {
+export default class AbstractEnvMap {
 
   constructor() {
     this.mats = [];
@@ -34,17 +34,17 @@ export default class AbstractMapTexture {
   }
 
   setupMaterials() {
-    // Abstract
+    // Abstract - initialise this.mats
   }
 
-  updateMaterial(props) {
-    // Abstract
+  updateMaterials(props) {
+    // Abstract - update this.mats settings
   }
 
   render(props) {
     // props.resolution
 
-    this.updateMaterial(props);
+    this.updateMaterials(props);
 
     let resolution = props.resolution;
     for (let i = 0; i < 6; i++) {

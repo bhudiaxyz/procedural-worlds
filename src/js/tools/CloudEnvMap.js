@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import AbstractMapTexture from './AbstractMapTexture';
+import AbstractEnvMap from './AbstractEnvMap';
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
-import fragShader from '!raw-loader!glslify-loader!../shaders/nebula.frag'
+import fragShader from '!raw-loader!glslify-loader!../shaders/cloudMap.frag'
 
-export default class NebulaMap extends AbstractMapTexture {
+export default class CloudEnvMap extends AbstractEnvMap {
 
   constructor() {
     super();
@@ -22,8 +22,7 @@ export default class NebulaMap extends AbstractMapTexture {
           res1: {type: "f", value: 0},
           res2: {type: "f", value: 0},
           resMix: {type: "f", value: 0},
-          mixScale: {type: "f", value: 0},
-          nebulaeMap: {type: "t", value: new THREE.Texture()}
+          mixScale: {type: "f", value: 0}
         },
         vertexShader: vertShader,
         fragmentShader: fragShader,
@@ -34,7 +33,7 @@ export default class NebulaMap extends AbstractMapTexture {
   }
 
   // Implement
-  updateMaterial(props) {
+  updateMaterials(props) {
     // props.seed
     // props.resolution
     // props.res1
@@ -49,8 +48,8 @@ export default class NebulaMap extends AbstractMapTexture {
       this.mats[i].uniforms.res2.value = props.res2;
       this.mats[i].uniforms.resMix.value = props.resMix;
       this.mats[i].uniforms.mixScale.value = props.mixScale;
-      this.mats[i].uniforms.nebulaeMap.value = props.nebulaeMap;
       this.mats[i].needsUpdate = true;
     }
   }
 }
+

@@ -2,10 +2,10 @@ import * as THREE from 'three';
 
 import Biome from '../tools/Biome'
 import Atmosphere from './Atmosphere'
-import NoiseMap from '../tools/NoiseMap'
-import TextureMap from '../tools/TextureMap'
-import NormalMap from '../tools/NormalMap'
-import RoughnessMap from '../tools/RoughnessMap'
+import NoiseEnvMap from '../tools/NoiseEnvMap'
+import TextureEnvMap from '../tools/TextureEnvMap'
+import NormalEnvMap from '../tools/NormalEnvMap'
+import RoughnessEnvMap from '../tools/RoughnessEnvMap'
 import Clouds from './Clouds'
 import Glow from './Glow'
 import AtmosphereRing from './AtmosphereRing'
@@ -49,19 +49,19 @@ export default class Planet extends THREE.Object3D {
   createInnerPlanet() {
     this.biome = new Biome();
 
-    this.heightMap = new NoiseMap();
+    this.heightMap = new NoiseEnvMap();
     this.heightMaps = this.heightMap.maps;
 
-    this.moistureMap = new NoiseMap();
+    this.moistureMap = new NoiseEnvMap();
     this.moistureMaps = this.moistureMap.maps;
 
-    this.textureMap = new TextureMap();
+    this.textureMap = new TextureEnvMap();
     this.textureMaps = this.textureMap.maps;
 
-    this.normalMap = new NormalMap();
+    this.normalMap = new NormalEnvMap();
     this.normalMaps = this.normalMap.maps;
 
-    this.roughnessMap = new RoughnessMap();
+    this.roughnessMap = new RoughnessEnvMap();
     this.roughnessMaps = this.roughnessMap.maps;
 
     this.materials = [];

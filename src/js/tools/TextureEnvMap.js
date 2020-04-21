@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import AbstractMapTexture from './AbstractMapTexture';
+import AbstractEnvMap from './AbstractEnvMap';
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/textureMap.frag'
 
-export default class TextureMap extends AbstractMapTexture {
+export default class TextureEnvMap extends AbstractEnvMap {
 
   constructor() {
     super();
@@ -29,7 +29,7 @@ export default class TextureMap extends AbstractMapTexture {
   }
 
   // Implement
-  updateMaterial(props) {
+  updateMaterials(props) {
     // props.resolution
     // props.heightMaps[]
     // props.moistureMaps[]

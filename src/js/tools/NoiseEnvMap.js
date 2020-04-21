@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import AbstractMapTexture from './AbstractMapTexture';
+import AbstractEnvMap from './AbstractEnvMap';
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
-import fragShader from '!raw-loader!glslify-loader!../shaders/stars.frag'
+import fragShader from '!raw-loader!glslify-loader!../shaders/flowNoiseMap.frag'
 
-export default class StarMap extends AbstractMapTexture {
+export default class NoiseEnvMap extends AbstractEnvMap {
 
   constructor() {
     super();
@@ -23,7 +23,7 @@ export default class StarMap extends AbstractMapTexture {
           res2: {type: "f", value: 0},
           resMix: {type: "f", value: 0},
           mixScale: {type: "f", value: 0},
-          nebulaeMap: {type: "t", value: new THREE.Texture()}
+          doesRidged: {type: "f", value: 0}
         },
         vertexShader: vertShader,
         fragmentShader: fragShader,
@@ -34,7 +34,7 @@ export default class StarMap extends AbstractMapTexture {
   }
 
   // Implement
-  updateMaterial(props) {
+  updateMaterials(props) {
     // props.seed
     // props.resolution
     // props.res1
@@ -49,8 +49,9 @@ export default class StarMap extends AbstractMapTexture {
       this.mats[i].uniforms.res2.value = props.res2;
       this.mats[i].uniforms.resMix.value = props.resMix;
       this.mats[i].uniforms.mixScale.value = props.mixScale;
-      this.mats[i].uniforms.nebulaeMap.value = props.nebulaeMap;
+      this.mats[i].uniforms.doesRidged.value = props.doesRidged;
       this.mats[i].needsUpdate = true;
     }
   }
 }
+

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import StarMap from '../tools/StarMap'
+import StarEnvMap from '../tools/StarEnvMap'
 
 export default class Stars extends THREE.Object3D {
 
@@ -23,7 +23,7 @@ export default class Stars extends THREE.Object3D {
 
     this.createControls();
 
-    this.starMap = new StarMap();
+    this.starMap = new StarEnvMap();
     this.starMaps = this.starMap.maps;
 
     this.materials = [];
