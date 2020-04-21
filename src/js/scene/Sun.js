@@ -12,7 +12,12 @@ export default class Sun extends THREE.Object3D {
     this.textureRing = loader.load('assets/textures/flare/lensFlareRing.jpg');
     this.textureBlur = loader.load('assets/textures/flare/lensFlareBlur.jpg');
     this.textureSun = loader.load('assets/textures/flare/lensFlare.jpg');
-    this.showSunMap = false;
+
+    this.params = {
+      showSunMap: false,
+      sunSize: 1500,
+      color: new THREE.Color(0xffffff),
+    };
 
     this.createControls();
 
@@ -23,7 +28,15 @@ export default class Sun extends THREE.Object3D {
   createControls() {
     let sunFolder = window.gui.addFolder('Sun');
 
-    sunFolder.add(this, "showSunMap").onChange(value => {
+    this.params.sunColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
+    // sunFolder.addColor(this.params, "sunColor").name('color').onChange(value => {
+    //   this.params.color.r = value[0] / 255;
+    //   this.params.color.g = value[1] / 255;
+    //   this.params.color.b = value[2] / 255;
+    //   this.updateMaterial();
+    // });
+
+    sunFolder.add(this.params, "showSunMap").onChange(value => {
       if (this.sunTexture) {
         this.sunTexture.toggleCanvasDisplay(value);
       }
@@ -40,8 +53,7 @@ export default class Sun extends THREE.Object3D {
     let l = 1.0;
     var sunColor = new THREE.Color().setHSL(h, s, l);
     var sunColor2 = new THREE.Color().setHSL(this.randRange(0, 1), s, 0.5);
-    let sunSize = this.randRange(1000, 2000);
-    sunSize = 1500;
+    let sunSize = Math.round(this.randRange(1000, 2500));
 
     this.lensFlare = new THREE.LensFlare(this.sunTexture.texture, sunSize, 0.0, THREE.AdditiveBlending, sunColor);
     this.lensFlare.add(this.sunTexture.texture, sunSize * 2, 0.1, THREE.AdditiveBlending, sunColor, 0.2);
@@ -114,6 +126,21 @@ export default class Sun extends THREE.Object3D {
 
   generateTexture() {
     this.sunTexture.generateTexture();
+  }
+
+  updateMaterial() {
+    // No-op
+  }
+
+  randomizeColor() {
+    this.params.color.setHSL(
+      this.randRange(0.0, 1.0),
+      1.0,
+      1.0
+    );
+    this.params.sunColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
+
+    this.updateMaterial();
   }
 
   render() {
