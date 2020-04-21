@@ -41,18 +41,28 @@ export default class BiomeTexture extends AbstractCanvasTexture {
   drawBase() {
     this.fillBaseColor();
 
-    let baseDetail = Math.round(this.randRange(5, 10));
+    let baseDetail = Math.round(this.randRange(5, 15));
     for (let i = 0; i < baseDetail; ++i) {
-      let x = 0;
-      let y = 0;
-      let width = this.width;
-      let height = this.height;
-      this.randomGradientRect(x, y, width, height);
+      // let x = 0;
+      // let y = 0;
+      // let width = this.width;
+      // let height = this.height;
+      // this.randomGradientRect(x, y, width, height);
+
+      let x1 = this.randRange(0, this.width);
+      let y1 = this.randRange(0, this.height);
+      let x2 = this.randRange(0, this.width);
+      let y2 = this.randRange(0, this.height);
+      let width = x2 - x1;
+      let height = y2 - y1;
+
+      this.randomGradientRect(0, 0, this.width, this.height);
+      this.randomGradientRect(x1, y1, width, height);
     }
   }
 
   drawDetail() {
-    let landDetail = Math.round(this.randRange(5, 20));
+    let landDetail = Math.round(this.randRange(5, 25));
     for (let i = 0; i < landDetail; ++i) {
       let x1 = this.randRange(0, this.width);
       let y1 = this.randRange(0, this.height);
@@ -75,7 +85,7 @@ export default class BiomeTexture extends AbstractCanvasTexture {
     let prevX = x;
     let prevY = y;
 
-    let riverDetail = Math.round(this.randRange(5, 10));
+    let riverDetail = Math.round(this.randRange(5, 25));
     for (let i = 0; i < riverDetail; ++i) {
       x = this.randRange(0, this.width);
       y = this.randRange(0, this.height);
@@ -92,7 +102,7 @@ export default class BiomeTexture extends AbstractCanvasTexture {
   randomCircle() {
     let x = this.randRange(0, this.width);
     let y = this.randRange(0, this.height);
-    let rad = this.randRange(0, 10);
+    let rad = this.randRange(2, 15);
 
     let c = this.randomColor();
     this.ctx.fillStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 0.5)";

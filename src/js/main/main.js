@@ -3,8 +3,8 @@ import MultiPassBloomPass from '@superguigui/wagner/src/passes/bloom/MultiPassBl
 import GodrayPass from '@superguigui/wagner/src/passes/godray/godraypass'
 import seedrandom from "seedrandom";
 import randomLorem from "random-lorem";
-// import * as Alea from 'alea';
-// import * as SimplexNoise from 'simplex-noise';
+import * as Alea from 'alea';
+import * as SimplexNoise from 'simplex-noise';
 
 import AbstractApplication from '../views/AbstractApplication'
 import Planet from '../scene/Planet'
@@ -144,8 +144,8 @@ class Main extends AbstractApplication {
     window.seedString = this.params.seedString;
     window.rng = seedrandom(this.params.seedString);
 
-    // this.random = new Alea(this.params.seedString);
-    // this.noise = new SimplexNoise(this.random);
+    this.random = new Alea(this.params.seedString);
+    this.noise = new SimplexNoise(this.random);
   }
 
   initFromURL() {
