@@ -8,7 +8,7 @@ uniform float res1;
 uniform float res2;
 uniform float resMix;
 uniform float mixScale;
-uniform float doesRidged;
+uniform int ridgesType;
 
 vec3 getSphericalCoord(int index, float x, float y, float width) {
     width /= 2.0;
@@ -117,14 +117,14 @@ void main() {
 
     float nMix;
 
-    if (doesRidged == 1.0) {
+    if (ridgesType == 1) {
         nMix = ridgedNoise(sphericalCoord, resMix, seed+13.0);
     } else {
         float n3 = cloudNoise(sphericalCoord, resMix, seed+52.0);
         nMix = cloudNoise(sphericalCoord + vec3(n3*1.8), resMix*0.7, seed+28.0);
     }
 
-    // float nMix = ridgedNoise(sphericalCoord, resMix, seed+13.0);
+    float nMix = ridgedNoise(sphericalCoord, nMix, seed+13.0);
     float n = mix(n1, n2, nMix);
 
     gl_FragColor = vec4(vec3(n), 1.0);

@@ -23,7 +23,7 @@ export default class NoiseEnvMap extends AbstractEnvMap {
           res2: {type: "f", value: 0},
           resMix: {type: "f", value: 0},
           mixScale: {type: "f", value: 0},
-          doesRidged: {type: "f", value: 0}
+          ridgesType: {type: "i", value: 0}
         },
         vertexShader: vertShader,
         fragmentShader: fragShader,
@@ -49,7 +49,7 @@ export default class NoiseEnvMap extends AbstractEnvMap {
       this.materials[i].uniforms.res2.value = props.res2;
       this.materials[i].uniforms.resMix.value = props.resMix;
       this.materials[i].uniforms.mixScale.value = props.mixScale;
-      this.materials[i].uniforms.doesRidged.value = props.doesRidged;
+      this.materials[i].uniforms.ridgesType.value = props.ridgesType;
       this.materials[i].needsUpdate = true;
     }
   }

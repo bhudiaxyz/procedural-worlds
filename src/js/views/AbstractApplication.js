@@ -11,7 +11,7 @@ export default class AbstractApplication {
     window.renderQueue = new RenderQueue();
 
     this._camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
-    this._camera.position.z = 2900;
+    this._camera.position.z = 2800;
     this._camera.lookAt(new THREE.Vector3(0, 0, 0));
     window.camera = this._camera;
 

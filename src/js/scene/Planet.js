@@ -163,7 +163,7 @@ export default class Planet extends THREE.Object3D {
       res2: this.randRange(resMin, resMax),
       resMix: this.randRange(resMin, resMax),
       mixScale: this.randRange(0.5, 1.0),
-      doesRidged: Math.floor(this.randRange(0, 4))
+      ridgesType: Math.floor(this.randRange(0, 4))
     });
 
     const resMod = this.randRange(3, 10);
@@ -177,7 +177,7 @@ export default class Planet extends THREE.Object3D {
       res2: this.randRange(resMin, resMax),
       resMix: this.randRange(resMin, resMax),
       mixScale: this.randRange(0.5, 1.0),
-      doesRidged: Math.floor(this.randRange(0, 4))
+      ridgesType: Math.floor(this.randRange(0, 4))
     });
 
     this.textureMap.render({

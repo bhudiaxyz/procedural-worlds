@@ -8,7 +8,7 @@ uniform float res1;
 uniform float res2;
 uniform float resMix;
 uniform float mixScale;
-uniform float doesRidged;
+uniform int ridgesType;
 const int octaves = 16;
 
 // #define M_PI 3.1415926535897932384626433832795;
@@ -131,19 +131,19 @@ void main() {
     float resMod = 1.0;// overall res magnification
     float resMod2 = mixScale;// minimum res mod
 
-    if (doesRidged == 0.0) {
+    if (ridgesType == 0) {
         sub1 = cloudNoise(sphericalCoord, res1*resMod, seed+11.437);
         sub2 = cloudNoise(sphericalCoord, res2*resMod, seed+93.483);
         sub3 = cloudNoise(sphericalCoord, resMix*resMod, seed+23.675);
         n = cloudNoise(sphericalCoord + vec3((sub1/sub3)*0.1), resMod2+sub2, seed+78.236);
     }
-    else if (doesRidged == 1.0) {
+    else if (ridgesType == 1) {
         sub1 = ridgedNoise(sphericalCoord, res1*resMod, seed+83.706);
         sub2 = ridgedNoise(sphericalCoord, res2*resMod, seed+29.358);
         sub3 = ridgedNoise(sphericalCoord, resMix*resMod, seed+53.041);
         n = ridgedNoise(sphericalCoord + vec3((sub1/sub3)*0.1), resMod2+sub2, seed+34.982);
     }
-    else if (doesRidged == 2.0) {
+    else if (ridgesType == 2) {
         sub1 = invRidgedNoise(sphericalCoord, res1*resMod, seed+49.684);
         sub2 = invRidgedNoise(sphericalCoord, res2*resMod, seed+136.276);
         sub3 = invRidgedNoise(sphericalCoord, resMix*resMod, seed+3.587);
