@@ -10,7 +10,7 @@ export default class Clouds extends THREE.Object3D {
     this.materials = [];
     this.cloudMaps = [];
     this.resolution = 1024;
-    this.size = 1005;
+    this.radius = 1005;
 
     this.params = {
       rotationSpeed: 0.0009,
@@ -40,7 +40,7 @@ export default class Clouds extends THREE.Object3D {
     }
 
     let geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
-    let radius = this.size;
+    let radius = this.radius;
     for (var i in geo.vertices) {
       var vertex = geo.vertices[i];
       vertex.normalize().multiplyScalar(radius);

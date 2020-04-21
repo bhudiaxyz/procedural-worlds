@@ -9,7 +9,7 @@ export default class Stars extends THREE.Object3D {
     this.materials = [];
     this.starMaps = [];
     this.resolution = 1024;
-    this.size = 50000;
+    this.radius = 50000;
 
     this.params = {
       rotate: true,
@@ -35,7 +35,7 @@ export default class Stars extends THREE.Object3D {
     }
 
     let geo = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
-    let radius = this.size;
+    let radius = this.radius;
     for (var i in geo.vertices) {
       var vertex = geo.vertices[i];
       vertex.normalize().multiplyScalar(radius);

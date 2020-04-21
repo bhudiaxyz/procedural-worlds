@@ -18,7 +18,7 @@ export default class Planet extends THREE.Object3D {
 
     this.materials = [];
     this.resolution = 1024;
-    this.size = 1000;
+    this.radius = 1000;
 
     this.heightMaps = [];
     this.moistureMaps = [];
@@ -72,7 +72,7 @@ export default class Planet extends THREE.Object3D {
     }
 
     const geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
-    const radius = this.size;
+    const radius = this.radius;
     for (var i in geo.vertices) {
       var vertex = geo.vertices[i];
       vertex.normalize().multiplyScalar(radius);

@@ -8,7 +8,8 @@ export default class Glow extends THREE.Object3D {
   constructor() {
     super();
 
-    this.size = 1030;
+    this.radius = 1030;
+
     this.params = {
       glow: 1.0,
       c: 0.41,
@@ -35,7 +36,7 @@ export default class Glow extends THREE.Object3D {
 
     this.geo = new THREE.IcosahedronBufferGeometry(1, 6);
     this.sphere = new THREE.Mesh(this.geo, this.mat);
-    this.sphere.scale.set(this.size, this.size, this.size);
+    this.sphere.scale.set(this.radius, this.radius, this.radius);
 
     this.add(this.sphere);
   }

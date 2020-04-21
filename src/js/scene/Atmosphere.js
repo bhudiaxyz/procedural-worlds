@@ -9,7 +9,7 @@ export default class Atmosphere extends THREE.Object3D {
     super();
 
     this.time = 0.0;
-    this.size = 1010;
+    this.radius = 1010;
 
     this.params = {
       speed: 0.1,
@@ -43,7 +43,7 @@ export default class Atmosphere extends THREE.Object3D {
     this.mat.blending = THREE.AdditiveBlending;
     this.geo = new THREE.IcosahedronBufferGeometry(1, 6);
     this.sphere = new THREE.Mesh(this.geo, this.mat);
-    this.sphere.scale.set(this.size, this.size, this.size);
+    this.sphere.scale.set(this.radius, this.radius, this.radius);
 
     this.add(this.sphere);
   }

@@ -8,7 +8,7 @@ export default class AtmosphereRing extends THREE.Object3D {
   constructor() {
     super();
 
-    this.size = 1030;
+    this.radius = 1030;
     this.clock = new THREE.Clock();
 
     this.params = {
@@ -17,7 +17,7 @@ export default class AtmosphereRing extends THREE.Object3D {
       ESun: 20.0,
       g: -0.950,
       innerRadius: 1000,
-      outerRadius: this.size,
+      outerRadius: this.radius,
       wavelength: [0.650, 0.570, 0.475],
       scaleDepth: 0.25,
       mieScaleDepth: 0.1,
@@ -59,7 +59,7 @@ export default class AtmosphereRing extends THREE.Object3D {
       side: THREE.BackSide
     });
 
-    this.geo = new THREE.IcosahedronGeometry(this.size, 6);
+    this.geo = new THREE.IcosahedronGeometry(this.radius, 6);
     this.sphere = new THREE.Mesh(this.geo, this.mat);
     // this.sphere.scale.set(this.size, this.size, this.size);
 
