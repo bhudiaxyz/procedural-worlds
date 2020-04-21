@@ -23,27 +23,6 @@ export default class Stars extends THREE.Object3D {
 
     this.createControls();
 
-    this.setup();
-  }
-
-  createControls() {
-    let starsFolder = window.gui.addFolder('Stars');
-
-    starsFolder.add(this.params, "rotate");
-    starsFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
-    starsFolder.add(this.params, "res1", 0.5, 2.0).step(0.001);
-    starsFolder.add(this.params, "res2", 0.5, 2.00).step(0.001);
-    starsFolder.add(this.params, "resMix", 0.5, 2.0).step(0.001);
-    starsFolder.add(this.params, "mixScale", 0.5, 2.0).step(0.001);
-  }
-
-  update() {
-    if (this.params.rotate) {
-      this.rotation.y += this.params.rotationSpeed;
-    }
-  }
-
-  setup() {
     this.starMap = new StarMap();
     this.starMaps = this.starMap.maps;
 
@@ -65,6 +44,23 @@ export default class Stars extends THREE.Object3D {
     this.sphere = new THREE.Mesh(geo, this.materials);
 
     this.add(this.sphere);
+  }
+
+  createControls() {
+    let starsFolder = window.gui.addFolder('Stars');
+
+    starsFolder.add(this.params, "rotate");
+    starsFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
+    starsFolder.add(this.params, "res1", 0.5, 2.0).step(0.001);
+    starsFolder.add(this.params, "res2", 0.5, 2.00).step(0.001);
+    starsFolder.add(this.params, "resMix", 0.5, 2.0).step(0.001);
+    starsFolder.add(this.params, "mixScale", 0.5, 2.0).step(0.001);
+  }
+
+  update() {
+    if (this.params.rotate) {
+      this.rotation.y += this.params.rotationSpeed;
+    }
   }
 
   render(props) {

@@ -27,7 +27,29 @@ export default class Nebula extends THREE.Object3D {
 
     this.createControls();
 
-    this.setup();
+    this.skyMap = new NebulaMap();
+    this.skyMaps = this.skyMap.maps;
+
+    this.materials = [];
+    for (let i = 0; i < 6; i++) {
+      this.materials.push(new THREE.MeshBasicMaterial({
+        color: new THREE.Color(0xFFFFFF),
+        side: THREE.BackSide,
+        transparent: true,
+        opacity: this.params.opacity
+      }));
+    }
+
+    let geo = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
+    let radius = this.size;
+    for (var i in geo.vertices) {
+      var vertex = geo.vertices[i];
+      vertex.normalize().multiplyScalar(radius);
+    }
+    this.computeGeometry(geo);
+    this.sphere = new THREE.Mesh(geo, this.materials);
+
+    this.add(this.sphere);
   }
 
   createControls() {
@@ -55,32 +77,6 @@ export default class Nebula extends THREE.Object3D {
     if (this.params.rotate) {
       this.rotation.y += this.params.rotationSpeed;
     }
-  }
-
-  setup() {
-    this.skyMap = new NebulaMap();
-    this.skyMaps = this.skyMap.maps;
-
-    this.materials = [];
-    for (let i = 0; i < 6; i++) {
-      this.materials.push(new THREE.MeshBasicMaterial({
-        color: new THREE.Color(0xFFFFFF),
-        side: THREE.BackSide,
-        transparent: true,
-        opacity: this.params.opacity
-      }));
-    }
-
-    let geo = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
-    let radius = this.size;
-    for (var i in geo.vertices) {
-      var vertex = geo.vertices[i];
-      vertex.normalize().multiplyScalar(radius);
-    }
-    this.computeGeometry(geo);
-    this.sphere = new THREE.Mesh(geo, this.materials);
-
-    this.add(this.sphere);
   }
 
   generateTexture() {

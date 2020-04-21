@@ -13,7 +13,7 @@ export default class Clouds extends THREE.Object3D {
     this.size = 1001;
 
     this.params = {
-      rotationSpeed: 0.0008,
+      rotationSpeed: 0.0009,
       roughness: 0.9,
       metalness: 0.5,
       normalScale: 5.0,
@@ -24,7 +24,31 @@ export default class Clouds extends THREE.Object3D {
 
     this.createControls();
 
-    this.setup();
+    this.cloudMap = new CloudMap();
+    this.cloudMaps = this.cloudMap.maps;
+
+    this.materials = [];
+    for (let i = 0; i < 6; i++) {
+      this.materials.push(new THREE.MeshStandardMaterial({
+        color: this.params.color,
+        transparent: true,
+        roughness: this.params.roughness,
+        metalness: this.params.metalness,
+        opacity: this.params.opacity,
+        bumpScale: this.params.bumpScale
+      }));
+    }
+
+    let geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
+    let radius = this.size;
+    for (var i in geo.vertices) {
+      var vertex = geo.vertices[i];
+      vertex.normalize().multiplyScalar(radius);
+    }
+    this.computeGeometry(geo);
+    this.sphere = new THREE.Mesh(geo, this.materials);
+
+    this.add(this.sphere);
   }
 
   createControls() {
@@ -61,34 +85,6 @@ export default class Clouds extends THREE.Object3D {
   update() {
     this.rotation.y += this.params.rotationSpeed;
     this.rotation.z += 0.0001;
-  }
-
-  setup() {
-    this.cloudMap = new CloudMap();
-    this.cloudMaps = this.cloudMap.maps;
-
-    this.materials = [];
-    for (let i = 0; i < 6; i++) {
-      this.materials.push(new THREE.MeshStandardMaterial({
-        color: this.params.color,
-        transparent: true,
-        roughness: this.params.roughness,
-        metalness: this.params.metalness,
-        opacity: this.params.opacity,
-        bumpScale: this.params.bumpScale
-      }));
-    }
-
-    let geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
-    let radius = this.size;
-    for (var i in geo.vertices) {
-      var vertex = geo.vertices[i];
-      vertex.normalize().multiplyScalar(radius);
-    }
-    this.computeGeometry(geo);
-    this.sphere = new THREE.Mesh(geo, this.materials);
-
-    this.add(this.sphere);
   }
 
   render(props) {
