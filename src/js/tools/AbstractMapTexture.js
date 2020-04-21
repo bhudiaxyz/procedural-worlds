@@ -1,12 +1,11 @@
 import * as THREE from 'three';
 
-export default class Map {
+const texResolution = 1024;
+
+export default class AbstractMapTexture {
 
   constructor() {
-    //
-  }
-
-  setup() {
+    this.mats = [];
     this.maps = [];
     this.textures = [];
     this.textureCameras = [];
@@ -14,14 +13,14 @@ export default class Map {
     this.planes = [];
     this.geos = [];
 
-    const tempRes = 1024;
+    this.setupMaterials();
     for (let i = 0; i < 6; i++) {
-      this.textures.push(new THREE.WebGLRenderTarget(tempRes, tempRes, {
+      this.textures.push(new THREE.WebGLRenderTarget(texResolution, texResolution, {
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         format: THREE.RGBAFormat
       }));
-      this.textureCameras.push(new THREE.OrthographicCamera(-tempRes / 2, tempRes / 2, tempRes / 2, -tempRes / 2, -100, 100));
+      this.textureCameras.push(new THREE.OrthographicCamera(-texResolution / 2, texResolution / 2, texResolution / 2, -texResolution / 2, -100, 100));
       this.textureCameras[i].position.z = 10;
 
       this.textureScenes.push(new THREE.Scene());
@@ -34,9 +33,20 @@ export default class Map {
     }
   }
 
-  render(props) {
-    let resolution = props.resolution;
+  setupMaterials() {
+    // Abstract
+  }
 
+  updateMaterial(props) {
+    // Abstract
+  }
+
+  render(props) {
+    // props.resolution
+
+    this.updateMaterial(props);
+
+    let resolution = props.resolution;
     for (let i = 0; i < 6; i++) {
       window.renderQueue.addAction(() => {
         this.textures[i].setSize(resolution, resolution);
@@ -53,5 +63,4 @@ export default class Map {
       });
     }
   }
-
 }

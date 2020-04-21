@@ -1,20 +1,18 @@
 import * as THREE from 'three';
-import Map from './Map';
+import AbstractMapTexture from './AbstractMapTexture';
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/stars.frag'
 
-export default class StarMap extends Map {
+export default class StarMap extends AbstractMapTexture {
 
   constructor() {
     super();
-    this.setup();
-    super.setup();
   }
 
-  setup() {
+  // Implement
+  setupMaterials() {
     this.mats = [];
-
     for (let i = 0; i < 6; i++) {
       this.mats.push(new THREE.ShaderMaterial({
         uniforms: {
@@ -35,6 +33,7 @@ export default class StarMap extends Map {
     }
   }
 
+  // Implement
   updateMaterial(props) {
     // props.seed
     // props.resolution
@@ -54,19 +53,4 @@ export default class StarMap extends Map {
       this.mats[i].needsUpdate = true;
     }
   }
-
-  render(props) {
-    // props.seed
-    // props.resolution
-    // props.res1
-    // props.res2
-    // props.resMix
-    // props.mixScale
-
-    this.updateMaterial(props);
-
-    super.render(props);
-  }
-
-
 }

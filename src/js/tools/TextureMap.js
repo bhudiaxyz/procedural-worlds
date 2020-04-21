@@ -1,20 +1,18 @@
 import * as THREE from 'three';
-import Map from './Map';
+import AbstractMapTexture from './AbstractMapTexture';
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/textureMap.frag'
 
-class TextureMap extends Map {
+export default class TextureMap extends AbstractMapTexture {
 
   constructor() {
     super();
-    this.setup();
-    super.setup();
   }
 
-  setup() {
+  // Implement
+  setupMaterials() {
     this.mats = [];
-
     for (let i = 0; i < 6; i++) {
       this.mats.push(new THREE.ShaderMaterial({
         uniforms: {
@@ -30,6 +28,7 @@ class TextureMap extends Map {
     }
   }
 
+  // Implement
   updateMaterial(props) {
     // props.resolution
     // props.heightMaps[]
@@ -37,25 +36,10 @@ class TextureMap extends Map {
     // props.biomeMap
 
     for (let i = 0; i < 6; i++) {
-
       this.mats[i].uniforms.heightMap.value = props.heightMaps[i];
       this.mats[i].uniforms.moistureMap.value = props.moistureMaps[i];
       this.mats[i].uniforms.biomeMap.value = props.biomeMap;
       this.mats[i].needsUpdate = true;
     }
   }
-
-  render(props) {
-    // props.resolution
-    // props.heightMaps[]
-    // props.moistureMaps[]
-    // props.biomeMap
-
-    this.updateMaterial(props);
-
-    super.render(props);
-  }
-
 }
-
-export default TextureMap;

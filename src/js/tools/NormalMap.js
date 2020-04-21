@@ -1,20 +1,18 @@
 import * as THREE from 'three';
-import Map from './Map';
+import AbstractMapTexture from './AbstractMapTexture';
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/normalMap.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/normalMap.frag'
 
-export default class NormalMap extends Map {
+export default class NormalMap extends AbstractMapTexture {
 
   constructor() {
     super();
-    this.setup();
-    super.setup();
   }
 
-  setup() {
+  // Implement
+  setupMaterials() {
     this.mats = [];
-
     for (let i = 0; i < 6; i++) {
       this.mats.push(new THREE.ShaderMaterial({
         uniforms: {
@@ -31,6 +29,7 @@ export default class NormalMap extends Map {
     }
   }
 
+  // Implement
   updateMaterial(props) {
     // props.resolution
     // props.heightMaps[]
@@ -45,17 +44,5 @@ export default class NormalMap extends Map {
       this.mats[i].needsUpdate = true;
     }
   }
-
-  render(props) {
-    // props.resolution
-    // props.heightMaps[]
-    // props.textureMaps[]
-    // props.waterLevel
-
-    this.updateMaterial(props);
-
-    super.render(props);
-  }
-
 }
 
