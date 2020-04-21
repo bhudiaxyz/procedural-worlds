@@ -23,7 +23,7 @@ export default class AtmosphereRing extends THREE.Object3D {
       mieScaleDepth: 0.1
     };
 
-    this.mat = new THREE.ShaderMaterial({
+    this.material = new THREE.ShaderMaterial({
       uniforms: {
         v3LightPosition: {type: "v3", value: new THREE.Vector3(-1, 1, 1)},
         v3InvWavelength: {type: "v3", value: new THREE.Vector3(1 / Math.pow(this.params.wavelength[0], 4), 1 / Math.pow(this.params.wavelength[1], 4), 1 / Math.pow(this.params.wavelength[2], 4))},
@@ -56,10 +56,9 @@ export default class AtmosphereRing extends THREE.Object3D {
       side: THREE.BackSide
     });
 
-    this.geo = new THREE.IcosahedronGeometry(this.radius, 6);
-    this.sphere = new THREE.Mesh(this.geo, this.mat);
+    this.geometry = new THREE.IcosahedronGeometry(this.radius, 6);
+    this.sphere = new THREE.Mesh(this.geometry, this.material);
     // this.sphere.scale.set(this.radius, this.radius, this.radius);
-
     this.add(this.sphere);
 
     this.createControls();
@@ -106,21 +105,21 @@ export default class AtmosphereRing extends THREE.Object3D {
   }
 
   updateMaterial() {
-    this.mat.uniforms.atmosphereColor.value.set(this.params.color.r, this.params.color.g, this.params.color.b, 1.0);
-    this.mat.uniforms.fKrESun.value = this.params.Kr * this.params.ESun;
-    this.mat.uniforms.fKmESun.value = this.params.Km * this.params.ESun;
-    this.mat.uniforms.fKr4PI.value = this.params.Kr * 4.0 * Math.PI;
-    this.mat.uniforms.fKm4PI.value = this.params.Km * 4.0 * Math.PI;
-    this.mat.uniforms.fScaleDepth.value = this.params.scaleDepth;
-    this.mat.uniforms.fScaleOverScaleDepth.value = 1 / (this.params.outerRadius - this.params.innerRadius) / this.params.scaleDepth;
-    this.mat.uniforms.g.value = this.params.g;
-    this.mat.uniforms.g2.value = this.params.g * this.params.g;
+    this.material.uniforms.atmosphereColor.value.set(this.params.color.r, this.params.color.g, this.params.color.b, 1.0);
+    this.material.uniforms.fKrESun.value = this.params.Kr * this.params.ESun;
+    this.material.uniforms.fKmESun.value = this.params.Km * this.params.ESun;
+    this.material.uniforms.fKr4PI.value = this.params.Kr * 4.0 * Math.PI;
+    this.material.uniforms.fKm4PI.value = this.params.Km * 4.0 * Math.PI;
+    this.material.uniforms.fScaleDepth.value = this.params.scaleDepth;
+    this.material.uniforms.fScaleOverScaleDepth.value = 1 / (this.params.outerRadius - this.params.innerRadius) / this.params.scaleDepth;
+    this.material.uniforms.g.value = this.params.g;
+    this.material.uniforms.g2.value = this.params.g * this.params.g;
 
     let cameraHeight = window.camera.position.length();
-    this.mat.uniforms.fCameraHeight.value = cameraHeight;
-    this.mat.uniforms.fCameraHeight2.value = cameraHeight * cameraHeight;
-    this.mat.uniforms.v3InvWavelength.value = new THREE.Vector3(1 / Math.pow(this.params.color.r, 4), 1 / Math.pow(this.params.color.g, 4), 1 / Math.pow(this.params.color.b, 4));
-    this.mat.uniforms.level.value = window.camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
+    this.material.uniforms.fCameraHeight.value = cameraHeight;
+    this.material.uniforms.fCameraHeight2.value = cameraHeight * cameraHeight;
+    this.material.uniforms.v3InvWavelength.value = new THREE.Vector3(1 / Math.pow(this.params.color.r, 4), 1 / Math.pow(this.params.color.g, 4), 1 / Math.pow(this.params.color.b, 4));
+    this.material.uniforms.level.value = window.camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
   }
 
   randRange(low, high) {

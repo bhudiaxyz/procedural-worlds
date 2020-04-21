@@ -17,7 +17,7 @@ export default class Glow extends THREE.Object3D {
       p: 1.7
     };
 
-    this.mat = new THREE.ShaderMaterial({
+    this.material = new THREE.ShaderMaterial({
       uniforms: {
         c: {type: "f", value: this.params.c},
         p: {type: "f", value: this.params.p},
@@ -28,14 +28,13 @@ export default class Glow extends THREE.Object3D {
       fragmentShader: fragShader
     });
 
-    this.mat.transparent = true;
-    this.mat.blending = THREE.AdditiveBlending;
-    this.mat.side = THREE.BackSide;
+    this.material.transparent = true;
+    this.material.blending = THREE.AdditiveBlending;
+    this.material.side = THREE.BackSide;
 
-    this.geo = new THREE.IcosahedronBufferGeometry(this.radius, 6);
-    this.sphere = new THREE.Mesh(this.geo, this.mat);
+    this.geometry = new THREE.IcosahedronBufferGeometry(this.radius, 6);
+    this.sphere = new THREE.Mesh(this.geometry, this.material);
     // this.sphere.scale.set(this.radius, this.radius, this.radius);
-
     this.add(this.sphere);
 
     this.createControls();
@@ -65,13 +64,13 @@ export default class Glow extends THREE.Object3D {
   }
 
   update() {
-    this.mat.uniforms.viewVector.value.subVectors(window.camera.position, this.sphere.position);
+    this.material.uniforms.viewVector.value.subVectors(window.camera.position, this.sphere.position);
   }
 
   updateMaterial() {
-    this.mat.uniforms.c.value = this.params.c;
-    this.mat.uniforms.p.value = this.params.p;
-    this.mat.uniforms.glowColor.value = this.params.color;
+    this.material.uniforms.c.value = this.params.c;
+    this.material.uniforms.p.value = this.params.p;
+    this.material.uniforms.glowColor.value = this.params.color;
   }
 
   randRange(low, high) {

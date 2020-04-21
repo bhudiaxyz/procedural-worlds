@@ -3,8 +3,8 @@
 import 'three'
 import AbstractVRApplication from 'src/js/views/AbstractVRApplication'
 import WEBVR from 'three/examples/js/vr/WebVR'
-import shaderVert from 'src/js/shaders/custom.vert'
-import shaderFrag from 'src/js/shaders/custom.frag'
+import vertShader from 'src/js/shaders/custom.vert'
+import fragShader from 'src/js/shaders/custom.frag'
 
 //import noiseMaterial from 'js/materials/noise'
 

@@ -22,7 +22,7 @@ export default class Atmosphere extends THREE.Object3D {
       atmo5: 0.1
     };
 
-    this.mat = new THREE.ShaderMaterial({
+    this.material = new THREE.ShaderMaterial({
       uniforms: {
         "time": {type: "f", value: this.time},
         "atmo1": {type: "f", value: this.params.atmo1},
@@ -39,10 +39,9 @@ export default class Atmosphere extends THREE.Object3D {
       blending: THREE.AdditiveBlending
     });
 
-    this.geo = new THREE.IcosahedronBufferGeometry(this.radius, 6);
-    this.sphere = new THREE.Mesh(this.geo, this.mat);
+    this.geometry = new THREE.IcosahedronBufferGeometry(this.radius, 6);
+    this.sphere = new THREE.Mesh(this.geometry, this.material);
     // this.sphere.scale.set(this.radius, this.radius, this.radius);
-
     this.add(this.sphere);
 
     this.createControls();
@@ -85,14 +84,14 @@ export default class Atmosphere extends THREE.Object3D {
   }
 
   updateMaterial() {
-    this.mat.uniforms.time.value = this.time;
-    this.mat.uniforms.atmo1.value = this.params.atmo1;
-    this.mat.uniforms.atmo2.value = this.params.atmo2;
-    this.mat.uniforms.atmo3.value = this.params.atmo3;
-    this.mat.uniforms.atmo4.value = this.params.atmo4;
-    this.mat.uniforms.atmo5.value = this.params.atmo5;
-    this.mat.uniforms.alpha.value = this.params.opacity;
-    this.mat.uniforms.color.value = this.params.color;
+    this.material.uniforms.time.value = this.time;
+    this.material.uniforms.atmo1.value = this.params.atmo1;
+    this.material.uniforms.atmo2.value = this.params.atmo2;
+    this.material.uniforms.atmo3.value = this.params.atmo3;
+    this.material.uniforms.atmo4.value = this.params.atmo4;
+    this.material.uniforms.atmo5.value = this.params.atmo5;
+    this.material.uniforms.alpha.value = this.params.opacity;
+    this.material.uniforms.color.value = this.params.color;
   }
 
   randomizeColor() {

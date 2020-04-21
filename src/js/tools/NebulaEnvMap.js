@@ -12,9 +12,9 @@ export default class NebulaEnvMap extends AbstractEnvMap {
 
   // Implement
   setupMaterials() {
-    this.mats = [];
+    this.materials = [];
     for (let i = 0; i < 6; i++) {
-      this.mats.push(new THREE.ShaderMaterial({
+      this.materials.push(new THREE.ShaderMaterial({
         uniforms: {
           index: {type: "i", value: i},
           seed: {type: "f", value: 0},
@@ -43,14 +43,14 @@ export default class NebulaEnvMap extends AbstractEnvMap {
     // props.mixScale
 
     for (let i = 0; i < 6; i++) {
-      this.mats[i].uniforms.seed.value = props.seed;
-      this.mats[i].uniforms.resolution.value = props.resolution;
-      this.mats[i].uniforms.res1.value = props.res1;
-      this.mats[i].uniforms.res2.value = props.res2;
-      this.mats[i].uniforms.resMix.value = props.resMix;
-      this.mats[i].uniforms.mixScale.value = props.mixScale;
-      this.mats[i].uniforms.nebulaeMap.value = props.nebulaeMap;
-      this.mats[i].needsUpdate = true;
+      this.materials[i].uniforms.seed.value = props.seed;
+      this.materials[i].uniforms.resolution.value = props.resolution;
+      this.materials[i].uniforms.res1.value = props.res1;
+      this.materials[i].uniforms.res2.value = props.res2;
+      this.materials[i].uniforms.resMix.value = props.resMix;
+      this.materials[i].uniforms.mixScale.value = props.mixScale;
+      this.materials[i].uniforms.nebulaeMap.value = props.nebulaeMap;
+      this.materials[i].needsUpdate = true;
     }
   }
 }

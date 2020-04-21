@@ -72,13 +72,12 @@ export default class Planet extends THREE.Object3D {
       }));
     }
 
-    const geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
-    const radius = this.radius;
-    for (var i in geo.vertices) {
-      geo.vertices[i].normalize().multiplyScalar(radius);
+    this.geometry = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
+    for (var i in this.geometry.vertices) {
+      this.geometry.vertices[i].normalize().multiplyScalar(this.radius);
     }
-    this.computeGeometry(geo);
-    this.ground = new THREE.Mesh(geo, this.materials);
+    this.computeGeometry(this.geometry);
+    this.ground = new THREE.Mesh(this.geometry, this.materials);
     this.add(this.ground);
   }
 

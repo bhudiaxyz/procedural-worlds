@@ -29,7 +29,6 @@ export default class SimpleNebula extends THREE.Object3D {
     this.generateTexture();
 
     this.materials = [];
-
     for (let i = 0; i < 6; i++) {
       this.materials.push(new THREE.MeshBasicMaterial({
         map: this.nebulaeGradient.texture,

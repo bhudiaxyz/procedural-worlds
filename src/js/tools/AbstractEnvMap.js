@@ -5,15 +5,16 @@ const texResolution = 1024;
 export default class AbstractEnvMap {
 
   constructor() {
-    this.mats = [];
+    this.materials = [];
     this.maps = [];
     this.textures = [];
     this.textureCameras = [];
     this.textureScenes = [];
     this.planes = [];
-    this.geos = [];
+    this.geometries = [];
 
     this.setupMaterials();
+
     for (let i = 0; i < 6; i++) {
       this.textures.push(new THREE.WebGLRenderTarget(texResolution, texResolution, {
         minFilter: THREE.LinearFilter,
@@ -24,8 +25,8 @@ export default class AbstractEnvMap {
       this.textureCameras[i].position.z = 10;
 
       this.textureScenes.push(new THREE.Scene());
-      this.geos.push(new THREE.PlaneGeometry(1, 1));
-      this.planes.push(new THREE.Mesh(this.geos[i], this.mats[i]));
+      this.geometries.push(new THREE.PlaneGeometry(1, 1));
+      this.planes.push(new THREE.Mesh(this.geometries[i], this.materials[i]));
       this.planes[i].position.z = -10;
       this.textureScenes[i].add(this.planes[i]);
       // window.renderer.render(textureScene, textureCamera, texture, true);
@@ -34,11 +35,11 @@ export default class AbstractEnvMap {
   }
 
   setupMaterials() {
-    // Abstract - initialise this.mats
+    // Abstract - initialise this.materials
   }
 
   updateMaterials(props) {
-    // Abstract - update this.mats settings
+    // Abstract - update this.materials settings
   }
 
   render(props) {
@@ -56,10 +57,10 @@ export default class AbstractEnvMap {
         this.textureCameras[i].top = resolution / 2;
         this.textureCameras[i].bottom = -resolution / 2;
         this.textureCameras[i].updateProjectionMatrix();
-        this.geos[i] = new THREE.PlaneGeometry(resolution, resolution);
-        this.planes[i].geometry = this.geos[i];
+        this.geometries[i] = new THREE.PlaneGeometry(resolution, resolution);
+        this.planes[i].geometry = this.geometries[i];
         window.renderer.render(this.textureScenes[i], this.textureCameras[i], this.textures[i], true);
-        this.geos[i].dispose();
+        this.geometries[i].dispose();
       });
     }
   }

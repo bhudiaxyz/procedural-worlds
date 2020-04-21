@@ -30,13 +30,12 @@ export default class Stars extends THREE.Object3D {
       }));
     }
 
-    let geo = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
-    for (var i in geo.vertices) {
-      geo.vertices[i].normalize().multiplyScalar(this.radius);
+    this.geometry = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
+    for (var i in this.geometry.vertices) {
+      this.geometry.vertices[i].normalize().multiplyScalar(this.radius);
     }
-    this.computeGeometry(geo);
-    this.sphere = new THREE.Mesh(geo, this.materials);
-
+    this.computeGeometry(this.geometry);
+    this.sphere = new THREE.Mesh(this.geometry, this.materials);
     this.add(this.sphere);
 
     this.createControls();
