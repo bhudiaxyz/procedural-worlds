@@ -11,8 +11,8 @@ export default class Glow extends THREE.Object3D {
     this.size = 1030;
     this.params = {
       glow: 1.0,
-      c: 0.33,
-      p: 1.27,
+      c: 0.41,
+      p: 1.7,
       color: new THREE.Color(0x55ffff)
     };
 

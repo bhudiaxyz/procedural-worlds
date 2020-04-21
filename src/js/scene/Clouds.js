@@ -10,7 +10,7 @@ export default class Clouds extends THREE.Object3D {
     this.materials = [];
     this.cloudMaps = [];
     this.resolution = 1024;
-    this.size = 1001;
+    this.size = 1005;
 
     this.params = {
       rotationSpeed: 0.0009,

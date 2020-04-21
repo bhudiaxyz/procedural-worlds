@@ -9,7 +9,7 @@ export default class Atmosphere extends THREE.Object3D {
     super();
 
     this.time = 0.0;
-    this.size = 1002;
+    this.size = 1010;
 
     this.params = {
       speed: 0.1,
@@ -19,7 +19,7 @@ export default class Atmosphere extends THREE.Object3D {
       atmo4: 0.5,
       atmo5: 0.1,
       color: new THREE.Color(0x00ffff),
-      opacity: 0.3
+      opacity: 0.31
     };
 
     this.createControls();
