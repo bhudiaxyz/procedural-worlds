@@ -140,7 +140,7 @@ export default class Planet extends THREE.Object3D {
     // No-op
   }
 
-  renderScene() {
+  render() {
     this.seed = this.randRange(0, 1) * 1000.0;
     this.params.waterLevel = this.randRange(0.1, 0.5);
 
@@ -171,7 +171,7 @@ export default class Planet extends THREE.Object3D {
     resMin *= resMod;
 
     this.moistureMap.render({
-      seed: this.seed + 392.253,
+      seed: this.seed * this.seed,
       resolution: this.resolution,
       res1: this.randRange(resMin, resMax),
       res2: this.randRange(resMin, resMax),

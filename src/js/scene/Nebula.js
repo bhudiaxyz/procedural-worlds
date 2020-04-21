@@ -78,6 +78,7 @@ export default class Nebula extends THREE.Object3D {
   }
 
   render(props = {}) {
+    this.generateTexture();
     this.seed = this.randRange(0, 1000);
 
     this.skyMap.render({

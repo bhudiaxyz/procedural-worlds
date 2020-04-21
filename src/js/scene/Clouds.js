@@ -11,6 +11,7 @@ export default class Clouds extends THREE.Object3D {
     this.radius = 1005;
 
     this.params = {
+      rotate: true,
       rotationSpeed: 0.0009,
       color: new THREE.Color(0xffffff),
       opacity: 1.0,
@@ -49,6 +50,7 @@ export default class Clouds extends THREE.Object3D {
   createControls() {
     let cloudsFolder = window.gui.addFolder('Clouds');
 
+    cloudsFolder.add(this.params, "rotate");
     cloudsFolder.add(this.params, 'rotationSpeed', -0.02, 0.02);
 
     cloudsFolder.add(this.params, "normalScale", 0.0, 10.0).step(0.01).onChange(value => {
@@ -74,15 +76,16 @@ export default class Clouds extends THREE.Object3D {
   }
 
   update() {
-    this.rotation.y += this.params.rotationSpeed;
-    this.rotation.z += 0.0001;
+    if (this.params.rotate) {
+      this.rotation.y += this.params.rotationSpeed;
+      this.rotation.z += 0.0001;
+    }
   }
 
   render(props) {
     this.seed = this.randRange(0, 1000);
-    let cloudSize = this.randRange(0.5, 1.0);
-
-    let mixScale = this.map_range(props.waterLevel * props.waterLevel, 0, 0.8, 0.0, 3.0);
+    // let cloudSize = this.randRange(0.5, 1.0);
+    // let mixScale = this.map_range(props.waterLevel * props.waterLevel, 0, 0.8, 0.0, 5.0);
 
     this.cloudMap.render({
       seed: this.seed,
@@ -91,6 +94,7 @@ export default class Clouds extends THREE.Object3D {
       res2: this.randRange(0.1, 1.0),
       resMix: this.randRange(0.1, 1.0),
       mixScale: this.randRange(0.1, 1.0)
+      // mixScale: mixScale
     });
 
     this.updateMaterial();

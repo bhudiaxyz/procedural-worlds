@@ -199,23 +199,6 @@ class Main extends AbstractApplication {
     this.renderScene();
   }
 
-  update() {
-    this.nebula.update();
-    this.stars.update();
-    this.sun.update();
-    this.planet.update();
-
-    if (this.params.autoGenerate) {
-      this.autoGenCountCurrent++;
-      if (this.autoGenCountCurrent > this.autoGenCountMax) {
-        this.randomize();
-      }
-    }
-
-    this.stars.position.copy(window.camera.position);
-    this.nebula.position.copy(window.camera.position);
-  }
-
   renderScene() {
     this.initSeed();
     this.updateWorldName();
@@ -225,11 +208,10 @@ class Main extends AbstractApplication {
 
     window.renderQueue.start();
 
-    this.nebula.generateTexture();
     this.nebula.render();
     this.stars.render({nebulaMap: this.nebula.nebulaTexture.texture});
     this.sun.render();
-    this.planet.renderScene();
+    this.planet.render();
   }
 
   setupControlsUI() {
@@ -273,6 +255,22 @@ class Main extends AbstractApplication {
     }
   }
 
+  update() {
+    this.nebula.update();
+    this.stars.update();
+    this.sun.update();
+    this.planet.update();
+
+    if (this.params.autoGenerate) {
+      this.autoGenCountCurrent++;
+      if (this.autoGenCountCurrent > this.autoGenCountMax) {
+        this.randomize();
+      }
+    }
+
+    this.stars.position.copy(window.camera.position);
+    this.nebula.position.copy(window.camera.position);
+  }
 
   animate() {
     super.animate();
