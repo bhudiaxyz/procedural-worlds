@@ -35,10 +35,8 @@ export default class Stars extends THREE.Object3D {
     }
 
     let geo = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
-    let radius = this.radius;
     for (var i in geo.vertices) {
-      var vertex = geo.vertices[i];
-      vertex.normalize().multiplyScalar(radius);
+      geo.vertices[i].normalize().multiplyScalar(this.radius);
     }
     this.computeGeometry(geo);
     this.sphere = new THREE.Mesh(geo, this.materials);

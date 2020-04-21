@@ -25,8 +25,6 @@ export default class Atmosphere extends THREE.Object3D {
     this.createControls();
 
     this.mat = new THREE.ShaderMaterial({
-      vertexShader: shaderVert,
-      fragmentShader: shaderFrag,
       uniforms: {
         "time": {type: "f", value: this.time},
         "atmo1": {type: "f", value: this.params.atmo1},
@@ -36,14 +34,16 @@ export default class Atmosphere extends THREE.Object3D {
         "atmo5": {type: "f", value: this.params.atmo5},
         "alpha": {type: "f", value: this.params.opacity},
         "color": {type: "c", value: this.params.color}
-      }
+      },
+      vertexShader: shaderVert,
+      fragmentShader: shaderFrag,
+      transparent: true,
+      blending: THREE.AdditiveBlending
     });
 
-    this.mat.transparent = true;
-    this.mat.blending = THREE.AdditiveBlending;
-    this.geo = new THREE.IcosahedronBufferGeometry(1, 6);
+    this.geo = new THREE.IcosahedronBufferGeometry(this.radius, 6);
     this.sphere = new THREE.Mesh(this.geo, this.mat);
-    this.sphere.scale.set(this.radius, this.radius, this.radius);
+    // this.sphere.scale.set(this.radius, this.radius, this.radius);
 
     this.add(this.sphere);
   }
@@ -81,7 +81,7 @@ export default class Atmosphere extends THREE.Object3D {
   }
 
   update() {
-    this.time += this.speed;
+    this.time += this.params.speed;
   }
 
   updateMaterial() {

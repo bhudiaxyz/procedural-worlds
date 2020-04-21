@@ -74,8 +74,7 @@ export default class Planet extends THREE.Object3D {
     const geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
     const radius = this.radius;
     for (var i in geo.vertices) {
-      var vertex = geo.vertices[i];
-      vertex.normalize().multiplyScalar(radius);
+      geo.vertices[i].normalize().multiplyScalar(radius);
     }
     this.computeGeometry(geo);
     this.ground = new THREE.Mesh(geo, this.materials);
