@@ -86,9 +86,9 @@ export default class Glow extends THREE.Object3D {
 
   randomizeColor() {
     this.params.color.setRGB(
-      window.rng(),
-      window.rng(),
-      window.rng()
+      this.randRange(0.2, 0.8),
+      this.randRange(0.2, 0.8),
+      this.randRange(0.2, 0.8)
     );
     this.params.glowColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
 
