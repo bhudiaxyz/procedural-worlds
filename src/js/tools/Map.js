@@ -16,17 +16,17 @@ export default class Map {
 
     const tempRes = 1024;
     for (let i = 0; i < 6; i++) {
-      this.textures[i] = new THREE.WebGLRenderTarget(tempRes, tempRes, {
+      this.textures.push(new THREE.WebGLRenderTarget(tempRes, tempRes, {
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         format: THREE.RGBAFormat
-      });
-      this.textureCameras[i] = new THREE.OrthographicCamera(-tempRes / 2, tempRes / 2, tempRes / 2, -tempRes / 2, -100, 100);
+      }));
+      this.textureCameras.push(new THREE.OrthographicCamera(-tempRes / 2, tempRes / 2, tempRes / 2, -tempRes / 2, -100, 100));
       this.textureCameras[i].position.z = 10;
 
-      this.textureScenes[i] = new THREE.Scene();
-      this.geos[i] = new THREE.PlaneGeometry(1, 1);
-      this.planes[i] = new THREE.Mesh(this.geos[i], this.mats[i]);
+      this.textureScenes.push(new THREE.Scene());
+      this.geos.push(new THREE.PlaneGeometry(1, 1));
+      this.planes.push(new THREE.Mesh(this.geos[i], this.mats[i]));
       this.planes[i].position.z = -10;
       this.textureScenes[i].add(this.planes[i]);
       // window.renderer.render(textureScene, textureCamera, texture, true);

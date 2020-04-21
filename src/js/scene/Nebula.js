@@ -61,14 +61,14 @@ export default class Nebula extends THREE.Object3D {
     this.skyMap = new NebulaMap();
     this.skyMaps = this.skyMap.maps;
 
+    this.materials = [];
     for (let i = 0; i < 6; i++) {
-      let material = new THREE.MeshBasicMaterial({
+      this.materials.push(new THREE.MeshBasicMaterial({
         color: new THREE.Color(0xFFFFFF),
         side: THREE.BackSide,
         transparent: true,
         opacity: this.params.opacity
-      });
-      this.materials[i] = material;
+      }));
     }
 
     let geo = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);

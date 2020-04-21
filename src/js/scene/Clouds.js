@@ -67,16 +67,16 @@ export default class Clouds extends THREE.Object3D {
     this.cloudMap = new CloudMap();
     this.cloudMaps = this.cloudMap.maps;
 
+    this.materials = [];
     for (let i = 0; i < 6; i++) {
-      let material = new THREE.MeshStandardMaterial({
+      this.materials.push(new THREE.MeshStandardMaterial({
         color: this.params.color,
         transparent: true,
         roughness: this.params.roughness,
         metalness: this.params.metalness,
         opacity: this.params.opacity,
         bumpScale: this.params.bumpScale
-      });
-      this.materials[i] = material;
+      }));
     }
 
     let geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);

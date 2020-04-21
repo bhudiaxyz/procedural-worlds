@@ -16,7 +16,7 @@ class TextureMap extends Map {
     this.mats = [];
 
     for (let i = 0; i < 6; i++) {
-      this.mats[i] = new THREE.ShaderMaterial({
+      this.mats.push(new THREE.ShaderMaterial({
         uniforms: {
           biomeMap: {type: "t", value: new THREE.Texture()},
           heightMap: {type: "t", value: new THREE.Texture()},
@@ -26,7 +26,7 @@ class TextureMap extends Map {
         fragmentShader: fragShader,
         transparent: true,
         depthWrite: false
-      });
+      }));
     }
   }
 

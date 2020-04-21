@@ -64,11 +64,11 @@ export default class Planet extends THREE.Object3D {
     this.roughnessMap = new RoughnessMap();
     this.roughnessMaps = this.roughnessMap.maps;
 
+    this.materials = [];
     for (let i = 0; i < 6; i++) {
-      let material = new THREE.MeshStandardMaterial({
+      this.materials.push(new THREE.MeshStandardMaterial({
         color: new THREE.Color(0xFFFFFF)
-      });
-      this.materials[i] = material;
+      }));
     }
 
     const geo = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);

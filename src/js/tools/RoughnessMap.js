@@ -16,7 +16,7 @@ export default class RoughnessMap extends Map {
     this.mats = [];
 
     for (let i = 0; i < 6; i++) {
-      this.mats[i] = new THREE.ShaderMaterial({
+      this.mats.push(new THREE.ShaderMaterial({
         uniforms: {
           resolution: {type: "f", value: 0},
           waterLevel: {type: "f", value: 0},
@@ -26,7 +26,7 @@ export default class RoughnessMap extends Map {
         fragmentShader: fragShader,
         transparent: true,
         depthWrite: false
-      });
+      }));
     }
   }
 
