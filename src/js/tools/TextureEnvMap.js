@@ -13,7 +13,7 @@ export default class TextureEnvMap extends AbstractEnvMap {
   // Implement
   setupMaterials() {
     this.materials = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.ShaderMaterial({
         uniforms: {
           biomeMap: {type: "t", value: new THREE.Texture()},
@@ -35,7 +35,7 @@ export default class TextureEnvMap extends AbstractEnvMap {
     // props.moistureMaps[]
     // props.biomeMap
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials[i].uniforms.heightMap.value = props.heightMaps[i];
       this.materials[i].uniforms.moistureMap.value = props.moistureMaps[i];
       this.materials[i].uniforms.biomeMap.value = props.biomeMap;

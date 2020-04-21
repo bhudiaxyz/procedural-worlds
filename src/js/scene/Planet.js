@@ -66,7 +66,7 @@ export default class Planet extends THREE.Object3D {
     this.roughnessMaps = this.roughnessMap.maps;
 
     this.materials = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.MeshStandardMaterial({
         color: new THREE.Color(0xFFFFFF)
       }));
@@ -104,7 +104,7 @@ export default class Planet extends THREE.Object3D {
     planetFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
 
     const planetFields = ["roughness", "metalness"];
-    for (let i = 0; i < planetFields.length; i++) {
+    for (let i = 0; i < planetFields.length; ++i) {
       planetFolder.add(this.params, planetFields[i], 0.0, 1.0).onChange(value => {
         this.updateMaterial();
       });
@@ -210,7 +210,7 @@ export default class Planet extends THREE.Object3D {
   }
 
   updateMaterial() {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       let material = this.materials[i];
       material.roughness = this.params.roughness;
       material.metalness = this.params.metalness;

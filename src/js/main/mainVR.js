@@ -43,7 +43,7 @@ class Main extends AbstractVRApplication {
 
     const geometry = new THREE.BoxGeometry(0.15, 0.15, 0.15);
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 200; ++i) {
 
       const object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff}));
 
@@ -153,7 +153,7 @@ class Main extends AbstractVRApplication {
 
     // Keep cubes inside room
 
-    for (let i = 0; i < this.room.children.length; i++) {
+    for (let i = 0; i < this.room.children.length; ++i) {
 
       const cube = this.room.children[i];
 

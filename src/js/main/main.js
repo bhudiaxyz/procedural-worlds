@@ -186,7 +186,7 @@ class Main extends AbstractApplication {
     }
 
     this.params.seedString = "";
-    for (let i = 0; i < wordCount; i++) {
+    for (let i = 0; i < wordCount; ++i) {
       this.params.seedString += this.capitalizeFirstLetter(randomLorem({min: 2, max: 8}));
       if (i < wordCount - 1) {
         this.params.seedString += " ";

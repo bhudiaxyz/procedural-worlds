@@ -76,7 +76,7 @@ export default class AtmosphereRing extends THREE.Object3D {
     });
 
     const atmosRingFields = ["Kr", "Km", "scaleDepth", "mieScaleDepth"];
-    for (let i = 0; i < atmosRingFields.length; i++) {
+    for (let i = 0; i < atmosRingFields.length; ++i) {
       atmosRingFolder.add(this.params, atmosRingFields[i], 0.0, 1.0).step(0.001).onChange(value => {
         this.updateMaterial();
       });

@@ -29,7 +29,7 @@ class Main extends AbstractApplication {
 
     this.material = new THREE.MeshPhongMaterial({color: 0x3a9ceb});
     let c;
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 500; ++i) {
       c = this.addCube();
       this.cubes.push(c);
       this._scene.add(c);
@@ -89,7 +89,7 @@ class Main extends AbstractApplication {
 
     super.animate();
 
-    for (let i = 0; i < this.cubes.length; i++) {
+    for (let i = 0; i < this.cubes.length; ++i) {
       this.cubes[i].rotation.y += 0.01 + ((i - this.cubes.length) * 0.00001);
       this.cubes[i].rotation.x += 0.01 + ((i - this.cubes.length) * 0.00001);
     }

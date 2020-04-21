@@ -59,7 +59,7 @@ export default class Sun extends THREE.Object3D {
     this.lensFlare.add(this.sunTexture.texture, sunSize * 2, 0.1, THREE.AdditiveBlending, sunColor, 0.2);
 
     const numSuns = this.randRange(1, 3);
-    for (let i = 0; i < numSuns; i++) {
+    for (let i = 0; i < numSuns; ++i) {
       let size = this.randRange(100, 600);
       let offset = this.randRange(-0.1, 0.2);
       let color = this.randomColor();
@@ -68,7 +68,7 @@ export default class Sun extends THREE.Object3D {
     }
 
     const numFlares = this.randRange(1, 5);
-    for (let i = 0; i < numFlares; i++) {
+    for (let i = 0; i < numFlares; ++i) {
       let size = this.randRange(200, 500);
       let offset = this.randRange(-0.1, 0.2);
       let color = this.randomColor();
@@ -77,7 +77,7 @@ export default class Sun extends THREE.Object3D {
     }
 
     const numLargeFlares = this.randRange(5, 15);
-    for (let i = 0; i < numLargeFlares; i++) {
+    for (let i = 0; i < numLargeFlares; ++i) {
       let size = this.randRange(5, 200);
       // size = Math.pow(size, 2) * 200;
       let offset = this.randRange(0.05, 0.4);
@@ -87,7 +87,7 @@ export default class Sun extends THREE.Object3D {
     }
 
     const numSmallFlares = this.randRange(5, 25);
-    for (let i = 0; i < numSmallFlares; i++) {
+    for (let i = 0; i < numSmallFlares; ++i) {
       let size = this.randRange(5, 200);
       // size = Math.pow(size, 2) * 200;
       let offset = this.randRange(-0.05, -0.2);
@@ -97,7 +97,7 @@ export default class Sun extends THREE.Object3D {
     }
 
     const numRings = this.randRange(10, 30);
-    for (let i = 0; i < numRings; i++) {
+    for (let i = 0; i < numRings; ++i) {
       let size = this.randRange(200, 400);
       // size = Math.pow(size, 2) * 200;
       let offset = this.randRange(-0.1, 0.3);

@@ -13,7 +13,7 @@ export default class StarEnvMap extends AbstractEnvMap {
   // Implement
   setupMaterials() {
     this.materials = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.ShaderMaterial({
         uniforms: {
           index: {type: "i", value: i},
@@ -42,7 +42,7 @@ export default class StarEnvMap extends AbstractEnvMap {
     // props.resMix
     // props.mixScale
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials[i].uniforms.seed.value = props.seed;
       this.materials[i].uniforms.resolution.value = props.resolution;
       this.materials[i].uniforms.res1.value = props.res1;

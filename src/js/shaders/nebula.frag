@@ -58,7 +58,7 @@ float baseNoise(vec3 pos, float frq, float seed) {
 
     float n = 0.0;
     float gain = 1.0;
-    for (int i=0; i<octaves; i++) {
+    for (int i=0; i<octaves; ++i) {
         n +=  simplex(vec3(pos.x*gain/frq, pos.y*gain/frq, pos.z*gain/frq), seed+float(i)*10.0) * amp/gain;
         gain *= 2.0;
     }
@@ -86,7 +86,7 @@ float ridgedNoise(vec3 pos, float frq, float seed) {
 
     float n = 0.0;
     float gain = 1.0;
-    for (int i=0; i<octaves; i++) {
+    for (int i=0; i<octaves; ++i) {
         n +=  simplexRidged(vec3(pos.x*gain/frq, 2.0*pos.y*gain/frq, pos.z*gain/frq), seed+float(i)*10.0) * amp/gain;
         gain *= 2.0;
     }
@@ -103,7 +103,7 @@ float invRidgedNoise(vec3 pos, float frq, float seed) {
     float amp = 0.5;
     float n = 0.0;
     float gain = 1.0;
-    for (int i=0; i<octaves; i++) {
+    for (int i=0; i<octaves; ++i) {
         n +=  simplexRidged(vec3(pos.x*gain/frq, pos.y*gain/frq, pos.z*gain/frq), seed+float(i)*10.0) * amp/gain;
         gain *= 2.0;
     }
@@ -132,7 +132,7 @@ float cloudNoise(vec3 pos, float frq, float seed) {
     float amp = 0.5;
     float n = 0.0;
     float gain = 1.0;
-    for (int i=0; i<octaves; i++) {
+    for (int i=0; i<octaves; ++i) {
         n +=  cloud(vec3(pos.x*gain/frq, 1.0*pos.y*gain/frq, pos.z*gain/frq), seed+float(i)*10.0) * amp/gain;
         gain *= 2.0;
     }

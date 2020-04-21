@@ -33,7 +33,7 @@ export default class Biome extends AbstractCanvasTexture {
 
   drawCircles() {
     let numCircles = Math.round(this.randRange(50, 150));
-    for (let i = 0; i < numCircles; i++) {
+    for (let i = 0; i < numCircles; ++i) {
       this.randomGradientCircle();
     }
   }
@@ -42,7 +42,7 @@ export default class Biome extends AbstractCanvasTexture {
     this.fillBaseColor();
 
     let baseDetail = Math.round(this.randRange(5, 10));
-    for (let i = 0; i < baseDetail; i++) {
+    for (let i = 0; i < baseDetail; ++i) {
       let x = 0;
       let y = 0;
       let width = this.width;
@@ -53,7 +53,7 @@ export default class Biome extends AbstractCanvasTexture {
 
   drawDetail() {
     let landDetail = Math.round(this.randRange(5, 20));
-    for (let i = 0; i < landDetail; i++) {
+    for (let i = 0; i < landDetail; ++i) {
       let x1 = this.randRange(0, this.width);
       let y1 = this.randRange(0, this.height);
       let x2 = this.randRange(0, this.width);
@@ -76,7 +76,7 @@ export default class Biome extends AbstractCanvasTexture {
     let prevY = y;
 
     let riverDetail = Math.round(this.randRange(5, 10));
-    for (let i = 0; i < riverDetail; i++) {
+    for (let i = 0; i < riverDetail; ++i) {
       x = this.randRange(0, this.width);
       y = this.randRange(0, this.height);
 

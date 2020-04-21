@@ -15,7 +15,7 @@ export default class AbstractEnvMap {
 
     this.setupMaterials();
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.textures.push(new THREE.WebGLRenderTarget(texResolution, texResolution, {
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
@@ -48,7 +48,7 @@ export default class AbstractEnvMap {
     this.updateMaterials(props);
 
     let resolution = props.resolution;
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       window.renderQueue.addAction(() => {
         this.textures[i].setSize(resolution, resolution);
         this.textures[i].needsUpdate = true;

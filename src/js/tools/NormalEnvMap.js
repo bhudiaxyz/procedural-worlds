@@ -13,7 +13,7 @@ export default class NormalEnvMap extends AbstractEnvMap {
   // Implement
   setupMaterials() {
     this.materials = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.ShaderMaterial({
         uniforms: {
           resolution: {type: "f", value: 0},
@@ -36,7 +36,7 @@ export default class NormalEnvMap extends AbstractEnvMap {
     // props.textureMaps[]
     // props.waterLevel
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials[i].uniforms.resolution.value = props.resolution;
       this.materials[i].uniforms.waterLevel.value = props.waterLevel;
       this.materials[i].uniforms.heightMap.value = props.heightMaps[i];

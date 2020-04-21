@@ -63,7 +63,7 @@ export default class Atmosphere extends THREE.Object3D {
     });
 
     const atmosFields = ["atmo1", "atmo2", "atmo3", "atmo4", "atmo4"];
-    for (let i = 0; i < atmosFields.length; i++) {
+    for (let i = 0; i < atmosFields.length; ++i) {
       atmosFolder.add(this.params, atmosFields[i], 0.0, 3.0).step(0.01).onChange(value => {
         this.updateMaterial();
       });

@@ -23,7 +23,7 @@ export default class Stars extends THREE.Object3D {
     this.starMaps = this.starMap.maps;
 
     this.materials = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.MeshBasicMaterial({
         color: new THREE.Color(0xFFFFFF),
         side: THREE.BackSide,
@@ -48,7 +48,7 @@ export default class Stars extends THREE.Object3D {
     starsFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
 
     const starFields = ["res1", "res2", "resMix", "mixScale"];
-    for (let i = 0; i < starFields.length; i++) {
+    for (let i = 0; i < starFields.length; ++i) {
       starsFolder.add(this.params, starFields[i], 0.5, 2.0).step(0.001);
     }
   }
@@ -76,7 +76,7 @@ export default class Stars extends THREE.Object3D {
   }
 
   updateMaterial() {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       let material = this.materials[i];
       material.map = this.starMaps[i];
     }

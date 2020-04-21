@@ -60,7 +60,7 @@ export default class RenderQueue {
   }
 
   executeCallbacks() {
-    for (let i = 0; i < this.callbacks.length; i++) {
+    for (let i = 0; i < this.callbacks.length; ++i) {
       this.callbacks[i]();
     }
 

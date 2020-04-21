@@ -24,7 +24,7 @@ export default class Clouds extends THREE.Object3D {
     this.cloudMaps = this.cloudMap.maps;
 
     this.materials = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.MeshStandardMaterial({
         color: this.params.color,
         transparent: true,
@@ -57,7 +57,7 @@ export default class Clouds extends THREE.Object3D {
 
 
     const cloudsFields = ["opacity", "roughness", "bumpScale"];
-    for (let i = 0; i < cloudsFields.length; i++) {
+    for (let i = 0; i < cloudsFields.length; ++i) {
       cloudsFolder.add(this.params, cloudsFields[i], 0.0, 1.0).step(0.001).onChange(value => {
         this.updateMaterial();
       });
@@ -101,7 +101,7 @@ export default class Clouds extends THREE.Object3D {
   }
 
   updateMaterial() {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       let material = this.materials[i];
       material.roughness = this.params.roughness;
       material.metalness = this.params.metalness;

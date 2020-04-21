@@ -36,7 +36,7 @@ export default class NebulaeGradient extends AbstractCanvasTexture {
 
   drawShapes() {
     let numCircles = Math.round(this.randRange(20, 70));
-    for (let i = 0; i < numCircles; i++) {
+    for (let i = 0; i < numCircles; ++i) {
       this.randomGradientCircle();
     }
   }

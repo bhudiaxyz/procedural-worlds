@@ -43,7 +43,7 @@ float baseNoise(vec3 pos, float frq, float seed) {
 
     float n = 0.0;
     float gain = 1.0;
-    for (int i=0; i<octaves; i++) {
+    for (int i=0; i<octaves; ++i) {
         n +=  simplex(vec3(pos.x*gain/frq, pos.y*gain/frq, pos.z*gain/frq), seed+float(i)*10.0) * amp/gain;
         gain *= 2.0;
     }
@@ -77,7 +77,7 @@ void main() {
     // float n;
     // float res = 200.0;
     // float mag = 0.7;
-    // for (int i=0; i<4; i++) {
+    // for (int i=0; i<4; ++i) {
     //   vec2 F = worley3D((sphericalCoord * res) + vec3(seed), 1.0, true);
     //   float F1 = F.x;
     //   float F2 = F.y;

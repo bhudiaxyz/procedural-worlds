@@ -93,7 +93,7 @@ export default class SunTexture extends AbstractCanvasTexture {
     numBeams *= 2;
     let size = this.randRange(0.05, 0.2);
     let angleStep = Math.PI * 2 / numBeams;
-    for (let i = 0; i < numBeams; i++) {
+    for (let i = 0; i < numBeams; ++i) {
       let a = angleStep * i;
 
       for (let j = 0; j < 5; j++) {
@@ -117,7 +117,7 @@ export default class SunTexture extends AbstractCanvasTexture {
     this.addColorToGradient(0.15, {h: h, s: s, l: l, a: 0.025}, gradient);
     this.addColorToGradient(dist, {h: h, s: s, l: l, a: 0.0}, gradient);
     let offset = this.randRange(0.1, Math.PI);
-    for (let i = 0; i < numBeams; i++) {
+    for (let i = 0; i < numBeams; ++i) {
       let a = angleStep * i + offset;
 
       for (let j = 0; j < 3; j++) {

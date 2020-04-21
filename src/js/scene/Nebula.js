@@ -26,7 +26,7 @@ export default class Nebula extends THREE.Object3D {
     this.skyMaps = this.skyMap.maps;
 
     this.materials = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.MeshBasicMaterial({
         color: new THREE.Color(0xFFFFFF),
         side: THREE.BackSide,
@@ -56,7 +56,7 @@ export default class Nebula extends THREE.Object3D {
     });
 
     const nebulaFields = ["res1", "res2", "resMix", "mixScale"];
-    for (let i = 0; i < nebulaFields.length; i++) {
+    for (let i = 0; i < nebulaFields.length; ++i) {
       nebulaFolder.add(this.params, nebulaFields[i], 1.0, 3.0).step(0.001);
     }
 
@@ -94,7 +94,7 @@ export default class Nebula extends THREE.Object3D {
   }
 
   updateMaterial() {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; ++i) {
       let material = this.materials[i];
       material.map = this.skyMaps[i];
       material.opacity = this.params.opacity;
