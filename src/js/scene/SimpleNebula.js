@@ -65,10 +65,10 @@ export default class SimpleNebula extends THREE.Object3D {
   }
 
   updateMaterial() {
-      for (let i = 0; i < 6; i++) {
-        this.materials[i].map = this.nebulaeGradient.texture;
-        this.materials[i].needsUpdate = true;
-      }
+    for (let i = 0; i < 6; i++) {
+      this.materials[i].map = this.nebulaeGradient.texture;
+      this.materials[i].needsUpdate = true;
+    }
   }
 
   render() {

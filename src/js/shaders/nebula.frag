@@ -118,7 +118,7 @@ float invRidgedNoise(vec3 pos, float frq, float seed) {
 float cloud(vec3 pos, float seed) {
     float n = noise(vec3(pos + seed));
     n = sin(n*4.0 * cos(n*2.0));
-//    n = sin(n*7.0);
+    //    n = sin(n*7.0);
 
     n = n*0.5 + 0.5;
     // n = 1.0-n;
