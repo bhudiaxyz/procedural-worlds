@@ -103,13 +103,12 @@ export default class Planet extends THREE.Object3D {
 
     planetFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
 
-    planetFolder.add(this.params, "roughness", 0.0, 1.0).onChange(value => {
-      this.updateMaterial();
-    });
-
-    planetFolder.add(this.params, "metalness", 0.0, 1.0).onChange(value => {
-      this.updateMaterial();
-    });
+    const planetFields = ["roughness", "metalness"];
+    for (let i = 0; i < planetFields.length; i++) {
+      planetFolder.add(this.params, planetFields[i], 0.0, 1.0).onChange(value => {
+        this.updateMaterial();
+      });
+    }
 
     planetFolder.add(this.params, "normalScale", -3.0, 6.0).onChange(value => {
       this.updateMaterial();

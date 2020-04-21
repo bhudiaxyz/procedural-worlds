@@ -51,21 +51,17 @@ export default class Clouds extends THREE.Object3D {
 
     cloudsFolder.add(this.params, 'rotationSpeed', -0.02, 0.02);
 
-    cloudsFolder.add(this.params, "roughness", 0.0, 1.0).step(0.001).onChange(value => {
-      this.updateMaterial();
-    });
-
     cloudsFolder.add(this.params, "normalScale", 0.0, 10.0).step(0.01).onChange(value => {
       this.updateMaterial();
     });
 
-    cloudsFolder.add(this.params, "opacity", 0.0, 1.0).step(0.001).onChange(value => {
-      this.updateMaterial();
-    });
 
-    cloudsFolder.add(this.params, "bumpScale", 0.0, 1.0).step(0.001).onChange(value => {
-      this.updateMaterial();
-    });
+    const cloudsFields = ["opacity", "roughness", "bumpScale"];
+    for (let i = 0; i < cloudsFields.length; i++) {
+      cloudsFolder.add(this.params, cloudsFields[i], 0.0, 1.0).step(0.001).onChange(value => {
+        this.updateMaterial();
+      });
+    }
 
     this.params.cloudColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
     cloudsFolder.addColor(this.params, "cloudColor").name('color').onChange(value => {

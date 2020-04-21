@@ -18,8 +18,8 @@ export default class Atmosphere extends THREE.Object3D {
       atmo1: 0.5,
       atmo2: 0.5,
       atmo3: 1.0,
-      atmo4: 0.5,
-      atmo5: 0.1
+      atmo4: 0.25,
+      atmo5: 0.01
     };
 
     this.material = new THREE.ShaderMaterial({
@@ -62,21 +62,12 @@ export default class Atmosphere extends THREE.Object3D {
       this.updateMaterial();
     });
 
-    atmosFolder.add(this.params, "atmo1", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-    atmosFolder.add(this.params, "atmo2", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-    atmosFolder.add(this.params, "atmo3", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-    atmosFolder.add(this.params, "atmo4", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-    atmosFolder.add(this.params, "atmo5", 0.0, 3.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
+    const atmosFields = ["atmo1", "atmo2", "atmo3", "atmo4", "atmo4"];
+    for (let i = 0; i < atmosFields.length; i++) {
+      atmosFolder.add(this.params, atmosFields[i], 0.0, 3.0).step(0.01).onChange(value => {
+        this.updateMaterial();
+      });
+    }
   }
 
   update() {

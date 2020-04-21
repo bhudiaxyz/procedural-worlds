@@ -55,10 +55,10 @@ export default class Nebula extends THREE.Object3D {
       this.updateMaterial();
     });
 
-    nebulaFolder.add(this.params, "res1", 1.0, 3.0).step(0.001);
-    nebulaFolder.add(this.params, "res2", 1.0, 3.0).step(0.001);
-    nebulaFolder.add(this.params, "resMix", 1.0, 3.0).step(0.001);
-    nebulaFolder.add(this.params, "mixScale", 1.0, 3.0).step(0.001);
+    const nebulaFields = ["res1", "res2", "resMix", "mixScale"];
+    for (let i = 0; i < nebulaFields.length; i++) {
+      nebulaFolder.add(this.params, nebulaFields[i], 1.0, 3.0).step(0.001);
+    }
 
     nebulaFolder.add(this.params, "showNebulaMap").onChange(value => {
       if (this.nebulaeGradient) {

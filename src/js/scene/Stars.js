@@ -46,10 +46,11 @@ export default class Stars extends THREE.Object3D {
 
     starsFolder.add(this.params, "rotate");
     starsFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
-    starsFolder.add(this.params, "res1", 0.5, 2.0).step(0.001);
-    starsFolder.add(this.params, "res2", 0.5, 2.00).step(0.001);
-    starsFolder.add(this.params, "resMix", 0.5, 2.0).step(0.001);
-    starsFolder.add(this.params, "mixScale", 0.5, 2.0).step(0.001);
+
+    const starFields = ["res1", "res2", "resMix", "mixScale"];
+    for (let i = 0; i < starFields.length; i++) {
+      starsFolder.add(this.params, starFields[i], 0.5, 2.0).step(0.001);
+    }
   }
 
   update() {
