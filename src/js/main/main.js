@@ -3,6 +3,8 @@ import MultiPassBloomPass from '@superguigui/wagner/src/passes/bloom/MultiPassBl
 import GodrayPass from '@superguigui/wagner/src/passes/godray/godraypass'
 import seedrandom from "seedrandom";
 import randomLorem from "random-lorem";
+// import * as Alea from 'alea';
+// import * as SimplexNoise from 'simplex-noise';
 
 import AbstractApplication from '../views/AbstractApplication'
 import Planet from '../scene/Planet'
@@ -17,11 +19,11 @@ class Main extends AbstractApplication {
     super(opts);
 
     this.params = {
-      seedString : "Scarlett",
-      resolution : 1024,
-      autoGenerate : false,
-      autoGenTime : 3 * 60,
-      bloom : false
+      seedString: "Mepmo Vimok",
+      resolution: 1024,
+      autoGenerate: false,
+      autoGenTime: 3 * 60,
+      bloom: false
     };
     this.autoGenCountCurrent = 0;
     this.autoGenCountMax = this.params.autoGenTime * 60;
@@ -136,6 +138,9 @@ class Main extends AbstractApplication {
   initSeed() {
     window.seedString = this.params.seedString;
     window.rng = seedrandom(this.params.seedString);
+
+    // this.random = new Alea(this.params.seedString);
+    // this.noise = new SimplexNoise(this.random);
   }
 
   initFromURL() {
@@ -190,11 +195,9 @@ class Main extends AbstractApplication {
   }
 
   update() {
-    if (this.planet.rotate) {
-      this.stars.rotation.y += 0.0004;
-      this.nebula.rotation.y += 0.0003;
-    }
-
+    this.nebula.update();
+    this.stars.update();
+    this.sun.update();
     this.planet.update();
 
     if (this.params.autoGenerate) {

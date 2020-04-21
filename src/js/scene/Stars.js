@@ -12,7 +12,8 @@ export default class Stars extends THREE.Object3D {
     this.size = 50000;
 
     this.params = {
-      speed: 0.1,
+      rotate: true,
+      rotationSpeed: 0.0003,
       res1: this.randRange(0.5, 2.0),
       res2: this.randRange(0.5, 2.0),
       resMix: this.randRange(0.5, 2.0),
@@ -28,6 +29,8 @@ export default class Stars extends THREE.Object3D {
   createControls() {
     let starsFolder = window.gui.addFolder('Stars');
 
+    starsFolder.add(this.params, "rotate");
+    starsFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
     starsFolder.add(this.params, "res1", 0.5, 2.0).step(0.001);
     starsFolder.add(this.params, "res2", 0.5, 2.00).step(0.001);
     starsFolder.add(this.params, "resMix", 0.5, 2.0).step(0.001);
@@ -35,7 +38,9 @@ export default class Stars extends THREE.Object3D {
   }
 
   update() {
-    // No-op
+    if (this.params.rotate) {
+      this.rotation.y += this.params.rotationSpeed;
+    }
   }
 
   setup() {

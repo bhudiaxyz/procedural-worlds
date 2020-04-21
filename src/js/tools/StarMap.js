@@ -35,7 +35,7 @@ export default class StarMap extends Map {
     }
   }
 
-  render(props) {
+  updateMaterial(props) {
     // props.seed
     // props.resolution
     // props.res1
@@ -53,6 +53,17 @@ export default class StarMap extends Map {
       this.mats[i].uniforms.nebulaeMap.value = props.nebulaeMap;
       this.mats[i].needsUpdate = true;
     }
+  }
+
+  render(props) {
+    // props.seed
+    // props.resolution
+    // props.res1
+    // props.res2
+    // props.resMix
+    // props.mixScale
+
+    this.updateMaterial(props);
 
     super.render(props);
   }

@@ -17,7 +17,8 @@ export default class Clouds extends THREE.Object3D {
       roughness: 0.9,
       metalness: 0.5,
       normalScale: 5.0,
-      opacity: 1,
+      opacity: 1.0,
+      bumpScale: 1.0,
       color: new THREE.Color(0xffffff),
     };
 
@@ -31,7 +32,19 @@ export default class Clouds extends THREE.Object3D {
 
     cloudsFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
 
+    cloudsFolder.add(this.params, "roughness", 0.0, 1.0).step(0.001).onChange(value => {
+      this.updateMaterial();
+    });
+
+    cloudsFolder.add(this.params, "normalScale", 0.0, 10.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
     cloudsFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
+    cloudsFolder.add(this.params, "bumpScale", 0.0, 1.0).step(0.01).onChange(value => {
       this.updateMaterial();
     });
 
@@ -43,13 +56,6 @@ export default class Clouds extends THREE.Object3D {
       this.updateMaterial();
     });
 
-    cloudsFolder.add(this.params, "roughness", 0.0, 1.0).step(0.001).onChange(value => {
-      this.updateMaterial();
-    });
-
-    cloudsFolder.add(this.params, "normalScale", 0.0, 10.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
   }
 
   update() {
@@ -65,6 +71,10 @@ export default class Clouds extends THREE.Object3D {
       let material = new THREE.MeshStandardMaterial({
         color: this.params.color,
         transparent: true,
+        roughness: this.params.roughness,
+        metalness: this.params.metalness,
+        opacity: this.params.opacity,
+        bumpScale: this.params.bumpScale
       });
       this.materials[i] = material;
     }
@@ -113,7 +123,7 @@ export default class Clouds extends THREE.Object3D {
       material.color = this.params.color;
       material.alphaMap = this.cloudMaps[i];
       material.bumpMap = this.cloudMaps[i];
-      material.bumpScale = 1.0;
+      material.bumpScale = this.params.bumpScale;
     }
   }
 

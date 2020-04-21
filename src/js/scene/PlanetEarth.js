@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 
-const imgGrass = require('../../assets/textures/terrain/grass1.jpg');
+const imgGrass = require('../../assets/textures/terrain/grass2.jpg');
 const imgMoon = require('../../assets/textures/planets/moon.png');
-const imgSand = require('../../assets/textures/terrain/sand1.jpg');
-const imgSnow = require('../../assets/textures/terrain/snow1.jpg');
+const imgSand = require('../../assets/textures/terrain/sand2.jpg');
+const imgSnow = require('../../assets/textures/terrain/snow2.jpg');
 const imgStone = require('../../assets/textures/terrain/stone2.jpg');
-const imgWater = require('../../assets/textures/terrain/water3.jpg');
+const imgWater = require('../../assets/textures/terrain/water.jpg');
 const imgWaterNormals = require('../../assets/textures/terrain/waternormals.jpg');
 
 import terrainFragShader from '!raw-loader!glslify-loader!../shaders/terrain.frag';
@@ -18,7 +18,6 @@ import waterFragShader from '!raw-loader!glslify-loader!../shaders/water.frag';
 export default class PlanetEarth extends THREE.Object3D {
   constructor(
     random,
-    params,
     radius = 25.0,
     detail = 6,
     widthSegments = 64,
@@ -27,9 +26,39 @@ export default class PlanetEarth extends THREE.Object3D {
     super();
 
     this.random = random;
-    this.params = params;
+
+    this.params = {
+      // General
+      rotate: true,
+      rotationSpeed: 0.0003,
+      // Earth
+      waterLevel: 0.0,
+      oceanVisible: true,
+      oceanSpeed: 0.0000275963,
+      earthSpeed: 0.00002,
+      earthRoughness: 0.04217,
+      earthLacunarity: 0.00125,
+      earthRotation: new THREE.Vector3(0.0, 0.003, 0.000),
+      // Clouds
+      cloudsVisible: true,
+      cloudSpeed: 0.00002140,
+      cloudRangeFactor: 0.29,
+      cloudSmoothness: 2.6,
+      cloudRotation: new THREE.Vector3(0.000053, -0.00138, 0.00003),
+      // Moon
+      moonVisible: true,
+      moonSpeed: 0.00015,
+      moonRoughness: 0.031,
+      moonLacunarity: 0.076,
+      // Lighting
+      lightPosition: new THREE.Vector3(window.light.position.x * radius, window.light.position.y * radius, window.light.position.z * radius),
+      lightColor: new THREE.Vector4(window.light.color.r, window.light.color.g, window.light.color.b, 1.0),
+      lightIntensity: window.light.intensity,
+    };
+
     this.setupPlanetEarth(radius, detail, widthSegments, heightSegments);
     this.setupEarthMoon(radius, detail);
+    this.createControls();
   }
 
   setupPlanetEarth(radius, detail, widthSegments, heightSegments) {
@@ -51,9 +80,9 @@ export default class PlanetEarth extends THREE.Object3D {
           texGrass: {type: "t", value: textureLoader.load(imgGrass)},
           texStone: {type: "t", value: textureLoader.load(imgStone)},
           texSnow: {type: "t", value: textureLoader.load(imgSnow)},
-          lightPosition: {type: 'v3', value: this.params.dirLightPosition},
-          lightColor: {type: 'v4', value: this.params.dirLightColorV4},
-          lightIntensity: {type: 'f', value: this.params.dirLightIntensity},
+          lightPosition: {type: "v3", value: this.params.lightPosition},
+          lightColor: {type: 'v4', value: this.params.lightColor},
+          lightIntensity: {type: 'f', value: this.params.lightIntensity},
           time: {type: "f", value: 0.0},
           radius: {type: "f", value: radius},
           roughness: {type: "f", value: this.params.earthRoughness},
@@ -77,9 +106,9 @@ export default class PlanetEarth extends THREE.Object3D {
       new THREE.ShaderMaterial({
         uniforms: {
           texWater: {type: "t", value: waterNormals},
-          lightPosition: {type: 'v3', value: this.params.dirLightPosition},
-          lightColor: {type: 'v4', value: this.params.dirLightColorV4},
-          lightIntensity: {type: 'f', value: this.params.dirLightIntensity},
+          lightPosition: {type: "v3", value: this.params.lightPosition},
+          lightColor: {type: 'v4', value: this.params.lightColor},
+          lightIntensity: {type: 'f', value: this.params.lightIntensity},
           time: {type: "f", value: 0.0},
           radius: {type: "f", value: ocean_radius},
           roughness: {type: "f", value: this.params.earthRoughness * 2.7},
@@ -100,9 +129,9 @@ export default class PlanetEarth extends THREE.Object3D {
       new THREE.SphereGeometry(atmosphere_radius, widthSegments, heightSegments),
       new THREE.ShaderMaterial({
         uniforms: {
-          lightPosition: {type: 'v3', value: this.params.dirLightPosition},
-          lightColor: {type: 'v4', value: this.params.dirLightColorV4},
-          lightIntensity: {type: 'f', value: this.params.dirLightIntensity},
+          lightPosition: {type: "v3", value: this.params.lightPosition},
+          lightColor: {type: 'v4', value: this.params.lightColor},
+          lightIntensity: {type: 'f', value: this.params.lightIntensity},
           time: {type: "f", value: 0.0},
           radius: {type: "f", value: atmosphere_radius},
           roughness: {type: "f", value: this.params.earthRoughness},
@@ -125,9 +154,9 @@ export default class PlanetEarth extends THREE.Object3D {
       new THREE.SphereGeometry(clouds_radius, widthSegments, heightSegments),
       new THREE.ShaderMaterial({
         uniforms: {
-          lightPosition: {type: 'v3', value: this.params.dirLightPosition},
-          lightColor: {type: 'v4', value: this.params.dirLightColorV4},
-          lightIntensity: {type: 'f', value: this.params.dirLightIntensity},
+          lightPosition: {type: "v3", value: this.params.lightPosition},
+          lightColor: {type: 'v4', value: this.params.lightColor},
+          lightIntensity: {type: 'f', value: this.params.lightIntensity},
           time: {type: "f", value: 0.0},
           radius: {type: "f", value: clouds_radius},
           resolution: {type: "f", value: image_resolution},
@@ -167,11 +196,9 @@ export default class PlanetEarth extends THREE.Object3D {
           texGrass: {type: "t", value: moonTexture},
           texStone: {type: "t", value: moonTexture},
           texSnow: {type: "t", value: moonTexture},
-
-          lightPosition: {type: 'v3', value: this.params.dirLightPosition},
-          lightColor: {type: 'v4', value: this.params.dirLightColorV4},
-          lightIntensity: {type: 'f', value: this.params.dirLightIntensity},
-
+          lightPosition: {type: "v3", value: this.params.lightPosition},
+          lightColor: {type: 'v4', value: this.params.lightColor},
+          lightIntensity: {type: 'f', value: this.params.lightIntensity},
           time: {type: "f", value: 0.0},
           radius: {type: "f", value: moon_radius},
           roughness: {type: "f", value: this.params.moonRoughness},
@@ -186,6 +213,37 @@ export default class PlanetEarth extends THREE.Object3D {
     this.moonMesh.rotation.y = -180.0; // so dark-side of moon is facing out from earth point of view
     this.add(this.moonMesh);
     this.earthPivotPoint.add(this.moonMesh); // Moon pivots around (and parented to) the earth.
+  }
+
+  createControls() {
+    let f = window.gui.addFolder('Planet');
+    f.add(this.params, 'rotate');
+    f.add(this.params, 'oceanVisible');
+    f.add(this.params, 'oceanSpeed', -0.001, 0.001);
+    f.add(this.params, 'earthSpeed', -0.001, 0.001);
+    f.add(this.params, 'earthRoughness', 0.0, 2.0);
+    f.add(this.params, 'earthLacunarity', 0.0, 2.0);
+    f.add(this.params.earthRotation, 'x').name('Earth Rotation X').min(-0.05).max(0.05);
+    f.add(this.params.earthRotation, 'y').name('Earth Rotation Y').min(-0.05).max(0.05);
+    f.add(this.params.earthRotation, 'z').name('Earth Rotation Z').min(-0.05).max(0.05);
+    f.close();
+
+    f = window.gui.addFolder("Clouds");
+    f.add(this.params, 'cloudsVisible');
+    f.add(this.params, 'cloudSpeed', 0.0, 0.001);
+    f.add(this.params, 'cloudRangeFactor', 0.0, 3.0);
+    f.add(this.params, 'cloudSmoothness', 0.0, 3.0);
+    f.add(this.params.cloudRotation, 'x').name('Cloud Rotation X').min(-0.05).max(0.05);
+    f.add(this.params.cloudRotation, 'y').name('Cloud Rotation Y').min(-0.05).max(0.05);
+    f.add(this.params.cloudRotation, 'z').name('Cloud Rotation Z').min(-0.05).max(0.05);
+    f.close();
+
+    f = window.gui.addFolder("Moon");
+    f.add(this.params, 'moonVisible');
+    f.add(this.params, 'moonSpeed', -0.05, 0.05);
+    f.add(this.params, 'moonRoughness', 0.0, 2.0);
+    f.add(this.params, 'moonLacunarity', 0.0, 2.0);
+    f.close();
   }
 
   randomize() {

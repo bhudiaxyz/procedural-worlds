@@ -31,7 +31,7 @@ export default class NormalMap extends Map {
     }
   }
 
-  render(props) {
+  updateMaterial(props) {
     // props.resolution
     // props.heightMaps[]
     // props.textureMaps[]
@@ -44,6 +44,15 @@ export default class NormalMap extends Map {
       this.mats[i].uniforms.textureMap.value = props.textureMaps[i];
       this.mats[i].needsUpdate = true;
     }
+  }
+
+  render(props) {
+    // props.resolution
+    // props.heightMaps[]
+    // props.textureMaps[]
+    // props.waterLevel
+
+    this.updateMaterial(props);
 
     super.render(props);
   }

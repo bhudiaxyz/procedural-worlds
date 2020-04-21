@@ -14,9 +14,13 @@ export default class Map {
     this.planes = [];
     this.geos = [];
 
+    const tempRes = 1024;
     for (let i = 0; i < 6; i++) {
-      let tempRes = 1000;
-      this.textures[i] = new THREE.WebGLRenderTarget(tempRes, tempRes, {minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBAFormat});
+      this.textures[i] = new THREE.WebGLRenderTarget(tempRes, tempRes, {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        format: THREE.RGBAFormat
+      });
       this.textureCameras[i] = new THREE.OrthographicCamera(-tempRes / 2, tempRes / 2, tempRes / 2, -tempRes / 2, -100, 100);
       this.textureCameras[i].position.z = 10;
 
@@ -34,7 +38,6 @@ export default class Map {
     let resolution = props.resolution;
 
     for (let i = 0; i < 6; i++) {
-
       window.renderQueue.addAction(() => {
         this.textures[i].setSize(resolution, resolution);
         this.textures[i].needsUpdate = true;
@@ -47,9 +50,7 @@ export default class Map {
         this.planes[i].geometry = this.geos[i];
         window.renderer.render(this.textureScenes[i], this.textureCameras[i], this.textures[i], true);
         this.geos[i].dispose();
-
       });
-
     }
   }
 

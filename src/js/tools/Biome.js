@@ -33,7 +33,7 @@ export default class Biome extends AbstractCanvasTexture {
 
   drawCircles() {
     let numCircles = Math.round(this.randRange(50, 150));
-    for (let i = 0; i <  numCircles; i++) {
+    for (let i = 0; i < numCircles; i++) {
       this.randomGradientCircle();
     }
   }

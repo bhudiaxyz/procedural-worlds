@@ -34,6 +34,10 @@ export default class Sun extends THREE.Object3D {
     });
   }
 
+  update() {
+    // No-op
+  }
+
   createLensFlare() {
     let h = this.randRange(0, 1);
     let s = 1.0;

@@ -14,7 +14,8 @@ export default class Nebula extends THREE.Object3D {
     this.size = 45000;
 
     this.params = {
-      speed: 0.1,
+      rotate: true,
+      rotationSpeed: 0.0002,
       res1: this.randRange(1.0, 3.0),
       res2: this.randRange(1.0, 3.0),
       resMix: this.randRange(1.0, 3.0),
@@ -32,6 +33,8 @@ export default class Nebula extends THREE.Object3D {
   createControls() {
     let nebulaFolder = window.gui.addFolder('Nebula');
 
+    nebulaFolder.add(this.params, "rotate");
+    nebulaFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
     nebulaFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
       this.updateMaterial();
     });
@@ -49,7 +52,9 @@ export default class Nebula extends THREE.Object3D {
   }
 
   update() {
-    // No-op
+    if (this.params.rotate) {
+      this.rotation.y += this.params.rotationSpeed;
+    }
   }
 
   setup() {

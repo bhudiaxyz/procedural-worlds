@@ -101,7 +101,6 @@ float ridgedNoise(vec3 pos, float frq, float seed) {
 
 float invRidgedNoise(vec3 pos, float frq, float seed) {
     float amp = 0.5;
-
     float n = 0.0;
     float gain = 1.0;
     for (int i=0; i<octaves; i++) {
@@ -113,14 +112,13 @@ float invRidgedNoise(vec3 pos, float frq, float seed) {
     n = pow(n, 2.0);
     n = 1.0 - n;
 
-
     return n;
 }
 
 float cloud(vec3 pos, float seed) {
     float n = noise(vec3(pos + seed));
-    // n = sin(n*4.0 * cos(n*2.0));
-    n = sin(n*7.0);
+    n = sin(n*4.0 * cos(n*2.0));
+//    n = sin(n*7.0);
 
     n = n*0.5 + 0.5;
     // n = 1.0-n;
@@ -132,7 +130,6 @@ float cloud(vec3 pos, float seed) {
 
 float cloudNoise(vec3 pos, float frq, float seed) {
     float amp = 0.5;
-
     float n = 0.0;
     float gain = 1.0;
     for (int i=0; i<octaves; i++) {
@@ -141,7 +138,6 @@ float cloudNoise(vec3 pos, float frq, float seed) {
     }
 
     // n = pow(n, 5.0);
-
     n = 1.0-n;
     n = pow(n, 1.0);
     n = 1.0-n;
@@ -153,7 +149,6 @@ float star(vec3 pos, float seed) {
     float n = noise(vec3(pos + seed));
 
     n = abs(n);
-
     // n = n*0.5 + 0.5;
     // n = pow(n, 2.0);
     // n = 1.0-n;
@@ -172,7 +167,6 @@ float starNoise(vec3 pos, float seed) {
     float n = rand(pos.xyz*100.0, seed);
 
     // n = pow(n, 2.0);
-
     // if (n < 0.99) {
     // 	n = 0.0;
     // }

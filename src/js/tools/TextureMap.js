@@ -30,13 +30,11 @@ class TextureMap extends Map {
     }
   }
 
-  render(props) {
+  updateMaterial(props) {
     // props.resolution
     // props.heightMaps[]
     // props.moistureMaps[]
     // props.biomeMap
-
-    let resolution = props.resolution;
 
     for (let i = 0; i < 6; i++) {
 
@@ -45,6 +43,15 @@ class TextureMap extends Map {
       this.mats[i].uniforms.biomeMap.value = props.biomeMap;
       this.mats[i].needsUpdate = true;
     }
+  }
+
+  render(props) {
+    // props.resolution
+    // props.heightMaps[]
+    // props.moistureMaps[]
+    // props.biomeMap
+
+    this.updateMaterial(props);
 
     super.render(props);
   }

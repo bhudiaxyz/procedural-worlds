@@ -35,15 +35,13 @@ export default class NoiseMap extends Map {
     }
   }
 
-  render(props) {
+  updateMaterial(props) {
     // props.seed
     // props.resolution
     // props.res1
     // props.res2
     // props.resMix
     // props.mixScale
-
-    let resolution = props.resolution;
 
     for (let i = 0; i < 6; i++) {
       this.mats[i].uniforms.seed.value = props.seed;
@@ -55,6 +53,17 @@ export default class NoiseMap extends Map {
       this.mats[i].uniforms.doesRidged.value = props.doesRidged;
       this.mats[i].needsUpdate = true;
     }
+  }
+
+  render(props) {
+    // props.seed
+    // props.resolution
+    // props.res1
+    // props.res2
+    // props.resMix
+    // props.mixScale
+
+    this.updateMaterial(props);
 
     super.render(props);
   }

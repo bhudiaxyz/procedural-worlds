@@ -34,7 +34,7 @@ export default class CloudMap extends Map {
     }
   }
 
-  render(props) {
+  updateMaterial(props) {
     // props.seed
     // props.resolution
     // props.res1
@@ -51,6 +51,17 @@ export default class CloudMap extends Map {
       this.mats[i].uniforms.mixScale.value = props.mixScale;
       this.mats[i].needsUpdate = true;
     }
+  }
+
+  render(props) {
+    // props.seed
+    // props.resolution
+    // props.res1
+    // props.res2
+    // props.resMix
+    // props.mixScale
+
+    this.updateMaterial(props);
 
     super.render(props);
   }

@@ -30,7 +30,7 @@ export default class RoughnessMap extends Map {
     }
   }
 
-  render(props) {
+  updateMaterial(props) {
     // props.resolution
     // props.heightMaps[]
     // props.waterLevel
@@ -41,6 +41,14 @@ export default class RoughnessMap extends Map {
       this.mats[i].uniforms.heightMap.value = props.heightMaps[i];
       this.mats[i].needsUpdate = true;
     }
+  }
+
+  render(props) {
+    // props.resolution
+    // props.heightMaps[]
+    // props.waterLevel
+
+    this.updateMaterial(props);
 
     super.render(props);
   }

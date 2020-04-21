@@ -27,12 +27,12 @@ export default class Planet extends THREE.Object3D {
     this.roughnessMaps = [];
 
     this.params = {
+      rotate: true,
+      rotationSpeed: 0.0005,
       waterLevel: 0.0,
       roughness: 0.8,
       metalness: 0.5,
       normalScale: 3.0,
-      rotate: true,
-      rotationSpeed: 0.0005,
       displayMap: "textureMap",
       showBiomeMap: false
     };
@@ -40,6 +40,10 @@ export default class Planet extends THREE.Object3D {
     this.createInnerPlanet();
     this.createControls();
     this.createOuterPlanet();
+  }
+
+  get rotate() {
+    return this.params.rotate;
   }
 
   createInnerPlanet() {
