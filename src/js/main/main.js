@@ -167,7 +167,7 @@ class Main extends AbstractApplication {
 
   regenerate() {
     this.autoGenCountCurrent = 0;
-    this.renderScene();
+    this.render();
   }
 
   capitalizeFirstLetter(string) {
@@ -196,10 +196,10 @@ class Main extends AbstractApplication {
     let url = this.updateQueryString("seed", this.params.seedString);
     window.history.pushState({seed: this.params.seedString}, this.params.seedString, url);
     this.autoGenCountCurrent = 0;
-    this.renderScene();
+    this.render();
   }
 
-  renderScene() {
+  render() {
     this.initSeed();
     this.updateWorldName();
 

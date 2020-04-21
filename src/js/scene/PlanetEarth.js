@@ -292,6 +292,6 @@ export default class PlanetEarth extends THREE.Object3D {
     // No-op
   }
 
-  renderScene() {
+  render() {
   }
 };
