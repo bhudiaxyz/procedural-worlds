@@ -7,22 +7,18 @@ export default class Clouds extends THREE.Object3D {
   constructor() {
     super();
 
-    this.materials = [];
-    this.cloudMaps = [];
     this.resolution = 1024;
     this.radius = 1005;
 
     this.params = {
       rotationSpeed: 0.0009,
+      color: new THREE.Color(0xffffff),
+      opacity: 1.0,
       roughness: 0.9,
       metalness: 0.5,
       normalScale: 5.0,
-      opacity: 1.0,
-      bumpScale: 1.0,
-      color: new THREE.Color(0xffffff),
+      bumpScale: 1.0
     };
-
-    this.createControls();
 
     this.cloudMap = new CloudEnvMap();
     this.cloudMaps = this.cloudMap.maps;
@@ -47,12 +43,14 @@ export default class Clouds extends THREE.Object3D {
     this.sphere = new THREE.Mesh(geo, this.materials);
 
     this.add(this.sphere);
+
+    this.createControls();
   }
 
   createControls() {
     let cloudsFolder = window.gui.addFolder('Clouds');
 
-    cloudsFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
+    cloudsFolder.add(this.params, 'rotationSpeed', -0.02, 0.02);
 
     cloudsFolder.add(this.params, "roughness", 0.0, 1.0).step(0.001).onChange(value => {
       this.updateMaterial();
@@ -62,11 +60,11 @@ export default class Clouds extends THREE.Object3D {
       this.updateMaterial();
     });
 
-    cloudsFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+    cloudsFolder.add(this.params, "opacity", 0.0, 1.0).step(0.001).onChange(value => {
       this.updateMaterial();
     });
 
-    cloudsFolder.add(this.params, "bumpScale", 0.0, 1.0).step(0.01).onChange(value => {
+    cloudsFolder.add(this.params, "bumpScale", 0.0, 1.0).step(0.001).onChange(value => {
       this.updateMaterial();
     });
 
@@ -113,11 +111,11 @@ export default class Clouds extends THREE.Object3D {
       material.roughness = this.params.roughness;
       material.metalness = this.params.metalness;
       material.opacity = this.params.opacity;
-      material.map = this.cloudMaps[i];
+      material.bumpScale = this.params.bumpScale;
       material.color = this.params.color;
+      material.map = this.cloudMaps[i];
       material.alphaMap = this.cloudMaps[i];
       material.bumpMap = this.cloudMaps[i];
-      material.bumpScale = this.params.bumpScale;
     }
   }
 

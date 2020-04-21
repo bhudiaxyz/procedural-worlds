@@ -6,8 +6,6 @@ export default class Stars extends THREE.Object3D {
   constructor() {
     super();
 
-    this.materials = [];
-    this.starMaps = [];
     this.resolution = 1024;
     this.radius = 50000;
 
@@ -20,8 +18,6 @@ export default class Stars extends THREE.Object3D {
       mixScale: this.randRange(0.5, 2.0),
       opacity: 1.0
     };
-
-    this.createControls();
 
     this.starMap = new StarEnvMap();
     this.starMaps = this.starMap.maps;
@@ -42,6 +38,8 @@ export default class Stars extends THREE.Object3D {
     this.sphere = new THREE.Mesh(geo, this.materials);
 
     this.add(this.sphere);
+
+    this.createControls();
   }
 
   createControls() {

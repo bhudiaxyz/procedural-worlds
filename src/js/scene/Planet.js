@@ -38,8 +38,9 @@ export default class Planet extends THREE.Object3D {
     };
 
     this.createInnerPlanet();
-    this.createControls();
     this.createOuterPlanet();
+
+    this.createControls();
   }
 
   get rotate() {

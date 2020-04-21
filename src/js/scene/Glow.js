@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-import shaderVert from '!raw-loader!glslify-loader!../shaders/glow.vert'
-import shaderFrag from '!raw-loader!glslify-loader!../shaders/glow.frag'
+import vertShader from '!raw-loader!glslify-loader!../shaders/glow.vert'
+import fragShader from '!raw-loader!glslify-loader!../shaders/glow.frag'
 
 export default class Glow extends THREE.Object3D {
 
@@ -11,23 +11,21 @@ export default class Glow extends THREE.Object3D {
     this.radius = 1030;
 
     this.params = {
+      color: new THREE.Color(0x55ffff),
       glow: 1.0,
       c: 0.41,
-      p: 1.7,
-      color: new THREE.Color(0x55ffff)
+      p: 1.7
     };
 
-    this.createControls();
-
     this.mat = new THREE.ShaderMaterial({
-      vertexShader: shaderVert,
-      fragmentShader: shaderFrag,
       uniforms: {
         c: {type: "f", value: this.params.c},
         p: {type: "f", value: this.params.p},
         glowColor: {type: "c", value: this.params.color},
         viewVector: {type: "v3", value: new THREE.Vector3(window.camera.position)}
-      }
+      },
+      vertexShader: vertShader,
+      fragmentShader: fragShader
     });
 
     this.mat.transparent = true;
@@ -39,6 +37,8 @@ export default class Glow extends THREE.Object3D {
     // this.sphere.scale.set(this.radius, this.radius, this.radius);
 
     this.add(this.sphere);
+
+    this.createControls();
   }
 
   createControls() {

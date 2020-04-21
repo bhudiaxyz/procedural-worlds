@@ -19,10 +19,10 @@ export default class Sun extends THREE.Object3D {
       color: new THREE.Color(0xffffff),
     };
 
-    this.createControls();
-
     this.sunTexture = new SunTexture();
     this.lensFlare = null;
+
+    this.createControls();
   }
 
   createControls() {

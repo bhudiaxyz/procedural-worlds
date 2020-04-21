@@ -7,9 +7,6 @@ export default class Nebula extends THREE.Object3D {
   constructor() {
     super();
 
-    this.materials = [];
-    this.skyMaps = [];
-
     this.resolution = 1024;
     this.radius = 45000;
 
@@ -23,10 +20,8 @@ export default class Nebula extends THREE.Object3D {
       opacity: 1.0,
       showNebulaMap: false
     };
+
     this.nebulaeGradient = new NebulaeGradient();
-
-    this.createControls();
-
     this.skyMap = new NebulaEnvMap();
     this.skyMaps = this.skyMap.maps;
 
@@ -48,6 +43,8 @@ export default class Nebula extends THREE.Object3D {
     this.sphere = new THREE.Mesh(geo, this.materials);
 
     this.add(this.sphere);
+
+    this.createControls();
   }
 
   createControls() {

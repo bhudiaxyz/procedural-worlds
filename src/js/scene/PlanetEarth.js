@@ -58,6 +58,7 @@ export default class PlanetEarth extends THREE.Object3D {
 
     this.setupPlanetEarth(radius, detail, widthSegments, heightSegments);
     this.setupEarthMoon(radius, detail);
+
     this.createControls();
   }
 

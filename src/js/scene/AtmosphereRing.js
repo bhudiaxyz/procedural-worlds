@@ -9,9 +9,9 @@ export default class AtmosphereRing extends THREE.Object3D {
     super();
 
     this.radius = 1030;
-    this.clock = new THREE.Clock();
 
     this.params = {
+      color: new THREE.Color(0.72, 0.27, 0.35),
       Kr: 0.0025,
       Km: 0.0010,
       ESun: 20.0,
@@ -20,11 +20,8 @@ export default class AtmosphereRing extends THREE.Object3D {
       outerRadius: this.radius,
       wavelength: [0.650, 0.570, 0.475],
       scaleDepth: 0.25,
-      mieScaleDepth: 0.1,
-      color: new THREE.Color(0.72, 0.27, 0.35)
+      mieScaleDepth: 0.1
     };
-
-    this.createControls();
 
     this.mat = new THREE.ShaderMaterial({
       uniforms: {
@@ -64,6 +61,8 @@ export default class AtmosphereRing extends THREE.Object3D {
     // this.sphere.scale.set(this.radius, this.radius, this.radius);
 
     this.add(this.sphere);
+
+    this.createControls();
   }
 
   createControls() {

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-import shaderVert from '!raw-loader!glslify-loader!../shaders/planet.vert'
-import shaderFrag from '!raw-loader!glslify-loader!../shaders/atmos.frag'
+import vertShader from '!raw-loader!glslify-loader!../shaders/planet.vert'
+import fragShader from '!raw-loader!glslify-loader!../shaders/atmos.frag'
 
 export default class Atmosphere extends THREE.Object3D {
 
@@ -13,16 +13,14 @@ export default class Atmosphere extends THREE.Object3D {
 
     this.params = {
       speed: 0.1,
+      color: new THREE.Color(0x00ffff),
+      opacity: 0.31,
       atmo1: 0.5,
       atmo2: 0.5,
       atmo3: 1.0,
       atmo4: 0.5,
-      atmo5: 0.1,
-      color: new THREE.Color(0x00ffff),
-      opacity: 0.31
+      atmo5: 0.1
     };
-
-    this.createControls();
 
     this.mat = new THREE.ShaderMaterial({
       uniforms: {
@@ -35,8 +33,8 @@ export default class Atmosphere extends THREE.Object3D {
         "alpha": {type: "f", value: this.params.opacity},
         "color": {type: "c", value: this.params.color}
       },
-      vertexShader: shaderVert,
-      fragmentShader: shaderFrag,
+      vertexShader: vertShader,
+      fragmentShader: fragShader,
       transparent: true,
       blending: THREE.AdditiveBlending
     });
@@ -46,6 +44,8 @@ export default class Atmosphere extends THREE.Object3D {
     // this.sphere.scale.set(this.radius, this.radius, this.radius);
 
     this.add(this.sphere);
+
+    this.createControls();
   }
 
   createControls() {
