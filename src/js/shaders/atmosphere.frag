@@ -3,6 +3,7 @@ precision highp float;
 uniform vec3 lightPosition;
 uniform vec4 lightColor;
 uniform float lightIntensity;
+uniform float seed;
 
 varying vec2 vUv;
 varying vec3 vNormal;

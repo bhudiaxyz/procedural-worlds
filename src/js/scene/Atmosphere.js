@@ -9,7 +9,7 @@ export default class Atmosphere extends THREE.Object3D {
     super();
 
     this.time = 0.0;
-    this.radius = 1010;
+    this.earthRadius = 1010;
 
     this.params = {
       speed: 0.1,

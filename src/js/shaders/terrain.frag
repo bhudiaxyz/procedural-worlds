@@ -10,6 +10,7 @@ uniform vec4 lightColor;
 uniform float lightIntensity;
 uniform float radius;
 uniform float roughness;
+uniform float seed;
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -20,13 +21,15 @@ varying vec3 vNewPosition;
 varying float displacement;
 varying vec3 lightDirection;
 
-float random(vec3 scale, float seed){ return fract(sin(dot(gl_FragCoord.xyz+seed, scale))*43758.5453+seed); }
+float random(vec3 p){
+    return fract(sin(dot(p.xyz, vec3(12.9898, 78.233, 1.23456))) * (5356.5453+ seed*1234.7582));
+}
 
 void main(void)
 {
     vec3 blending = abs(vNormal);
-    blending = (blending - 0.25) * 8.0;
-    blending = max(blending, 0.0);// Force weights to sum to 1.0
+    blending = (blending - 0.25) * 8.0 / random(vNormal);
+    blending = max(blending, 0.0); // Force weights to sum to 1.0
     float b = (blending.x + blending.y + blending.z);
     blending /= vec3(b, b, b);
 

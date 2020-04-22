@@ -6,6 +6,7 @@ uniform vec3 lightPosition;
 uniform vec4 lightColor;
 uniform float lightIntensity;
 uniform float time;
+uniform float seed;
 
 varying vec2 vUv;
 varying vec3 vPosition01;
@@ -13,6 +14,9 @@ varying vec3 vPosition;
 varying vec3 vNormal;
 varying vec3 lightDirection;
 
+float random(vec3 p) {
+    return fract(sin(dot(p.xyz, vec3(12.9898, 78.233, 1.23456))) * (5356.5453+ seed*1234.7582));
+}
 
 vec4 getNormal(vec2 uv, float speed) {
     float scaleFactor = 0.06;
@@ -37,10 +41,9 @@ vec4 getNormal(vec2 uv, float speed) {
     return normal;
 }
 
-void main(void)
-{
+void main(void) {
     vec3 blending = abs(vNormal);
-    blending = (blending - 0.2) * 7.14;
+    blending = (blending - 0.2) * 3.14 * random(vNormal);
     blending = max(blending, 0.0);// Force weights to sum to 1.0
     float b = (blending.x + blending.y + blending.z);
     blending /= vec3(b, b, b);

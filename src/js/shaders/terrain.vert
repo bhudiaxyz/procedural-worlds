@@ -10,6 +10,7 @@ uniform float radius;
 uniform float time;
 uniform float roughness;
 uniform float lacunarity;
+uniform float seed;
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -22,6 +23,10 @@ varying vec3 lightDirection;
 
 const float PI = 3.14159265358979323846264;
 const vec3 noiseVec3 = vec3(PI);
+
+float random(vec3 p){
+    return fract(sin(dot(p.xyz, vec3(12.9898, 78.233, 1.23456))) * (5356.5453+ seed*1234.7582));
+}
 
 float stripes(float x, float f) {
     float t = .5 + .5 * sin(f * 2.0 * PI * x);
@@ -36,7 +41,9 @@ void main() {
     vPosition = position;
     vNormal = normal;
 
-    displacement = (-turbulence(2.0 * normal) * radius * roughness) + (pnoise(lacunarity * position + noiseVec3, noiseVec3) * radius * roughness);
+    displacement = random(normal) * radius * roughness / 6.123;
+    displacement += -turbulence(2.0 * normal) * radius * roughness;
+    displacement += pnoise(lacunarity * position + noiseVec3, noiseVec3) * radius * roughness;
     lightDirection = normalize(lightPosition - position);
 
     vNewPosition = position + normal * vec3(displacement);

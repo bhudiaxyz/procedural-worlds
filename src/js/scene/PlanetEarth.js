@@ -26,6 +26,7 @@ export default class PlanetEarth extends THREE.Object3D {
     super();
 
     this.random = random;
+    this.earthRadius = radius;
 
     this.params = {
       // General
@@ -36,7 +37,7 @@ export default class PlanetEarth extends THREE.Object3D {
       oceanVisible: true,
       oceanSpeed: 0.0000275963,
       earthSpeed: 0.00002,
-      earthRoughness: 0.04217,
+      earthRoughness: 0.01137,
       earthLacunarity: 0.00125,
       earthRotation: new THREE.Vector3(0.0, 0.003, 0.000),
       // Clouds
@@ -51,7 +52,7 @@ export default class PlanetEarth extends THREE.Object3D {
       moonRoughness: 0.031,
       moonLacunarity: 0.076,
       // Lighting
-      lightPosition: new THREE.Vector3(window.light.position.x * radius, window.light.position.y * radius, window.light.position.z * radius),
+      lightPosition: new THREE.Vector3().copy(window.light.position).multiplyScalar(this.earthRadius),
       lightColor: new THREE.Vector4(window.light.color.r, window.light.color.g, window.light.color.b, 1.0),
       lightIntensity: window.light.intensity,
     };
@@ -63,10 +64,12 @@ export default class PlanetEarth extends THREE.Object3D {
   }
 
   setupPlanetEarth(radius, detail, widthSegments, heightSegments) {
-    const atmosphere_radius = radius * 1.085;
-    const clouds_radius = radius * 1.07;
-    const ocean_radius = radius * 1.0002;
+    this.atmosphereRadius = radius * 1.025;
+    this.cloudsRadius = radius * 1.035;
+    this.oceanRadius = radius * 0.9999;
+
     const image_resolution = 1024.0;
+
 
     const textureLoader = new THREE.TextureLoader();
     this.earthPivotPoint = new THREE.Object3D();
@@ -111,7 +114,7 @@ export default class PlanetEarth extends THREE.Object3D {
           lightColor: {type: 'v4', value: this.params.lightColor},
           lightIntensity: {type: 'f', value: this.params.lightIntensity},
           time: {type: "f", value: 0.0},
-          radius: {type: "f", value: ocean_radius},
+          radius: {type: "f", value: this.oceanRadius},
           roughness: {type: "f", value: this.params.earthRoughness * 2.7},
           lacunarity: {type: "f", value: this.params.earthLacunarity * 3.14},
           seed: {type: "f", value: this.random() * 7}
@@ -127,14 +130,14 @@ export default class PlanetEarth extends THREE.Object3D {
 
     // Earth Atmosphere Shader
     this.atmosphereMesh = new THREE.Mesh(
-      new THREE.SphereGeometry(atmosphere_radius, widthSegments, heightSegments),
+      new THREE.SphereGeometry(this.atmosphereRadius, widthSegments, heightSegments),
       new THREE.ShaderMaterial({
         uniforms: {
           lightPosition: {type: "v3", value: this.params.lightPosition},
           lightColor: {type: 'v4', value: this.params.lightColor},
           lightIntensity: {type: 'f', value: this.params.lightIntensity},
           time: {type: "f", value: 0.0},
-          radius: {type: "f", value: atmosphere_radius},
+          radius: {type: "f", value: this.atmosphereRadius},
           roughness: {type: "f", value: this.params.earthRoughness},
           lacunarity: {type: "f", value: this.params.earthLacunarity},
           seed: {type: "f", value: this.random() * 7}
@@ -152,14 +155,14 @@ export default class PlanetEarth extends THREE.Object3D {
 
     // Earth Clouds Shader
     this.cloudsMesh = new THREE.Mesh(
-      new THREE.SphereGeometry(clouds_radius, widthSegments, heightSegments),
+      new THREE.SphereGeometry(this.cloudsRadius, widthSegments, heightSegments),
       new THREE.ShaderMaterial({
         uniforms: {
           lightPosition: {type: "v3", value: this.params.lightPosition},
           lightColor: {type: 'v4', value: this.params.lightColor},
           lightIntensity: {type: 'f', value: this.params.lightIntensity},
           time: {type: "f", value: 0.0},
-          radius: {type: "f", value: clouds_radius},
+          radius: {type: "f", value: this.cloudsRadius},
           resolution: {type: "f", value: image_resolution},
           baseColor: {type: "v3", value: new THREE.Vector3(0.65, 0.65, 0.65)},
           rangeFactor: {type: "f", value: this.params.cloudRangeFactor},
@@ -181,15 +184,14 @@ export default class PlanetEarth extends THREE.Object3D {
   }
 
   setupEarthMoon(radius, detail) {
-    const moon_radius = radius * 0.27;
-    const moon_posx = radius * 5.36;
-
+    this.moonRadius = radius * 0.27;
+    const moonPositionX = radius * 5.36;
     const textureLoader = new THREE.TextureLoader();
 
     // Moon
     const moonTexture = textureLoader.load(imgMoon);
     this.moonMesh = new THREE.Mesh(
-      new THREE.IcosahedronBufferGeometry(moon_radius, detail),
+      new THREE.IcosahedronBufferGeometry(this.moonRadius, detail),
       new THREE.ShaderMaterial({
         uniforms: {
           texWater: {type: "t", value: moonTexture},
@@ -201,7 +203,7 @@ export default class PlanetEarth extends THREE.Object3D {
           lightColor: {type: 'v4', value: this.params.lightColor},
           lightIntensity: {type: 'f', value: this.params.lightIntensity},
           time: {type: "f", value: 0.0},
-          radius: {type: "f", value: moon_radius},
+          radius: {type: "f", value: this.moonRadius},
           roughness: {type: "f", value: this.params.moonRoughness},
           lacunarity: {type: "f", value: this.params.moonLacunarity},
           seed: {type: "f", value: this.random() * 7}
@@ -210,7 +212,7 @@ export default class PlanetEarth extends THREE.Object3D {
         fragmentShader: terrainFragShader
       })
     );
-    this.moonMesh.position.set(moon_posx, 0, 0); // relative to earth
+    this.moonMesh.position.set(moonPositionX, 0, 0); // relative to earth
     this.moonMesh.rotation.y = -180.0; // so dark-side of moon is facing out from earth point of view
     this.add(this.moonMesh);
     this.earthPivotPoint.add(this.moonMesh); // Moon pivots around (and parented to) the earth.
@@ -219,31 +221,49 @@ export default class PlanetEarth extends THREE.Object3D {
   createControls() {
     let f = window.gui.addFolder('Planet');
     f.add(this.params, 'rotate');
-    f.add(this.params, 'oceanVisible');
+    f.add(this.params, "oceanVisible").onChange(value => {
+      this.oceanMesh.visible = value;
+    });
     f.add(this.params, 'oceanSpeed', -0.001, 0.001);
     f.add(this.params, 'earthSpeed', -0.001, 0.001);
-    f.add(this.params, 'earthRoughness', 0.0, 2.0);
-    f.add(this.params, 'earthLacunarity', 0.0, 2.0);
-    f.add(this.params.earthRotation, 'x').name('Earth Rotation X').min(-0.05).max(0.05);
-    f.add(this.params.earthRotation, 'y').name('Earth Rotation Y').min(-0.05).max(0.05);
-    f.add(this.params.earthRotation, 'z').name('Earth Rotation Z').min(-0.05).max(0.05);
+    f.add(this.params, 'earthRoughness', 0.0, 1.0).onChange(value => {
+      this.updateMaterial();
+    });
+    f.add(this.params, 'earthLacunarity', -1.0, 1.0).onChange(value => {
+      this.updateMaterial();
+    });
+    f.add(this.params.earthRotation, 'x').name('Rotation X').min(-0.05).max(0.05);
+    f.add(this.params.earthRotation, 'y').name('Rotation Y').min(-0.05).max(0.05);
+    f.add(this.params.earthRotation, 'z').name('Rotation Z').min(-0.05).max(0.05);
     f.close();
 
     f = window.gui.addFolder("Clouds");
-    f.add(this.params, 'cloudsVisible');
+    f.add(this.params, 'cloudsVisible').onChange(value => {
+      this.cloudsMesh.visible = value;
+    });
     f.add(this.params, 'cloudSpeed', 0.0, 0.001);
-    f.add(this.params, 'cloudRangeFactor', 0.0, 3.0);
-    f.add(this.params, 'cloudSmoothness', 0.0, 3.0);
-    f.add(this.params.cloudRotation, 'x').name('Cloud Rotation X').min(-0.05).max(0.05);
-    f.add(this.params.cloudRotation, 'y').name('Cloud Rotation Y').min(-0.05).max(0.05);
-    f.add(this.params.cloudRotation, 'z').name('Cloud Rotation Z').min(-0.05).max(0.05);
+    f.add(this.params, 'cloudRangeFactor', 0.0, 3.0).onChange(value => {
+      this.updateMaterial();
+    });
+    f.add(this.params, 'cloudSmoothness', 0.0, 3.0).onChange(value => {
+      this.updateMaterial();
+    });
+    f.add(this.params.cloudRotation, 'x').name('Rotation X').min(-0.05).max(0.05);
+    f.add(this.params.cloudRotation, 'y').name('Rotation Y').min(-0.05).max(0.05);
+    f.add(this.params.cloudRotation, 'z').name('Rotation Z').min(-0.05).max(0.05);
     f.close();
 
     f = window.gui.addFolder("Moon");
-    f.add(this.params, 'moonVisible');
+    f.add(this.params, 'moonVisible').onChange(value => {
+      this.moonMesh.visible = value;
+    });
     f.add(this.params, 'moonSpeed', -0.05, 0.05);
-    f.add(this.params, 'moonRoughness', 0.0, 2.0);
-    f.add(this.params, 'moonLacunarity', 0.0, 2.0);
+    f.add(this.params, 'moonRoughness', 0.0, 2.0).onChange(value => {
+      this.updateMaterial();
+    });
+    f.add(this.params, 'moonLacunarity', 0.0, 2.0).onChange(value => {
+      this.updateMaterial();
+    });
     f.close();
   }
 
@@ -255,25 +275,51 @@ export default class PlanetEarth extends THREE.Object3D {
     this.moonMesh.material.uniforms.seed.value = this.random() * 7.0;
   }
 
-  update(dt = 0) {
+  updateMaterial() {
+    const lightPosition = new THREE.Vector3().copy(window.light.position).multiplyScalar(this.earthRadius)
+    const lightColor = new THREE.Vector4(window.light.color.r, window.light.color.g, window.light.color.b, 1.0);
+
     // Earth Moon
-    this.moonMesh.visible = this.params.moonVisible;
-    this.moonMesh.material.uniforms.time.value = this.params.moonSpeed * 0.1;
+    this.moonMesh.material.uniforms.lightPosition.value.copy(lightPosition);
+    this.moonMesh.material.uniforms.lightColor.value.copy(lightColor);
+    this.moonMesh.material.uniforms.lightIntensity.value = window.light.intensity;
     this.moonMesh.material.uniforms.roughness.value = this.params.moonRoughness;
     this.moonMesh.material.uniforms.lacunarity.value = this.params.moonLacunarity;
 
     // Planet Earth
-    this.earthMesh.material.uniforms.time.value = this.params.earthSpeed * 0.1;
+    this.earthMesh.material.uniforms.lightPosition.value.copy(lightPosition);
+    this.earthMesh.material.uniforms.lightColor.value.copy(lightColor);
+    this.earthMesh.material.uniforms.lightIntensity.value = window.light.intensity;
     this.earthMesh.material.uniforms.roughness.value = this.params.earthRoughness;
     this.earthMesh.material.uniforms.lacunarity.value = this.params.earthLacunarity;
 
-    this.oceanMesh.material.uniforms.time.value = this.params.oceanSpeed * 0.15;
-    this.oceanMesh.visible = this.params.oceanVisible;
+    this.oceanMesh.material.uniforms.lightPosition.value.copy(lightPosition);
+    this.oceanMesh.material.uniforms.lightColor.value.copy(lightColor);
+    this.oceanMesh.material.uniforms.lightIntensity.value = window.light.intensity;
+    this.oceanMesh.material.uniforms.roughness.value = this.params.earthRoughness * 2.7;
+    this.oceanMesh.material.uniforms.lacunarity.value = this.params.earthLacunarity * 3.14;
 
-    this.cloudsMesh.material.uniforms.time.value = this.params.cloudSpeed * 0.2;
-    this.cloudsMesh.visible = this.params.cloudsVisible;
+    this.atmosphereMesh.material.uniforms.lightPosition.value.copy(lightPosition);
+    this.atmosphereMesh.material.uniforms.lightColor.value.copy(lightColor);
+    this.atmosphereMesh.material.uniforms.lightIntensity.value = window.light.intensity;
+    this.atmosphereMesh.material.uniforms.roughness.value = this.params.earthRoughness;
+    this.atmosphereMesh.material.uniforms.lacunarity.value = this.params.earthLacunarity;
+
+    this.cloudsMesh.material.uniforms.lightPosition.value.copy(lightPosition);
+    this.cloudsMesh.material.uniforms.lightColor.value.copy(lightColor);
+    this.cloudsMesh.material.uniforms.lightIntensity.value = window.light.intensity;
     this.cloudsMesh.material.uniforms.rangeFactor.value = this.params.cloudRangeFactor;
     this.cloudsMesh.material.uniforms.smoothness.value = this.params.cloudSmoothness;
+  }
+
+  update(dt = 0) {
+    // Earth Moon
+    this.moonMesh.material.uniforms.time.value = this.params.moonSpeed * 0.1;
+
+    // Planet Earth
+    this.earthMesh.material.uniforms.time.value = this.params.earthSpeed * 0.1;
+    this.oceanMesh.material.uniforms.time.value = this.params.oceanSpeed * 0.15;
+    this.cloudsMesh.material.uniforms.time.value = this.params.cloudSpeed * 0.2;
 
     this.cloudsMesh.rotation.x += this.params.cloudRotation.x;
     this.cloudsMesh.rotation.y += this.params.cloudRotation.y;
@@ -293,5 +339,6 @@ export default class PlanetEarth extends THREE.Object3D {
   }
 
   render() {
+    this.randomize();
   }
-};
+}

@@ -212,6 +212,10 @@ export default class Main extends AbstractApplication {
     this.stars.render({nebulaMap: this.nebula.nebulaTexture.texture});
     this.sun.render();
     this.planet.render();
+
+    window.renderQueue.addCallback(() => {
+      // No-op
+    });
   }
 
   setupControlsUI() {
