@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 
-const imgGrass = require('../../assets/textures/terrain/grass2.jpg');
+const imgGrass = require('../../assets/textures/terrain/grass3.jpg');
 const imgMoon = require('../../assets/textures/planets/moon.png');
 const imgSand = require('../../assets/textures/terrain/sand2.jpg');
 const imgSnow = require('../../assets/textures/terrain/snow2.jpg');
 const imgStone = require('../../assets/textures/terrain/stone2.jpg');
-const imgWater = require('../../assets/textures/terrain/water.jpg');
-const imgWaterNormals = require('../../assets/textures/terrain/waternormals.jpg');
+const imgWater = require('../../assets/textures/terrain/water1.jpg');
+const imgWaterNormals = require('../../assets/textures/terrain/water_normals1.jpg');
 
 import terrainFragShader from '!raw-loader!glslify-loader!../shaders/terrain.frag';
 import terrainVertShader from '!raw-loader!glslify-loader!../shaders/terrain.vert';
