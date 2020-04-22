@@ -32,7 +32,9 @@ export default class Planet extends THREE.Object3D {
       waterLevel: 0.0,
       roughness: 0.8,
       metalness: 0.5,
-      normalScale: 3.0,
+      normalScale: 4.14,
+      bumpScale: 1.0,
+      displacementScale: 1.0,
       displayMap: "textureMap",
       showBiomeMap: false
     };
@@ -68,7 +70,7 @@ export default class Planet extends THREE.Object3D {
     this.materials = [];
     for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.MeshStandardMaterial({
-        color: new THREE.Color(0xFFFFFF)
+        color: new THREE.Color(0xffffff)
       }));
     }
 
@@ -103,14 +105,14 @@ export default class Planet extends THREE.Object3D {
 
     planetFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
 
-    const planetFields = ["roughness", "metalness"];
+    const planetFields = ["roughness", "metalness", "bumpScale", "displacementScale"];
     for (let i = 0; i < planetFields.length; ++i) {
       planetFolder.add(this.params, planetFields[i], 0.0, 1.0).onChange(value => {
         this.updateMaterial();
       });
     }
 
-    planetFolder.add(this.params, "normalScale", -3.0, 6.0).onChange(value => {
+    planetFolder.add(this.params, "normalScale", -6.0, 6.0).onChange(value => {
       this.updateMaterial();
     });
 
@@ -214,29 +216,32 @@ export default class Planet extends THREE.Object3D {
       let material = this.materials[i];
       material.roughness = this.params.roughness;
       material.metalness = this.params.metalness;
+      material.normalScale = new THREE.Vector2(this.params.normalScale, this.params.normalScale);
+      material.bumpScale = this.params.bumpScale;
+      material.displacementScale = this.params.displacementScale;
+
+      material.map = null;
+      material.normalMap = null;
+      material.roughnessMap = null;
+      material.metalnessMap = null;
+      material.displacementMap = null;
+      material.bumpMap = null;
 
       if (this.params.displayMap === "textureMap") {
         material.map = this.textureMaps[i];
         material.normalMap = this.normalMaps[i];
-        material.normalScale = new THREE.Vector2(this.params.normalScale, this.params.normalScale);
         material.roughnessMap = this.roughnessMaps[i];
-        // material.metalnessMap = this.roughnessMaps[i];
+        material.metalnessMap = this.moistureMaps[i];
+        material.displacementMap = this.heightMaps[i];
+        material.bumpMap = this.heightMaps[i];
       } else if (this.params.displayMap === "heightMap") {
         material.map = this.heightMaps[i];
-        material.normalMap = null;
-        material.roughnessMap = null;
       } else if (this.params.displayMap === "moistureMap") {
         material.map = this.moistureMaps[i];
-        material.normalMap = null;
-        material.roughnessMap = null;
       } else if (this.params.displayMap === "normalMap") {
         material.map = this.normalMaps[i];
-        material.normalMap = null;
-        material.roughnessMap = null;
       } else if (this.params.displayMap === "roughnessMap") {
         material.map = this.roughnessMaps[i];
-        material.normalMap = null;
-        material.roughnessMap = null;
       }
 
       material.needsUpdate = true;
