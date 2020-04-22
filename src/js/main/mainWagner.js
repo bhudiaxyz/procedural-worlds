@@ -9,10 +9,9 @@ import FXAAPass from '@superguigui/wagner/src/passes/fxaa/FXAAPass'
 import ZoomBlurPassfrom from '@superguigui/wagner/src/passes/zoom-blur/ZoomBlurPass'
 import MultiPassBloomPass from '@superguigui/wagner/src/passes/bloom/MultiPassBloomPass'
 
-class Main extends AbstractApplication {
+export default class Main extends AbstractApplication {
 
   constructor(opts = {}) {
-
     super(opts);
     this.cubes = [];
 
@@ -37,13 +36,9 @@ class Main extends AbstractApplication {
 
     this.initPostprocessing();
     this.initGui();
-
-    this.animate();
-
   }
 
   addCube() {
-
     let cube = new THREE.Mesh(new THREE.BoxGeometry(20, 20, 20), this.material);
 
     cube.position.set(
@@ -57,12 +52,11 @@ class Main extends AbstractApplication {
       Math.random() * Math.PI * 2,
       Math.random() * Math.PI * 2
     );
-    return cube;
 
+    return cube;
   }
 
   initPostprocessing() {
-
     this._renderer.autoClearColor = true;
     this.composer = new WAGNER.Composer(this._renderer);
     this.fxaaPass = new FXAAPass();
@@ -71,22 +65,19 @@ class Main extends AbstractApplication {
       blurAmount: 2,
       applyZoomBlur: true
     });
-
   }
 
   initGui() {
-
     const gui = new dat.GUI();
     gui.add(this.params, 'usePostProcessing');
     gui.add(this.params, 'useFXAA');
     gui.add(this.params, 'useBlur');
     gui.add(this.params, 'useBloom');
-    return gui;
 
+    return gui;
   }
 
   animate() {
-
     super.animate();
 
     for (let i = 0; i < this.cubes.length; ++i) {
@@ -104,9 +95,6 @@ class Main extends AbstractApplication {
     } else {
       this._renderer.render(this._scene, this._camera);
     }
-
   }
-
 }
 
-export default Main;

@@ -10,12 +10,21 @@ export default class AbstractApplication {
   constructor(opts = {}) {
     window.renderQueue = new RenderQueue();
 
+    // stats
+    this.stats = new Stats();
+    this.stats.setMode(0);
+    document.body.appendChild(this.stats.domElement);
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.left = '10px';
+    this.stats.domElement.style.top = '0px';
+
+    // three stuff
+    this._scene = new THREE.Scene();
+
     this._camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
     this._camera.position.z = 2800;
     this._camera.lookAt(new THREE.Vector3(0, 0, 0));
     window.camera = this._camera;
-
-    this._scene = new THREE.Scene();
 
     this._renderer = new THREE.WebGLRenderer({antialias: false, alpha: true});
     this._renderer.setPixelRatio(window.devicePixelRatio);
@@ -49,28 +58,24 @@ export default class AbstractApplication {
     this.gui = new dat.GUI();
     window.gui = this.gui;
     this._createControls();
-
-    // stats
-    this.stats = new Stats();
-    this.stats.setMode(0);
-    document.body.appendChild(this.stats.domElement);
-    this.stats.domElement.style.position = 'absolute';
-    this.stats.domElement.style.left = '10px';
-    this.stats.domElement.style.top = '0px';
+    this.gui.open();
 
     window.addEventListener('resize', this.onWindowResize.bind(this), false);
     window.addEventListener('keydown', (e) => {
       this.onKeyDown(e)
     }, false);
 
-    this.gui.open();
+  }
+
+  init() {
+    // No-op - initialise this app before we start animate()
   }
 
   _createControls() {
     let lightFolder = this.gui.addFolder('Lighting');
 
     this.sunColor = {r: 255, g: 255, b: 255};
-    this.dirLightControl = lightFolder.addColor(this, "sunColor").onChange(value => {
+    lightFolder.addColor(this, "sunColor").onChange(value => {
       this.directionalLight.color.r = this.sunColor.r / 255;
       this.directionalLight.color.g = this.sunColor.g / 255;
       this.directionalLight.color.b = this.sunColor.b / 255;
@@ -79,7 +84,7 @@ export default class AbstractApplication {
     lightFolder.add(this.directionalLight, "intensity", 0.0, 3.0);
 
     this.ambientColor = {r: 255, g: 255, b: 255};
-    this.ambientControl = lightFolder.addColor(this, "ambientColor").onChange(value => {
+    lightFolder.addColor(this, "ambientColor").onChange(value => {
       this.ambientLight.color.r = this.ambientColor.r / 255;
       this.ambientLight.color.g = this.ambientColor.g / 255;
       this.ambientLight.color.b = this.ambientColor.b / 255;
@@ -112,10 +117,10 @@ export default class AbstractApplication {
   }
 
   onKeyDown(e) {
-    if (e.keyCode == '72') {
+    if (e.keyCode === '72') {
       var brandTag = document.getElementById("brandTag");
       var infoBoxHolder = document.getElementById("infoBoxHolder");
-      if (brandTag.style.visibility == "hidden") {
+      if (brandTag.style.visibility === "hidden") {
         brandTag.style.visibility = "visible";
         infoBoxHolder.style.visibility = "visible";
       } else {
@@ -140,5 +145,6 @@ export default class AbstractApplication {
     this._renderer.render(this._scene, this._camera);
     this.stats.end();
   }
+
 }
 

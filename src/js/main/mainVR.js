@@ -8,7 +8,7 @@ import fragShader from 'src/js/shaders/custom.frag'
 
 //import noiseMaterial from 'js/materials/noise'
 
-class Main extends AbstractVRApplication {
+export default class Main extends AbstractVRApplication {
   constructor(opts = {}) {
 
     super(opts);
@@ -77,43 +77,30 @@ class Main extends AbstractVRApplication {
     this.renderer.domElement.addEventListener('mouseup', this.onMouseUp.bind(this), false);
     this.renderer.domElement.addEventListener('touchstart', this.onMouseDown.bind(this), false);
     this.renderer.domElement.addEventListener('touchend', this.onMouseUp.bind(this), false);
-
-    this.animate()
-
   }
 
   onMouseDown() {
-
     this.isMouseDown = true;
-
   }
 
   onMouseUp() {
-
     this.isMouseDown = false;
-
   }
 
   onWindowResize() {
-
     super.onWindowResize();
     this.effect.setSize(window.innerWidth, window.innerHeight);
-
   }
 
   animate() {
-
     this.effect.requestAnimationFrame(this.animate.bind(this));
     this.render();
-
   }
 
   render() {
-
     const delta = this.clock.getDelta() * 60;
 
     if (this.isMouseDown === true) {
-
       const cube = this.room.children[0];
       this.room.remove(cube);
 
@@ -124,7 +111,6 @@ class Main extends AbstractVRApplication {
       cube.userData.velocity.z = (Math.random() * 0.01 - 0.05) * delta;
       cube.userData.velocity.applyQuaternion(this.camera.quaternion);
       this.room.add(cube);
-
     }
 
     this.raycaster.setFromCamera({x: 0, y: 0}, this.camera);
@@ -132,7 +118,6 @@ class Main extends AbstractVRApplication {
     const intersects = this.raycaster.intersectObjects(this.room.children);
 
     if (intersects.length > 0) {
-
       if (this.INTERSECTED != intersects[0].object) {
 
         if (this.INTERSECTED) this.INTERSECTED.material.emissive.setHex(this.INTERSECTED.currentHex);
@@ -142,9 +127,7 @@ class Main extends AbstractVRApplication {
         this.INTERSECTED.material.emissive.setHex(0xff0000);
 
       }
-
     } else {
-
       if (this.INTERSECTED) this.INTERSECTED.material.emissive.setHex(this.INTERSECTED.currentHex);
 
       this.INTERSECTED = undefined;
@@ -152,9 +135,7 @@ class Main extends AbstractVRApplication {
     }
 
     // Keep cubes inside room
-
     for (let i = 0; i < this.room.children.length; ++i) {
-
       const cube = this.room.children[i];
 
       cube.userData.velocity.multiplyScalar(1 - (0.001 * delta));
@@ -162,37 +143,28 @@ class Main extends AbstractVRApplication {
       cube.position.add(cube.userData.velocity);
 
       if (cube.position.x < -3 || cube.position.x > 3) {
-
         cube.position.x = THREE.Math.clamp(cube.position.x, -3, 3);
         cube.userData.velocity.x = -cube.userData.velocity.x;
-
       }
 
       if (cube.position.y < -3 || cube.position.y > 3) {
-
         cube.position.y = THREE.Math.clamp(cube.position.y, -3, 3);
         cube.userData.velocity.y = -cube.userData.velocity.y;
-
       }
 
       if (cube.position.z < -3 || cube.position.z > 3) {
-
         cube.position.z = THREE.Math.clamp(cube.position.z, -3, 3);
         cube.userData.velocity.z = -cube.userData.velocity.z;
-
       }
 
       cube.rotation.x += cube.userData.velocity.x * 2 * delta;
       cube.rotation.y += cube.userData.velocity.y * 2 * delta;
       cube.rotation.z += cube.userData.velocity.z * 2 * delta;
-
     }
 
     this.controls.update();
     this.effect.render(this.scene, this.camera);
-
   }
-
 }
 
-export default Main;
+

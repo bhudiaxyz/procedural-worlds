@@ -25,6 +25,7 @@ import Main from './main/main'
       }
 
       const app = new Main(opts);
+      app.init();
       app.animate();
     } else {
       const warning = WEBGL.getWebGLErrorMessage();

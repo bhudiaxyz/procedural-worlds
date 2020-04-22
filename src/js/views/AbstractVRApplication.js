@@ -6,7 +6,8 @@ import * as webvrui from 'webvr-ui'
 import RenderQueue from "../utils/RenderQueue";
 
 
-class AbstractVRApplication {
+export default class AbstractVRApplication {
+
   constructor(opts = {}) {
 
     window.renderQueue = new RenderQueue();
@@ -60,54 +61,43 @@ class AbstractVRApplication {
 
   }
 
+  init() {
+    // Abstract - initialise this app before we start animate()
+  }
+
   get renderer() {
-
     return this._renderer;
-
   }
 
   get camera() {
-
     return this._camera;
-
   }
 
   get scene() {
-
     return this._scene;
-
   }
 
   get effect() {
-
     return this._effect;
-
   }
 
   get controls() {
-
     return this._controls;
-
   }
 
 
   onWindowResize() {
-
     this._camera.aspect = window.innerWidth / window.innerHeight;
     this._camera.updateProjectionMatrix();
 
     this._renderer.setSize(window.innerWidth, window.innerHeight);
-
   }
 
   animate(timestamp) {
     this._effect.requestAnimationFrame(this.animate.bind(this));
     this._controls.update();
     this._effect.render(this._scene, this._camera);
-
   }
-
 
 }
 
-export default AbstractVRApplication;

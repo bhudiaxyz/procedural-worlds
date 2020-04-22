@@ -67,5 +67,4 @@ export default class RenderQueue {
     this.loadingBar.hide();
     this.callbacks = [];
   }
-
 }

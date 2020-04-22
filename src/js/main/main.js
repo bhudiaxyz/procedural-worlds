@@ -17,7 +17,7 @@ const N = 6;
 const TWO_N = Math.pow(2, N); // detail of the spheres
 const EARTH_RADIUS = 1000.0;
 
-class Main extends AbstractApplication {
+export default class Main extends AbstractApplication {
 
   constructor(opts = {}) {
     super(opts);
@@ -34,7 +34,7 @@ class Main extends AbstractApplication {
 
     this.initSeed();
     this.createControls();
-    this.initPostprocessing();
+    this.setupPostprocessing();
 
     this.nebula = new Nebula();
     this.scene.add(this.nebula);
@@ -50,10 +50,7 @@ class Main extends AbstractApplication {
     this.scene.add(this.planet);
 
     this.setupControlsUI();
-
-    this.initFromURL();
   }
-
 
   createControls() {
     let generalFolder = window.gui.addFolder('General');
@@ -80,12 +77,11 @@ class Main extends AbstractApplication {
     });
 
     window.onpopstate = (event) => {
-      this.initFromURL();
+      this.init();
     };
   }
 
-
-  initPostprocessing() {
+  setupPostprocessing() {
     this.renderer.autoClearColor = true;
     this.composer = new WAGNER.Composer(this.renderer);
     this.bloomPass = new MultiPassBloomPass({
@@ -148,13 +144,16 @@ class Main extends AbstractApplication {
     this.noise = new SimplexNoise(this.random);
   }
 
-  initFromURL() {
+  // Implement
+  init() {
+    super.init();
+
     this.params.seedString = this.getParameterByName("seed");
     if (this.params.seedString) {
       console.log("Using seed string: " + this.params.seedString);
       this.regenerate();
     } else {
-      console.log("No seed string - using random");
+      console.log("No seed string - randomizing");
       this.randomize();
     }
   }
@@ -185,13 +184,14 @@ class Main extends AbstractApplication {
       wordCount = 3;
     }
 
-    this.params.seedString = "";
+    let newSeedString = "";
     for (let i = 0; i < wordCount; ++i) {
-      this.params.seedString += this.capitalizeFirstLetter(randomLorem({min: 2, max: 8}));
+      newSeedString += this.capitalizeFirstLetter(randomLorem({min: 2, max: 8}));
       if (i < wordCount - 1) {
-        this.params.seedString += " ";
+        newSeedString += " ";
       }
     }
+    this.params.seedString = newSeedString;
 
     let url = this.updateQueryString("seed", this.params.seedString);
     window.history.pushState({seed: this.params.seedString}, this.params.seedString, url);
@@ -288,5 +288,3 @@ class Main extends AbstractApplication {
   }
 
 }
-
-export default Main;
