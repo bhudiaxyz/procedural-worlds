@@ -18,14 +18,14 @@ export default class AbstractCanvasTexture {
     this.texture = new THREE.CanvasTexture(this.canvas);
 
     document.body.appendChild(this.canvas);
-    this.toggleCanvasDisplay(false);
+    this.visibleCanvas(false);
   }
 
   generateTexture(props) {
     // Abstract
   }
 
-  toggleCanvasDisplay(value) {
+  visibleCanvas(value) {
     if (value) {
       this.canvas.style.display = "block";
     } else {

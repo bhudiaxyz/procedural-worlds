@@ -14,7 +14,7 @@ export default class Sun extends THREE.Object3D {
     this.textureSun = loader.load('assets/textures/flare/lensFlare.jpg');
 
     this.params = {
-      showSunMap: false,
+      showTextureMap: false,
       sunSize: 1500,
       color: new THREE.Color(0xffffff),
     };
@@ -36,9 +36,9 @@ export default class Sun extends THREE.Object3D {
     //   this.updateMaterial();
     // });
 
-    sunFolder.add(this.params, "showSunMap").onChange(value => {
+    sunFolder.add(this.params, "showTextureMap").onChange(value => {
       if (this.sunTexture) {
-        this.sunTexture.toggleCanvasDisplay(value);
+        this.sunTexture.visibleCanvas(value);
       }
     });
   }

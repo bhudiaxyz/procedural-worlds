@@ -21,7 +21,7 @@ export default class NebulaTexture extends AbstractCanvasTexture {
     this.texture = new THREE.CanvasTexture(this.canvas);
   }
 
-  toggleCanvasDisplay(value) {
+  visibleCanvas(value) {
     if (value) {
       this.canvas.style.display = "block";
     } else {

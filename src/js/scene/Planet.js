@@ -122,7 +122,7 @@ export default class Planet extends THREE.Object3D {
 
     planetFolder.add(this.params, "showBiomeMap").onChange(value => {
       if (this.biome) {
-        this.biome.toggleCanvasDisplay(value);
+        this.biome.visibleCanvas(value);
       }
     });
   }

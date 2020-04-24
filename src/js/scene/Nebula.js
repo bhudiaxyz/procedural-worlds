@@ -18,7 +18,7 @@ export default class Nebula extends THREE.Object3D {
       resMix: this.randRange(1.0, 3.0),
       mixScale: this.randRange(1.0, 3.0),
       opacity: 1.0,
-      showNebulaMap: false
+      showTextureMap: false
     };
 
     this.nebulaTexture = new NebulaTexture();
@@ -60,9 +60,9 @@ export default class Nebula extends THREE.Object3D {
       nebulaFolder.add(this.params, nebulaFields[i], 1.0, 3.0).step(0.001);
     }
 
-    nebulaFolder.add(this.params, "showNebulaMap").onChange(value => {
+    nebulaFolder.add(this.params, "showTextureMap").onChange(value => {
       if (this.nebulaTexture) {
-        this.nebulaTexture.toggleCanvasDisplay(value);
+        this.nebulaTexture.visibleCanvas(value);
       }
     });
   }
