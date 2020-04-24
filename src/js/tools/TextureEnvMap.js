@@ -18,7 +18,8 @@ export default class TextureEnvMap extends AbstractEnvMap {
         uniforms: {
           biomeMap: {type: "t", value: new THREE.Texture()},
           heightMap: {type: "t", value: new THREE.Texture()},
-          moistureMap: {type: "t", value: new THREE.Texture()}
+          moistureMap: {type: "t", value: new THREE.Texture()},
+          waterLevel: {type: "f", value: 0}
         },
         vertexShader: vertShader,
         fragmentShader: fragShader,
@@ -34,11 +35,13 @@ export default class TextureEnvMap extends AbstractEnvMap {
     // props.heightMaps[]
     // props.moistureMaps[]
     // props.biomeMap
+    // props.waterLevel
 
     for (let i = 0; i < 6; ++i) {
       this.materials[i].uniforms.heightMap.value = props.heightMaps[i];
       this.materials[i].uniforms.moistureMap.value = props.moistureMaps[i];
       this.materials[i].uniforms.biomeMap.value = props.biomeMap;
+      this.materials[i].uniforms.waterLevel.value = props.waterLevel;
       this.materials[i].needsUpdate = true;
     }
   }

@@ -29,7 +29,7 @@ export default class Planet extends THREE.Object3D {
     this.params = {
       rotate: true,
       rotationSpeed: 0.0005,
-      waterLevel: 0.0,
+      waterLevel: 0.2,
       roughness: 0.8,
       metalness: 0.5,
       normalScale: 4.14,
@@ -104,6 +104,19 @@ export default class Planet extends THREE.Object3D {
     planetFolder.add(this.params, "rotate");
 
     planetFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
+
+    planetFolder.add(this.params, "waterLevel", 0, 1.0).onFinishChange(value => {
+      this.biome.generateTexture({waterLevel: this.params.waterLevel});
+      this.textureMap.render({
+        resolution: this.resolution,
+        heightMaps: this.heightMaps,
+        moistureMaps: this.moistureMaps,
+        biomeMap: this.biome.texture,
+        waterLevel: this.params.waterLevel
+      });
+
+      this.updateMaterial();
+    });
 
     const planetFields = ["roughness", "metalness", "bumpScale", "displacementScale"];
     for (let i = 0; i < planetFields.length; ++i) {
@@ -186,7 +199,8 @@ export default class Planet extends THREE.Object3D {
       resolution: this.resolution,
       heightMaps: this.heightMaps,
       moistureMaps: this.moistureMaps,
-      biomeMap: this.biome.texture
+      biomeMap: this.biome.texture,
+      waterLevel: this.params.waterLevel
     });
 
     this.normalMap.render({
