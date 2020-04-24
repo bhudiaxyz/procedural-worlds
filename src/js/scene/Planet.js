@@ -30,6 +30,7 @@ export default class Planet extends THREE.Object3D {
       rotate: true,
       rotationSpeed: 0.0005,
       waterLevel: 0.2,
+      waterColor: new THREE.Color(0.0, 0.4, 0.9),
       roughness: 0.8,
       metalness: 0.5,
       normalScale: 4.14,
@@ -105,18 +106,18 @@ export default class Planet extends THREE.Object3D {
 
     planetFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
 
-    planetFolder.add(this.params, "waterLevel", 0, 1.0).onFinishChange(value => {
-      this.biome.generateTexture({waterLevel: this.params.waterLevel});
-      this.textureMap.render({
-        resolution: this.resolution,
-        heightMaps: this.heightMaps,
-        moistureMaps: this.moistureMaps,
-        biomeMap: this.biome.texture,
-        waterLevel: this.params.waterLevel
-      });
-
-      this.updateMaterial();
+    planetFolder.add(this.params, "waterLevel", 0, 1.0).onChange(value => {
+      this.updateTexture();
     });
+
+    this.params.waterColorCtrl = [this.params.waterColor.r * 255, this.params.waterColor.g * 255, this.params.waterColor.b * 255];
+    planetFolder.addColor(this.params, "waterColorCtrl").name('waterColor').onChange(value => {
+      this.params.waterColor.r = value[0] / 255;
+      this.params.waterColor.g = value[1] / 255;
+      this.params.waterColor.b = value[2] / 255;
+      this.updateTexture();
+    });
+
 
     const planetFields = ["roughness", "metalness", "bumpScale", "displacementScale"];
     for (let i = 0; i < planetFields.length; ++i) {
@@ -155,9 +156,29 @@ export default class Planet extends THREE.Object3D {
     // No-op
   }
 
+  updateTexture() {
+    // this.biome.generateTexture({waterLevel: this.params.waterLevel});
+    this.textureMap.render({
+      resolution: this.resolution,
+      heightMaps: this.heightMaps,
+      moistureMaps: this.moistureMaps,
+      biomeMap: this.biome.texture,
+      waterLevel: this.params.waterLevel,
+      waterColor: this.params.waterColor,
+    });
+
+    this.updateMaterial();
+  }
+
   render() {
     this.seed = this.randRange(0, 1) * 1000.0;
     this.params.waterLevel = this.randRange(0.1, 0.5);
+    this.params.waterColor.setRGB(
+      this.randRange(0.0, 0.1),
+      this.randRange(0.2, 0.4),
+      this.randRange(0.7, 0.9)
+    );
+    this.params.waterColorCtrl = [this.params.waterColor.r * 255, this.params.waterColor.g * 255, this.params.waterColor.b * 255];
 
     this.clouds.resolution = this.resolution;
     this.updateNormalScaleForRes(this.resolution);
@@ -200,7 +221,8 @@ export default class Planet extends THREE.Object3D {
       heightMaps: this.heightMaps,
       moistureMaps: this.moistureMaps,
       biomeMap: this.biome.texture,
-      waterLevel: this.params.waterLevel
+      waterLevel: this.params.waterLevel,
+      waterColor: this.params.waterColor,
     });
 
     this.normalMap.render({
