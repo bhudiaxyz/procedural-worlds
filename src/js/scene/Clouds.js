@@ -4,13 +4,14 @@ import tinycolor from 'tinycolor2'
 
 export default class Clouds extends THREE.Object3D {
 
-  constructor() {
+  constructor(radius = 1005.0) {
     super();
 
+    this.radius = radius;
     this.resolution = 1024;
-    this.radius = 1005;
 
     this.params = {
+      visible: true,
       rotate: true,
       rotationSpeed: 0.0009,
       color: new THREE.Color(0xffffff),
@@ -49,6 +50,10 @@ export default class Clouds extends THREE.Object3D {
 
   createControls() {
     let cloudsFolder = window.gui.addFolder('Clouds');
+
+    cloudsFolder.add(this.params, "visible").onChange(value => {
+      this.sphere.visible = value;
+    });
 
     cloudsFolder.add(this.params, "rotate");
     cloudsFolder.add(this.params, 'rotationSpeed', -0.02, 0.02);

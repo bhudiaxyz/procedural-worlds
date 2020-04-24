@@ -34,6 +34,12 @@ export default class AbstractEnvMap {
     }
   }
 
+  visible(is_visible) {
+    for (let i = 0; i < 6; ++i) {
+      this.geometries[i] = is_visible;
+    }
+  }
+
   setupMaterials() {
     // Abstract - initialise this.materials
   }

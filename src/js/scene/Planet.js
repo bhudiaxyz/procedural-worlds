@@ -13,12 +13,12 @@ import AtmosphereRing from './AtmosphereRing'
 
 export default class Planet extends THREE.Object3D {
 
-  constructor() {
+  constructor(radius = 1000.0) {
     super();
 
+    this.radius = radius;
     this.materials = [];
     this.resolution = 1024;
-    this.radius = 1000;
 
     this.heightMaps = [];
     this.moistureMaps = [];

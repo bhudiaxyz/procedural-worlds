@@ -5,12 +5,13 @@ import fragShader from '!raw-loader!glslify-loader!../shaders/glow.frag'
 
 export default class Glow extends THREE.Object3D {
 
-  constructor() {
+  constructor(radius = 1030.0) {
     super();
 
-    this.radius = 1030;
+    this.radius = radius;
 
     this.params = {
+      visible: true,
       color: new THREE.Color(0x55ffff),
       glow: 1.0,
       c: 0.41,
@@ -42,6 +43,11 @@ export default class Glow extends THREE.Object3D {
 
   createControls() {
     let glowFolder = window.gui.addFolder('Glow');
+
+    glowFolder.add(this.params, "visible").onChange(value => {
+      this.sphere.visible = value;
+    });
+
     glowFolder.add(this.params, "glow", 0.0, 1.0).step(0.01).onChange(value => {
       this.updateMaterial();
     });

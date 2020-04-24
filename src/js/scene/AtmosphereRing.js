@@ -5,12 +5,13 @@ import fragShader from '!raw-loader!glslify-loader!../shaders/atmosRing.frag'
 
 export default class AtmosphereRing extends THREE.Object3D {
 
-  constructor() {
+  constructor(radius = 1030.0) {
     super();
 
-    this.radius = 1030;
+    this.radius = radius;
 
     this.params = {
+      visible: true,
       color: new THREE.Color(0.72, 0.27, 0.35),
       Kr: 0.0025,
       Km: 0.0010,
@@ -66,6 +67,10 @@ export default class AtmosphereRing extends THREE.Object3D {
 
   createControls() {
     let atmosRingFolder = window.gui.addFolder('Atmosphere Ring');
+
+    atmosRingFolder.add(this.params, "visible").onChange(value => {
+      this.sphere.visible = value;
+    });
 
     this.params.atmosRingColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
     atmosRingFolder.addColor(this.params, "atmosRingColor").name('color').onChange(value => {

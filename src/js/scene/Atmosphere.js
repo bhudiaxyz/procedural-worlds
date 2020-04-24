@@ -5,13 +5,14 @@ import fragShader from '!raw-loader!glslify-loader!../shaders/atmos.frag'
 
 export default class Atmosphere extends THREE.Object3D {
 
-  constructor() {
+  constructor(radius = 1010.0) {
     super();
 
+    this.radius = radius;
     this.time = 0.0;
-    this.earthRadius = 1010;
 
     this.params = {
+      visible: true,
       speed: 0.1,
       color: new THREE.Color(0x00ffff),
       opacity: 0.31,
@@ -49,6 +50,11 @@ export default class Atmosphere extends THREE.Object3D {
 
   createControls() {
     let atmosFolder = window.gui.addFolder('Atmosphere');
+
+    atmosFolder.add(this.params, "visible").onChange(value => {
+      this.sphere.visible = value;
+      this.updateMaterial();
+    });
 
     this.params.atmosColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
     atmosFolder.addColor(this.params, "atmosColor").name('color').onChange(value => {
