@@ -18,6 +18,12 @@ export default class RenderQueue {
     this.loadingBar.show();
   }
 
+  finish() {
+    this.addCallback(() => {
+      // No-op
+    });
+  }
+
   update() {
     if (this.startFrame === false) {
       if (this.actions.length > 0) {

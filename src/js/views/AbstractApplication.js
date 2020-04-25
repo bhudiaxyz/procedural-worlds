@@ -8,7 +8,8 @@ import RenderQueue from "../utils/RenderQueue";
 export default class AbstractApplication {
 
   constructor(opts = {}) {
-    window.renderQueue = new RenderQueue();
+    this.renderQueue = new RenderQueue();
+    window.renderQueue = this.renderQueue;
 
     // stats
     this.stats = new Stats();

@@ -213,9 +213,7 @@ export default class Main extends AbstractApplication {
     this.sun.render();
     this.planet.render();
 
-    window.renderQueue.addCallback(() => {
-      // No-op
-    });
+    window.renderQueue.finish();
   }
 
   setupControlsUI() {

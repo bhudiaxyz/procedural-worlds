@@ -10,7 +10,8 @@ export default class AbstractVRApplication {
 
   constructor(opts = {}) {
 
-    window.renderQueue = new RenderQueue();
+    this.renderQueue = new RenderQueue();
+    window.renderQueue = this.renderQueue;
 
     this._camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10);
 
