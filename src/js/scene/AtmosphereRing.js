@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import ColorGUIHelper from "../utils/ColorGUIHelper";
+
 import vertShader from '!raw-loader!glslify-loader!../shaders/atmosRing.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/atmosRing.frag'
 
@@ -72,11 +74,7 @@ export default class AtmosphereRing extends THREE.Object3D {
       this.sphere.visible = value;
     });
 
-    this.params.atmosRingColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
-    atmosRingFolder.addColor(this.params, "atmosRingColor").name('color').onChange(value => {
-      this.params.color.r = value[0] / 255;
-      this.params.color.g = value[1] / 255;
-      this.params.color.b = value[2] / 255;
+    atmosRingFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").onChange(value => {
       this.updateMaterial();
     });
 
@@ -135,7 +133,6 @@ export default class AtmosphereRing extends THREE.Object3D {
       this.randRange(0.3, 1.0),
       this.randRange(0.3, 1.0)
     );
-    this.params.atmosRingColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
 
     this.updateMaterial();
   }

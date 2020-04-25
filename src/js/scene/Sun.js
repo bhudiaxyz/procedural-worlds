@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+import ColorGUIHelper from "../utils/ColorGUIHelper";
 import SunTexture from '../tools/SunTexture'
 
 export default class Sun extends THREE.Object3D {
@@ -28,11 +29,7 @@ export default class Sun extends THREE.Object3D {
   createControls() {
     let sunFolder = window.gui.addFolder('Sun');
 
-    this.params.sunColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
-    // sunFolder.addColor(this.params, "sunColor").name('color').onChange(value => {
-    //   this.params.color.r = value[0] / 255;
-    //   this.params.color.g = value[1] / 255;
-    //   this.params.color.b = value[2] / 255;
+    // glowFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").onChange(value => {
     //   this.updateMaterial();
     // });
 

@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import CloudEnvMap from '../tools/CloudEnvMap'
 import tinycolor from 'tinycolor2'
 
+import ColorGUIHelper from "../utils/ColorGUIHelper";
+
 export default class Clouds extends THREE.Object3D {
 
   constructor(radius = 1005.0) {
@@ -70,11 +72,7 @@ export default class Clouds extends THREE.Object3D {
       });
     }
 
-    this.params.cloudColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
-    cloudsFolder.addColor(this.params, "cloudColor").name('color').onChange(value => {
-      this.params.color.r = value[0] / 255;
-      this.params.color.g = value[1] / 255;
-      this.params.color.b = value[2] / 255;
+    cloudsFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").onChange(value => {
       this.updateMaterial();
     });
 

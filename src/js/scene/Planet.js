@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+import ColorGUIHelper from "../utils/ColorGUIHelper";
 import BiomeTexture from '../tools/BiomeTexture'
 import Atmosphere from './Atmosphere'
 import NoiseEnvMap from '../tools/NoiseEnvMap'
@@ -110,11 +111,7 @@ export default class Planet extends THREE.Object3D {
       this.updateTexture();
     });
 
-    this.params.waterColorCtrl = [this.params.waterColor.r * 255, this.params.waterColor.g * 255, this.params.waterColor.b * 255];
-    planetFolder.addColor(this.params, "waterColorCtrl").name('waterColor').onChange(value => {
-      this.params.waterColor.r = value[0] / 255;
-      this.params.waterColor.g = value[1] / 255;
-      this.params.waterColor.b = value[2] / 255;
+    planetFolder.addColor(new ColorGUIHelper(this.params, "waterColor"), "color").onChange(value => {
       this.updateTexture();
     });
 

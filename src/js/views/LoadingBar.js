@@ -8,17 +8,20 @@ export default class LoadingBar {
 
   update(progress) {
     this.bar = document.getElementById("loadingBar");
-    this.bar.style.width = "" + progress * 100 + "%";
+    if (this.bar) {
+      this.bar.style.width = "" + progress * 100 + "%";
+    }
   }
 
   show() {
     document.body.appendChild(this.base);
     this.bar = document.getElementById("loadingBar");
-    this.bar.style.width = "0%";
+    if (this.bar) {
+      this.bar.style.width = "0%";
+    }
   }
 
   hide() {
     document.body.removeChild(this.base);
   }
-
 }

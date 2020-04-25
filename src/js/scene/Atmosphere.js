@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import ColorGUIHelper from "../utils/ColorGUIHelper";
+
 import vertShader from '!raw-loader!glslify-loader!../shaders/planet.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/atmos.frag'
 
@@ -56,11 +58,7 @@ export default class Atmosphere extends THREE.Object3D {
       this.updateMaterial();
     });
 
-    this.params.atmosColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
-    atmosFolder.addColor(this.params, "atmosColor").name('color').onChange(value => {
-      this.params.color.r = value[0] / 255;
-      this.params.color.g = value[1] / 255;
-      this.params.color.b = value[2] / 255;
+    atmosFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").onChange(value => {
       this.updateMaterial();
     });
 
@@ -97,7 +95,6 @@ export default class Atmosphere extends THREE.Object3D {
       this.randRange(0.5, 1.0),
       this.randRange(0.5, 1.0)
     );
-    this.params.atmosColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
 
     this.updateMaterial();
   }
