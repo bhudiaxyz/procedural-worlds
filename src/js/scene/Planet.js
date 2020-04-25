@@ -11,6 +11,7 @@ import Clouds from './Clouds'
 import Glow from './Glow'
 import AtmosphereRing from './AtmosphereRing'
 
+const BASE_WATER_COLOR = new THREE.Color(0.0, 0.4, 0.9);
 
 export default class Planet extends THREE.Object3D {
 
@@ -31,7 +32,7 @@ export default class Planet extends THREE.Object3D {
       rotate: true,
       rotationSpeed: 0.0005,
       waterLevel: 0.2,
-      waterColor: new THREE.Color(0.0, 0.4, 0.9),
+      waterColor: BASE_WATER_COLOR.clone(),
       roughness: 0.8,
       metalness: 0.5,
       normalScale: 4.14,
@@ -45,6 +46,19 @@ export default class Planet extends THREE.Object3D {
     this.createOuterPlanet();
 
     this.createControls();
+  }
+
+  randomWaterColor() {
+
+    let newColor = new THREE.Color();
+
+    let hsl = BASE_WATER_COLOR.getHSL();
+    newColor.setHSL(
+      hsl.h,
+      hsl.s + window.rng() * 0.4 - 0.2,
+      hsl.l + window.rng() * 0.4 - 0.2);
+
+    return newColor;
   }
 
   get rotate() {
@@ -170,12 +184,8 @@ export default class Planet extends THREE.Object3D {
   render() {
     this.seed = this.randRange(0, 1) * 1000.0;
     this.params.waterLevel = this.randRange(0.1, 0.5);
-    this.params.waterColor.setRGB(
-      this.randRange(0.0, 0.1),
-      this.randRange(0.2, 0.4),
-      this.randRange(0.7, 0.9)
-    );
-    this.params.waterColorCtrl = [this.params.waterColor.r * 255, this.params.waterColor.g * 255, this.params.waterColor.b * 255];
+    let rndWaterColor = this.randomWaterColor();
+    this.params.waterColor.setRGB(rndWaterColor.r, rndWaterColor.g, rndWaterColor.b);
 
     this.clouds.resolution = this.resolution;
     this.updateNormalScaleForRes(this.resolution);
