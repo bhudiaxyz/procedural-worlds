@@ -59,6 +59,12 @@ export default class Stars extends THREE.Object3D {
     }
   }
 
+  randRange(low, high) {
+    let range = high - low;
+    let n = window.rng() * range;
+    return low + n;
+  }
+
   render(props) {
     this.seed = this.randRange(0, 1000);
 
@@ -80,13 +86,6 @@ export default class Stars extends THREE.Object3D {
       let material = this.materials[i];
       material.map = this.starMaps[i];
     }
-  }
-
-
-  randRange(low, high) {
-    let range = high - low;
-    let n = window.rng() * range;
-    return low + n;
   }
 
   computeGeometry(geometry) {

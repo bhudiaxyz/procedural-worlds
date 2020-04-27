@@ -213,6 +213,7 @@ export default class Planet extends THREE.Object3D {
     resMax *= resMod;
     resMin *= resMod;
 
+    // GROUND
     this.moistureMap.render({
       seed: this.seed * this.seed,
       resolution: this.resolution,
@@ -245,6 +246,7 @@ export default class Planet extends THREE.Object3D {
       waterLevel: this.params.waterLevel
     });
 
+    // CLOUDS
     this.clouds.render({
       waterLevel: this.params.waterLevel
     });

@@ -49,11 +49,11 @@ export default class Sun extends THREE.Object3D {
     let s = 1.0;
     let l = 1.0;
     var sunColor = new THREE.Color().setHSL(h, s, l);
-    var sunColor2 = new THREE.Color().setHSL(this.randRange(0, 1), s, 0.5);
-    let sunSize = Math.round(this.randRange(1000, 2500));
+    // var sunColor2 = new THREE.Color().setHSL(this.randRange(0, 1), s, 0.5);
+    this.params.sunSize = Math.round(this.randRange(1000, 2500));
 
-    this.lensFlare = new THREE.LensFlare(this.sunTexture.texture, sunSize, 0.0, THREE.AdditiveBlending, sunColor);
-    this.lensFlare.add(this.sunTexture.texture, sunSize * 2, 0.1, THREE.AdditiveBlending, sunColor, 0.2);
+    this.lensFlare = new THREE.LensFlare(this.sunTexture.texture, this.params.sunSize, 0.0, THREE.AdditiveBlending, sunColor);
+    this.lensFlare.add(this.sunTexture.texture, this.params.sunSize * 2, 0.1, THREE.AdditiveBlending, sunColor, 0.2);
 
     const numSuns = this.randRange(1, 3);
     for (let i = 0; i < numSuns; ++i) {
@@ -64,7 +64,7 @@ export default class Sun extends THREE.Object3D {
       this.lensFlare.add(this.textureSun, size, offset, THREE.AdditiveBlending, color, alpha);
     }
 
-    const numFlares = this.randRange(1, 5);
+    const numFlares = this.randRange(5, 10);
     for (let i = 0; i < numFlares; ++i) {
       let size = this.randRange(200, 500);
       let offset = this.randRange(-0.1, 0.2);
@@ -135,7 +135,6 @@ export default class Sun extends THREE.Object3D {
       1.0,
       1.0
     );
-    this.params.sunColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
 
     this.updateMaterial();
   }

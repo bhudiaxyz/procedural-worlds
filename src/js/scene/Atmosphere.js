@@ -89,6 +89,12 @@ export default class Atmosphere extends THREE.Object3D {
     this.material.uniforms.color.value = this.params.color;
   }
 
+  randRange(low, high) {
+    let range = high - low;
+    let n = window.rng() * range;
+    return low + n;
+  }
+
   randomizeColor() {
     this.params.color.setRGB(
       this.randRange(0.5, 1.0),
@@ -100,19 +106,13 @@ export default class Atmosphere extends THREE.Object3D {
   }
 
   randomize() {
-    this.params.atmo1 = this.randRange(0.0, 3.0);
-    this.params.atmo2 = this.randRange(0.0, 3.0);
-    this.params.atmo3 = this.randRange(0.0, 3.0);
-    this.params.atmo4 = this.randRange(0.0, 3.0);
-    this.params.atmo5 = this.randRange(0.0, 3.0);
+    this.params.atmo1 = this.randRange(0.0, 1.0);
+    this.params.atmo2 = this.randRange(0.0, 1.0);
+    this.params.atmo3 = this.randRange(0.0, 1.0);
+    this.params.atmo4 = this.randRange(0.0, 1.0);
+    this.params.atmo5 = this.randRange(0.1, 2.0);
 
     this.randomizeColor();
-  }
-
-  randRange(low, high) {
-    let range = high - low;
-    let n = window.rng() * range;
-    return low + n;
   }
 }
 

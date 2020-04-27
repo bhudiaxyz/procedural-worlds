@@ -102,7 +102,6 @@ export default class Nebula extends THREE.Object3D {
     }
   }
 
-
   randRange(low, high) {
     let range = high - low;
     let n = window.rng() * range;

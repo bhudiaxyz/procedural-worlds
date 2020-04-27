@@ -121,26 +121,26 @@ export default class Clouds extends THREE.Object3D {
     }
   }
 
+  randRange(low, high) {
+    let range = high - low;
+    let n = window.rng() * range;
+    return low + n;
+  }
+
   randomizeColor() {
     this.params.color.setRGB(
       this.randRange(0.5, 1.0),
       this.randRange(0.5, 1.0),
       this.randRange(0.5, 1.0)
     );
-    this.params.cloudColor = [this.params.color.r * 255, this.params.color.g * 255, this.params.color.b * 255];
 
     this.updateMaterial();
   }
 
   randomize() {
     this.params.opacity = this.randRange(0.25, 1.0);
-    this.randomizeColor();
-  }
 
-  randRange(low, high) {
-    let range = high - low;
-    let n = window.rng() * range;
-    return low + n;
+    this.randomizeColor();
   }
 
   computeGeometry(geometry) {

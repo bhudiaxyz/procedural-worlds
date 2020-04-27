@@ -123,10 +123,6 @@ export default class AtmosphereRing extends THREE.Object3D {
     return low + n;
   }
 
-  randomize() {
-    this.randomizeColor();
-  }
-
   randomizeColor() {
     this.params.color.setRGB(
       this.randRange(0.3, 1.0),
@@ -135,6 +131,10 @@ export default class AtmosphereRing extends THREE.Object3D {
     );
 
     this.updateMaterial();
+  }
+
+  randomize() {
+    this.randomizeColor();
   }
 }
 
