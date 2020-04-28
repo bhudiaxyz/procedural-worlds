@@ -199,23 +199,9 @@ export default class Planet extends THREE.Object3D {
     let resMin = 0.01;
     let resMax = 5.0;
 
+    // GROUND
     this.heightMap.render({
       seed: this.seed,
-      resolution: this.resolution,
-      res1: this.randRange(resMin, resMax),
-      res2: this.randRange(resMin, resMax),
-      resMix: this.randRange(resMin, resMax),
-      mixScale: this.randRange(0.5, 1.0),
-      ridgesType: Math.floor(this.randRange(0, 4))
-    });
-
-    const resMod = this.randRange(3, 10);
-    resMax *= resMod;
-    resMin *= resMod;
-
-    // GROUND
-    this.moistureMap.render({
-      seed: this.seed * this.seed,
       resolution: this.resolution,
       res1: this.randRange(resMin, resMax),
       res2: this.randRange(resMin, resMax),
@@ -233,17 +219,31 @@ export default class Planet extends THREE.Object3D {
       waterColor: this.params.waterColor,
     });
 
+    this.roughnessMap.render({
+      resolution: this.resolution,
+      heightMaps: this.heightMaps,
+      waterLevel: this.params.waterLevel
+    });
+
+    const resMod = this.randRange(2, 5);
+    resMax *= resMod;
+    resMin *= resMod;
+
+    this.moistureMap.render({
+      seed: this.seed * this.seed,
+      resolution: this.resolution,
+      res1: this.randRange(resMin, resMax),
+      res2: this.randRange(resMin, resMax),
+      resMix: this.randRange(resMin, resMax),
+      mixScale: this.randRange(0.5, 1.0),
+      ridgesType: Math.floor(this.randRange(0, 4))
+    });
+
     this.normalMap.render({
       resolution: this.resolution,
       waterLevel: this.params.waterLevel,
       heightMaps: this.heightMaps,
       textureMaps: this.textureMaps
-    });
-
-    this.roughnessMap.render({
-      resolution: this.resolution,
-      heightMaps: this.heightMaps,
-      waterLevel: this.params.waterLevel
     });
 
     // CLOUDS
@@ -277,8 +277,8 @@ export default class Planet extends THREE.Object3D {
         material.normalMap = this.normalMaps[i];
         material.roughnessMap = this.roughnessMaps[i];
         material.metalnessMap = this.moistureMaps[i];
-        material.displacementMap = this.heightMaps[i];
-        material.bumpMap = this.heightMaps[i];
+        material.displacementMap = this.normalMap[i];
+        material.bumpMap = this.roughnessMap[i];
       } else if (this.params.displayMap === "heightMap") {
         material.map = this.heightMaps[i];
       } else if (this.params.displayMap === "moistureMap") {

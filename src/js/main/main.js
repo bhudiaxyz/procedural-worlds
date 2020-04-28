@@ -23,7 +23,7 @@ export default class Main extends AbstractApplication {
     super(opts);
 
     this.params = {
-      seedString: "Mepmo Vimok",
+      seedString: "Ezrohzo Esogam",
       resolution: 1024,
       autoGenerate: false,
       autoGenTime: 3 * 60,

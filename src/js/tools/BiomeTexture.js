@@ -16,8 +16,8 @@ export default class BiomeTexture extends AbstractCanvasTexture {
     let l = this.randRange(0.0, 0.6);
     this.baseColor = new THREE.Color().setHSL(h, s, l);
     this.colorAngle = this.randRange(0.2, 0.4)
-    this.satRange = this.randRange(0.3, 0.5);
-    this.lightRange = this.randRange(0.3, 0.5);
+    this.saturationRange = this.randRange(0.3, 0.5);
+    this.lightnessRange = this.randRange(0.3, 0.5);
     this.circleSize = this.randRange(30, 250);
 
     // this.blackWhiteGradient();
@@ -41,20 +41,14 @@ export default class BiomeTexture extends AbstractCanvasTexture {
   drawBase() {
     this.fillBaseColor();
 
-    let baseDetail = Math.round(this.randRange(5, 15));
+    let baseDetail = Math.round(this.randRange(5, 10));
     for (let i = 0; i < baseDetail; ++i) {
-      // let x = 0;
-      // let y = 0;
-      // let width = this.width;
-      // let height = this.height;
-      // this.randomGradientRect(x, y, width, height);
-
       let x1 = this.randRange(0, this.width);
       let y1 = this.randRange(0, this.height);
       let x2 = this.randRange(0, this.width);
       let y2 = this.randRange(0, this.height);
-      let width = x2 - x1;
-      let height = y2 - y1;
+      let width = Math.abs(x2 - x1);
+      let height = Math.abs(y2 - y1);
 
       this.randomGradientRect(0, 0, this.width, this.height);
       this.randomGradientRect(x1, y1, width, height);
@@ -62,14 +56,14 @@ export default class BiomeTexture extends AbstractCanvasTexture {
   }
 
   drawDetail() {
-    let landDetail = Math.round(this.randRange(5, 25));
+    let landDetail = Math.round(this.randRange(5, 35));
     for (let i = 0; i < landDetail; ++i) {
       let x1 = this.randRange(0, this.width);
       let y1 = this.randRange(0, this.height);
       let x2 = this.randRange(0, this.width);
       let y2 = this.randRange(0, this.height);
-      let width = x2 - x1;
-      let height = y2 - y1;
+      let width = Math.abs(x2 - x1);
+      let height = Math.abs(y2 - y1);
 
       this.randomGradientStrip(0, 0, this.width, this.height);
       this.randomGradientStrip(x1, y1, width, height);
@@ -85,7 +79,7 @@ export default class BiomeTexture extends AbstractCanvasTexture {
     let prevX = x;
     let prevY = y;
 
-    let riverDetail = Math.round(this.randRange(5, 25));
+    let riverDetail = Math.round(this.randRange(5, 35));
     for (let i = 0; i < riverDetail; ++i) {
       x = this.randRange(0, this.width);
       y = this.randRange(0, this.height);
@@ -295,8 +289,8 @@ export default class BiomeTexture extends AbstractCanvasTexture {
       hOffset = -this.colorAngle + this.randRange(-range, range);
     }
 
-    let sOffset = this.randRange(-this.satRange, this.satRange);
-    let lOffset = this.randRange(-this.lightRange, this.lightRange);
+    let sOffset = this.randRange(-this.saturationRange, this.saturationRange);
+    let lOffset = this.randRange(-this.lightnessRange, this.lightnessRange);
 
     let c = newColor.getHSL();
     c.h += hOffset;
