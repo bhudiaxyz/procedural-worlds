@@ -89,6 +89,7 @@ export default class Clouds extends THREE.Object3D {
     this.seed = this.randRange(0, 1000);
     // let cloudSize = this.randRange(0.5, 1.0);
     // let mixScale = this.map_range(props.waterLevel * props.waterLevel, 0, 0.8, 0.0, 5.0);
+    this.updateMaterial();
 
     this.cloudMap.render({
       seed: this.seed,
@@ -100,7 +101,6 @@ export default class Clouds extends THREE.Object3D {
       // mixScale: mixScale
     });
 
-    this.updateMaterial();
   }
 
   map_range(value, low1, high1, low2, high2) {

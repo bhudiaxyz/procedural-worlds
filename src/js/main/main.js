@@ -56,7 +56,7 @@ export default class Main extends AbstractApplication {
   createControls() {
     let generalFolder = window.gui.addFolder('General');
 
-    generalFolder.add(this.params, "resolution", [256, 512, 1024, 2048, 4096]).onChange(value => {
+    generalFolder.add(this.params, "resolution", [128, 256, 512, 1024, 2048]).onChange(value => {
       this.regenerate();
     });
 
@@ -200,15 +200,19 @@ export default class Main extends AbstractApplication {
     this.render();
   }
 
+  changeResolution() {
+    this.stars.resolution = this.params.resolution;
+    this.nebula.resolution = this.params.resolution;
+    this.planet.resolution = this.params.resolution;
+  }
+
   render() {
     this.initSeed();
     this.updateWorldName();
 
-    this.stars.resolution = this.params.resolution;
-    this.nebula.resolution = this.params.resolution;
-
     window.renderQueue.start();
 
+    this.changeResolution();
     this.nebula.render();
     this.stars.render({nebulaMap: this.nebula.nebulaTexture.texture});
     this.sun.render();

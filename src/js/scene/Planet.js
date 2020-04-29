@@ -199,6 +199,8 @@ export default class Planet extends THREE.Object3D {
     let resMin = 0.01;
     let resMax = 5.0;
 
+    this.updateMaterial();
+
     // GROUND
     this.heightMap.render({
       seed: this.seed,

@@ -67,6 +67,7 @@ export default class Stars extends THREE.Object3D {
 
   render(props) {
     this.seed = this.randRange(0, 1000);
+    this.updateMaterial();
 
     this.starMap.render({
       seed: this.seed,
@@ -77,8 +78,6 @@ export default class Stars extends THREE.Object3D {
       mixScale: this.params.mixScale,
       nebulaMap: props.nebulaMap
     });
-
-    this.updateMaterial();
   }
 
   updateMaterial() {
