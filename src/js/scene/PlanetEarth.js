@@ -1,4 +1,10 @@
 import * as THREE from 'three';
+import terrainFragShader from '!raw-loader!glslify-loader!../shaders/terrain.frag';
+import terrainVertShader from '!raw-loader!glslify-loader!../shaders/terrain.vert';
+import atmosphereFragShader from '!raw-loader!glslify-loader!../shaders/atmosphere.frag';
+import cloudsFragShader from '!raw-loader!glslify-loader!../shaders/clouds.frag';
+import standardVertShader from '!raw-loader!glslify-loader!../shaders/standard.vert';
+import waterFragShader from '!raw-loader!glslify-loader!../shaders/water.frag';
 
 const imgGrass = require('../../assets/textures/terrain/grass3.jpg');
 const imgMoon = require('../../assets/textures/planets/moon.png');
@@ -7,13 +13,6 @@ const imgSnow = require('../../assets/textures/terrain/snow2.jpg');
 const imgStone = require('../../assets/textures/terrain/stone2.jpg');
 const imgWater = require('../../assets/textures/terrain/water1.jpg');
 const imgWaterNormals = require('../../assets/textures/terrain/water_normals1.jpg');
-
-import terrainFragShader from '!raw-loader!glslify-loader!../shaders/terrain.frag';
-import terrainVertShader from '!raw-loader!glslify-loader!../shaders/terrain.vert';
-import atmosphereFragShader from '!raw-loader!glslify-loader!../shaders/atmosphere.frag';
-import cloudsFragShader from '!raw-loader!glslify-loader!../shaders/clouds.frag';
-import standardVertShader from '!raw-loader!glslify-loader!../shaders/standard.vert';
-import waterFragShader from '!raw-loader!glslify-loader!../shaders/water.frag';
 
 export default class PlanetEarth extends THREE.Object3D {
   constructor(

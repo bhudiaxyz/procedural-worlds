@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import CloudEnvMap from '../tools/CloudEnvMap'
-import tinycolor from 'tinycolor2'
 
 import ColorGUIHelper from "../utils/ColorGUIHelper";
 

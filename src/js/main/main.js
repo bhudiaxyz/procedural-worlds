@@ -11,7 +11,6 @@ import Planet from '../scene/Planet'
 import Stars from "../scene/Stars";
 import Nebula from "../scene/Nebula";
 import Sun from "../scene/Sun";
-import PlanetEarth from "../scene/PlanetEarth";
 
 const N = 6;
 const TWO_N = Math.pow(2, N); // detail of the spheres

@@ -6,7 +6,6 @@ import WAGNER from '@superguigui/wagner/'
 import AbstractApplication from 'src/js/views/AbstractApplication'
 import BoxBlurPass from '@superguigui/wagner/src/passes/box-blur/BoxBlurPass'
 import FXAAPass from '@superguigui/wagner/src/passes/fxaa/FXAAPass'
-import ZoomBlurPassfrom from '@superguigui/wagner/src/passes/zoom-blur/ZoomBlurPass'
 import MultiPassBloomPass from '@superguigui/wagner/src/passes/bloom/MultiPassBloomPass'
 
 export default class Main extends AbstractApplication {

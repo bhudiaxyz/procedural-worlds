@@ -29,7 +29,7 @@ void main(void)
 {
     vec3 blending = abs(vNormal);
     blending = (blending - 0.25) * 8.0 / random(vNormal);
-    blending = max(blending, 0.0); // Force weights to sum to 1.0
+    blending = max(blending, 0.0);// Force weights to sum to 1.0
     float b = (blending.x + blending.y + blending.z);
     blending /= vec3(b, b, b);
 

@@ -20,7 +20,7 @@ export default class TextureEnvMap extends AbstractEnvMap {
           heightMap: {type: "t", value: new THREE.Texture()},
           moistureMap: {type: "t", value: new THREE.Texture()},
           waterLevel: {type: "f", value: 0},
-          waterColor:{type: "c", value: new THREE.Color(0.0, 0.4, 0.9)}
+          waterColor: {type: "c", value: new THREE.Color(0.0, 0.4, 0.9)}
         },
         vertexShader: vertShader,
         fragmentShader: fragShader,

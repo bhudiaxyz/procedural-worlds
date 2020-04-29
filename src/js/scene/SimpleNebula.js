@@ -2,9 +2,6 @@ import * as THREE from 'three';
 
 import NebulaTexture from "../tools/NebulaTexture";
 
-import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
-import fragShader from '!raw-loader!glslify-loader!../shaders/nebula.frag'
-
 export default class SimpleNebula extends THREE.Object3D {
   constructor(
     random,

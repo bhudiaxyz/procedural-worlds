@@ -1,6 +1,4 @@
 import * as THREE from 'three';
-
-import ColorGUIHelper from "../utils/ColorGUIHelper";
 import SunTexture from '../tools/SunTexture'
 
 export default class Sun extends THREE.Object3D {

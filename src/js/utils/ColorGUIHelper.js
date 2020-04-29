@@ -1,5 +1,3 @@
-import LoadingBar from '../views/LoadingBar'
-
 export default class ColorGUIHelper {
 
   constructor(object, prop) {

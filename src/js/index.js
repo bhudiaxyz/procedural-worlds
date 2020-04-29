@@ -3,7 +3,6 @@ global.THREE = require('three');
 import 'bootstrap';
 import '../scss/index.scss';
 import WEBGL from './utils/WebGL';
-
 //import Main from './main/mainVR'
 //import Main from './main/mainWagner'
 import Main from './main/main'
