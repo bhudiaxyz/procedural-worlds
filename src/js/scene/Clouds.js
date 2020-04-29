@@ -20,7 +20,6 @@ export default class Clouds extends THREE.Object3D {
       opacity: 1.0,
       roughness: 0.9,
       metalness: 0.5,
-      normalScale: 5.0,
       bumpScale: 1.0
     };
 
@@ -59,11 +58,6 @@ export default class Clouds extends THREE.Object3D {
 
     cloudsFolder.add(this.params, "rotate");
     cloudsFolder.add(this.params, 'rotationSpeed', -0.02, 0.02);
-
-    cloudsFolder.add(this.params, "normalScale", 0.0, 10.0).step(0.01).onChange(value => {
-      this.updateMaterial();
-    });
-
 
     const cloudsFields = ["opacity", "roughness", "bumpScale"];
     for (let i = 0; i < cloudsFields.length; ++i) {
