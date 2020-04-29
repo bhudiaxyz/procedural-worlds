@@ -1,4 +1,4 @@
-#pragma glslify: noise = require(glsl-noise/simplex/3d)
+#pragma glslify: noise = require('glsl-noise/simplex/3d')
 
 varying vec2 vUv;
 uniform int index;

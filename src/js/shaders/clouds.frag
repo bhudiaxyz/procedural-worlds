@@ -1,5 +1,7 @@
 precision highp float;
 
+#pragma glslify: PI = require('glsl-pi');
+
 uniform float time;
 uniform vec4 lightColor;
 uniform float lightIntensity;
@@ -14,7 +16,6 @@ varying vec3 vPosition;
 varying vec3 vNormal;
 varying vec3 lightDirection;
 
-const float PI = 3.14159265358979323846264;
 
 int mod(int x, int m) {
     return int(mod(float(x), float(m)));

@@ -1,4 +1,4 @@
-#pragma glslify: noise = require(glsl-noise/classic/4d)
+#pragma glslify: noise = require('glsl-noise/classic/4d')
 
 varying vec2 vUv;
 

@@ -1,4 +1,5 @@
-#pragma glslify: noise = require(glsl-noise/classic/3d)
+#pragma glslify: noise = require('glsl-noise/classic/3d')
+#pragma glslify: PI = require('glsl-pi');
 
 varying vec2 vUv;
 uniform int index;
@@ -10,8 +11,6 @@ uniform float resMix;
 uniform float mixScale;
 uniform int ridgesType;
 const int octaves = 16;
-
-// #define M_PI 3.1415926535897932384626433832795;
 
 
 vec3 getSphericalCoord(int index, float x, float y, float width) {

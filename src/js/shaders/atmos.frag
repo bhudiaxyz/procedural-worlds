@@ -1,4 +1,4 @@
-#pragma glslify: noise = require(glsl-noise/periodic/4d)
+#pragma glslify: noise = require('glsl-noise/periodic/4d')
 
 varying vec3 vNormal;
 varying vec3 vPosition;

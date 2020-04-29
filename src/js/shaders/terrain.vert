@@ -1,7 +1,7 @@
 precision highp float;
 
-#pragma glslify: turbulence = require(./noise/turbulence)
-#pragma glslify: pnoise = require(glsl-noise/periodic/3d)
+#pragma glslify: turbulence = require('./noise/turbulence')
+#pragma glslify: pnoise = require('glsl-noise/periodic/3d')
 
 uniform vec3 lightPosition;
 uniform vec4 lightColor;

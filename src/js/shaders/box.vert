@@ -1,3 +1,7 @@
+#pragma glslify: turbulence = require('./noise/turbulence')
+#pragma glslify: pnoise = require('glsl-noise/periodic/3d')
+#pragma glslify: PI = require('glsl-pi');
+
 #if defined(FLAT_SHADED) || defined(USE_BUMPMAP) || defined(USE_NORMALMAP)
 
 varying vec3 vViewPosition;
@@ -15,10 +19,6 @@ varying vec3 vPosition;
 varying vec3 vPosition01;
 varying vec3 lightDirection;
 
-#pragma glslify: turbulence = require(./noise/turbulence)
-#pragma glslify: pnoise = require(glsl-noise/periodic/3d)
-
-const float PI = 3.14159265358979323846264;
 const vec3 noiseVec3 = vec3(PI);
 
 // Also, using glslify-hex, you can use #ff00ff to create vec3 colors

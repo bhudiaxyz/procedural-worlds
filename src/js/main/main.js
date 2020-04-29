@@ -23,7 +23,8 @@ export default class Main extends AbstractApplication {
     super(opts);
 
     this.params = {
-      seedString: "Ezrohzo Esogam",
+      // seedString: "Ezrohzo Esogam",
+      seedString: "Ik Esce",
       resolution: 1024,
       autoGenerate: false,
       autoGenTime: 3 * 60,
@@ -277,7 +278,6 @@ export default class Main extends AbstractApplication {
   animate() {
     super.animate();
 
-    window.renderQueue.update();
     this.update();
 
     if (this.params.bloom) {

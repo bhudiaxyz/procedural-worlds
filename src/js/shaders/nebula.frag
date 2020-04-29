@@ -1,5 +1,5 @@
-#pragma glslify: noise = require(glsl-noise/classic/3d)
-#pragma glslify: worley3D = require(glsl-worley/worley3D)
+#pragma glslify: noise = require('glsl-noise/classic/3d')
+#pragma glslify: worley3D = require('glsl-worley/worley3D')
 
 varying vec2 vUv;
 uniform int index;

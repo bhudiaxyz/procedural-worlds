@@ -1,6 +1,6 @@
 precision highp float;
 
-#pragma glslify: pnoise3 = require(glsl-noise/periodic/3d)
+#pragma glslify: pnoise3 = require('glsl-noise/periodic/3d')
 
 const vec3 turbulenceVec3 = vec3(10.0, 10.0, 10.0);
 

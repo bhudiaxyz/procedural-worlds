@@ -144,6 +144,8 @@ export default class AbstractApplication {
 
     this._controls.update();
     this._renderer.render(this._scene, this._camera);
+
+    window.renderQueue.update();
     this.stats.end();
   }
 
