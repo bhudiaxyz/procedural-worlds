@@ -67,7 +67,7 @@ export default class Main extends AbstractApplication {
 
     let seedStringControl = generalFolder.add(this.params, "seedString").listen();
     seedStringControl.onFinishChange(value => {
-      this.loadSeedFromTextfield();
+      this.updateUrlAndRegenerate();
     });
 
     document.addEventListener('keydown', (event) => {
@@ -158,7 +158,8 @@ export default class Main extends AbstractApplication {
     }
   }
 
-  loadSeedFromTextfield() {
+  updateUrlAndRegenerate() {
+    this.autoGenCountCurrent = 0;
     let url = this.updateQueryString("seed", this.params.seedString);
     window.history.pushState({seed: this.params.seedString}, this.params.seedString, url);
     this.regenerate();
@@ -169,11 +170,7 @@ export default class Main extends AbstractApplication {
     this.render();
   }
 
-  capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  randomize() {
+  generateNewSeed() {
     let n = Math.random();
     let wordCount = 0;
     if (n > 0.8) {
@@ -186,17 +183,20 @@ export default class Main extends AbstractApplication {
 
     let newSeedString = "";
     for (let i = 0; i < wordCount; ++i) {
-      newSeedString += this.capitalizeFirstLetter(randomLorem({min: 2, max: 8}));
+      const randWord = randomLorem({min: 2, max: 8});
+      const wordCapitalized = randWord.charAt(0).toUpperCase() + randWord.slice(1)
+      newSeedString += wordCapitalized;
       if (i < wordCount - 1) {
         newSeedString += " ";
       }
     }
-    this.params.seedString = newSeedString;
+    return newSeedString;
+  }
 
-    let url = this.updateQueryString("seed", this.params.seedString);
-    window.history.pushState({seed: this.params.seedString}, this.params.seedString, url);
+  randomize() {
     this.autoGenCountCurrent = 0;
-    this.render();
+    this.params.seedString = this.generateNewSeed();
+    this.updateUrlAndRegenerate();
   }
 
   changeResolution() {
