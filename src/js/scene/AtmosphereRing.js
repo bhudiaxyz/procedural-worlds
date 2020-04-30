@@ -5,6 +5,8 @@ import ColorGUIHelper from "../utils/ColorGUIHelper";
 import vertShader from '!raw-loader!glslify-loader!../shaders/atmosRing.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/atmosRing.frag'
 
+const ORIGIN = new THREE.Vector3(0, 0, 0);
+
 export default class AtmosphereRing extends THREE.Object3D {
 
   constructor(radius = 1030.0) {
@@ -113,8 +115,8 @@ export default class AtmosphereRing extends THREE.Object3D {
     let cameraHeight = window.camera.position.length();
     this.material.uniforms.fCameraHeight.value = cameraHeight;
     this.material.uniforms.fCameraHeight2.value = cameraHeight * cameraHeight;
-    this.material.uniforms.v3InvWavelength.value = new THREE.Vector3(1 / Math.pow(this.params.color.r, 4), 1 / Math.pow(this.params.color.g, 4), 1 / Math.pow(this.params.color.b, 4));
-    this.material.uniforms.level.value = window.camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
+    this.material.uniforms.v3InvWavelength.value.set(1 / Math.pow(this.params.color.r, 4), 1 / Math.pow(this.params.color.g, 4), 1 / Math.pow(this.params.color.b, 4));
+    this.material.uniforms.level.value = window.camera.position.distanceTo(ORIGIN);
   }
 
   randRange(low, high) {

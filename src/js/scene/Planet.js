@@ -42,6 +42,7 @@ export default class Planet extends THREE.Object3D {
       displayMap: "textureMap",
       showBiomeMap: false
     };
+    this.params.normalScaleV2 = new THREE.Vector2(this.params.normalScale, this.params.normalScale);
 
     this.createInnerPlanet();
     this.createOuterPlanet();
@@ -87,7 +88,13 @@ export default class Planet extends THREE.Object3D {
     this.materials = [];
     for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.MeshStandardMaterial({
-        color: new THREE.Color(0xffffff)
+        color: new THREE.Color(0xffffff),
+        wireframe: this.params.wireframe,
+        roughness: this.params.roughness,
+        metalness: this.params.metalness,
+        normalScale: this.params.normalScaleV2,
+        bumpScale: this.params.bumpScale,
+        displacementScale: this.params.displacementScale
       }));
     }
 
@@ -263,12 +270,14 @@ export default class Planet extends THREE.Object3D {
   }
 
   updateMaterial() {
+    this.params.normalScaleV2.set(this.params.normalScale, this.params.normalScale);
+
     for (let i = 0; i < 6; ++i) {
       let material = this.materials[i];
       material.wireframe = this.params.wireframe;
       material.roughness = this.params.roughness;
       material.metalness = this.params.metalness;
-      material.normalScale = new THREE.Vector2(this.params.normalScale, this.params.normalScale);
+      material.normalScale = this.params.normalScaleV2;
       material.bumpScale = this.params.bumpScale;
       material.displacementScale = this.params.displacementScale;
 

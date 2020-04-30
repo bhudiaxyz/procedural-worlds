@@ -63,10 +63,11 @@ export default class AbstractEnvMap {
         this.textureCameras[i].top = resolution / 2;
         this.textureCameras[i].bottom = -resolution / 2;
         this.textureCameras[i].updateProjectionMatrix();
+        if (this.geometries[i])
+          this.geometries[i].dispose();
         this.geometries[i] = new THREE.PlaneGeometry(resolution, resolution);
         this.planes[i].geometry = this.geometries[i];
         window.renderer.render(this.textureScenes[i], this.textureCameras[i], this.textures[i], true);
-        this.geometries[i].dispose();
       });
     }
   }
