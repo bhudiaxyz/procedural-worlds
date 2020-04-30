@@ -58,17 +58,17 @@ export default class Atmosphere extends THREE.Object3D {
       this.updateMaterial();
     });
 
-    atmosFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").onChange(value => {
+    atmosFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").listen().onChange(value => {
       this.updateMaterial();
     });
 
-    atmosFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+    atmosFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).listen().onChange(value => {
       this.updateMaterial();
     });
 
-    const atmosFields = ["atmo1", "atmo2", "atmo3", "atmo4", "atmo4"];
+    const atmosFields = ["atmo1", "atmo2", "atmo3", "atmo4", "atmo5"];
     for (let i = 0; i < atmosFields.length; ++i) {
-      atmosFolder.add(this.params, atmosFields[i], 0.0, 3.0).step(0.01).onChange(value => {
+      atmosFolder.add(this.params, atmosFields[i], 0.0, 3.0).step(0.01).listen().onChange(value => {
         this.updateMaterial();
       });
     }

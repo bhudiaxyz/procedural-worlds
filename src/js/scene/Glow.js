@@ -50,18 +50,18 @@ export default class Glow extends THREE.Object3D {
       this.sphere.visible = value;
     });
 
-    glowFolder.add(this.params, "glow", 0.0, 1.0).step(0.01).onChange(value => {
+    glowFolder.add(this.params, "glow", 0.0, 1.0).step(0.01).listen().onChange(value => {
       this.updateMaterial();
     });
 
-    glowFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").onChange(value => {
+    glowFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").listen().onChange(value => {
       this.updateMaterial();
     });
 
-    glowFolder.add(this.params, "c", 0, 1).step(0.01).onChange(value => {
+    glowFolder.add(this.params, "c", 0, 1).step(0.01).listen().onChange(value => {
       this.updateMaterial();
     });
-    glowFolder.add(this.params, "p", 0, 6).step(0.01).onChange(value => {
+    glowFolder.add(this.params, "p", 0, 6).step(0.01).listen().onChange(value => {
       this.updateMaterial();
     });
 
@@ -95,6 +95,8 @@ export default class Glow extends THREE.Object3D {
 
   randomize() {
     this.params.glow = this.randRange(0.25, 1.0);
+    this.params.c = this.randRange(0.01, 1.0);
+    this.params.p = this.randRange(0.01, 6.0);
 
     this.randomizeColor();
   }

@@ -53,7 +53,7 @@ export default class Nebula extends THREE.Object3D {
 
     nebulaFolder.add(this.params, "rotate");
     nebulaFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
-    nebulaFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+    nebulaFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).listen().onChange(value => {
       this.updateMaterial();
     });
 
@@ -63,7 +63,9 @@ export default class Nebula extends THREE.Object3D {
 
     const nebulaFields = ["res1", "res2", "resMix", "mixScale"];
     for (let i = 0; i < nebulaFields.length; ++i) {
-      nebulaFolder.add(this.params, nebulaFields[i], 1.0, 3.0).step(0.001);
+      nebulaFolder.add(this.params, nebulaFields[i], 1.0, 3.0).step(0.001).listen().onChange(value => {
+        this.updateMaterial();
+      });
     }
 
     nebulaFolder.add(this.params, "showTextureMap").onChange(value => {

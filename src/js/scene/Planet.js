@@ -132,23 +132,23 @@ export default class Planet extends THREE.Object3D {
     planetFolder.add(this.params, "wireframe").onChange(value => {
       this.updateMaterial();
     });
-    planetFolder.add(this.params, "waterLevel", 0, 1.0).onChange(value => {
+    planetFolder.add(this.params, "waterLevel", 0, 1.0).listen().onChange(value => {
       this.updateTexture();
     });
 
-    planetFolder.addColor(new ColorGUIHelper(this.params, "waterColor"), "color").onChange(value => {
+    planetFolder.addColor(new ColorGUIHelper(this.params, "waterColor"), "color").listen().onChange(value => {
       this.updateTexture();
     });
 
 
     const planetFields = ["roughness", "metalness", "bumpScale", "displacementScale"];
     for (let i = 0; i < planetFields.length; ++i) {
-      planetFolder.add(this.params, planetFields[i], 0.0, 1.0).onChange(value => {
+      planetFolder.add(this.params, planetFields[i], 0.0, 1.0).listen().onChange(value => {
         this.updateMaterial();
       });
     }
 
-    planetFolder.add(this.params, "normalScale", -6.0, 6.0).onChange(value => {
+    planetFolder.add(this.params, "normalScale", -6.0, 6.0).listen().onChange(value => {
       this.updateMaterial();
     });
 

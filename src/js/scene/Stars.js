@@ -49,7 +49,9 @@ export default class Stars extends THREE.Object3D {
 
     const starFields = ["res1", "res2", "resMix", "mixScale"];
     for (let i = 0; i < starFields.length; ++i) {
-      starsFolder.add(this.params, starFields[i], 0.5, 2.0).step(0.001);
+      starsFolder.add(this.params, starFields[i], 0.5, 2.0).step(0.001).listen().onChange(value => {
+        this.updateMaterial();
+      });
     }
   }
 

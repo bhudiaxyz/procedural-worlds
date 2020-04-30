@@ -23,15 +23,14 @@ export default class AtmosphereRing extends THREE.Object3D {
       g: -0.950,
       innerRadius: 1000,
       outerRadius: this.radius,
-      wavelength: [0.650, 0.570, 0.475],
       scaleDepth: 0.25,
       mieScaleDepth: 0.1
     };
 
     this.material = new THREE.ShaderMaterial({
       uniforms: {
-        v3LightPosition: {type: "v3", value: new THREE.Vector3(-1, 1, 1)},
-        v3InvWavelength: {type: "v3", value: new THREE.Vector3(1 / Math.pow(this.params.wavelength[0], 4), 1 / Math.pow(this.params.wavelength[1], 4), 1 / Math.pow(this.params.wavelength[2], 4))},
+        v3LightPosition: {type: "v3", value: new THREE.Vector3(window.light.position.x * radius, window.light.position.y * radius, window.light.position.z * radius)},
+        v3InvWavelength: {type: "v3", value: new THREE.Vector3(1 / Math.pow(this.params.color.r, 4), 1 / Math.pow(this.params.color.g, 4), 1 / Math.pow(this.params.color.b, 4))},
         fCameraHeight: {type: "f", value: 0},
         fCameraHeight2: {type: "f", value: 0},
         fInnerRadius: {type: "f", value: this.params.innerRadius},
@@ -76,22 +75,22 @@ export default class AtmosphereRing extends THREE.Object3D {
       this.sphere.visible = value;
     });
 
-    atmosRingFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").onChange(value => {
+    atmosRingFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").listen().onChange(value => {
       this.updateMaterial();
     });
 
     const atmosRingFields = ["Kr", "Km", "scaleDepth", "mieScaleDepth"];
     for (let i = 0; i < atmosRingFields.length; ++i) {
-      atmosRingFolder.add(this.params, atmosRingFields[i], 0.0, 1.0).step(0.001).onChange(value => {
+      atmosRingFolder.add(this.params, atmosRingFields[i], 0.0, 1.0).step(0.001).listen().onChange(value => {
         this.updateMaterial();
       });
     }
 
-    atmosRingFolder.add(this.params, "g", -1.0, 1.0).step(0.001).onChange(value => {
+    atmosRingFolder.add(this.params, "g", -1.0, 1.0).step(0.001).listen().onChange(value => {
       this.updateMaterial();
     });
 
-    atmosRingFolder.add(this.params, "ESun", -100.0, 100.0).step(0.001).onChange(value => {
+    atmosRingFolder.add(this.params, "ESun", -100.0, 100.0).step(0.001).listen().onChange(value => {
       this.updateMaterial();
     });
 
@@ -136,6 +135,13 @@ export default class AtmosphereRing extends THREE.Object3D {
   }
 
   randomize() {
+    this.params.Kr = this.randRange(0.01, 1.0);
+    this.params.Km = this.randRange(0.01, 1.0);
+    this.params.scaleDepth = this.randRange(0.0, 1.0);
+    this.params.mieScaleDepth = this.randRange(0.01, 1.0);
+    this.params.g = this.randRange(-1.0, 1.0);
+    this.params.ESun = this.randRange(-100.0, 100.0);
+
     this.randomizeColor();
   }
 }
