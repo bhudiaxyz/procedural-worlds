@@ -31,6 +31,7 @@ export default class Planet extends THREE.Object3D {
     this.params = {
       rotate: true,
       rotationSpeed: 0.0005,
+      wireframe: false,
       waterLevel: 0.2,
       waterColor: BASE_WATER_COLOR.clone(),
       roughness: 0.8,
@@ -121,6 +122,9 @@ export default class Planet extends THREE.Object3D {
 
     planetFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
 
+    planetFolder.add(this.params, "wireframe").onChange(value => {
+      this.updateMaterial();
+    });
     planetFolder.add(this.params, "waterLevel", 0, 1.0).onChange(value => {
       this.updateTexture();
     });
@@ -261,6 +265,7 @@ export default class Planet extends THREE.Object3D {
   updateMaterial() {
     for (let i = 0; i < 6; ++i) {
       let material = this.materials[i];
+      material.wireframe = this.params.wireframe;
       material.roughness = this.params.roughness;
       material.metalness = this.params.metalness;
       material.normalScale = new THREE.Vector2(this.params.normalScale, this.params.normalScale);
