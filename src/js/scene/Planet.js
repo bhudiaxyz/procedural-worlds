@@ -98,7 +98,7 @@ export default class Planet extends THREE.Object3D {
       }));
     }
 
-    this.geometry = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
+    this.geometry = new THREE.BoxGeometry(1, 1, 1, 128, 128, 128);
     for (var i in this.geometry.vertices) {
       this.geometry.vertices[i].normalize().multiplyScalar(this.radius);
     }

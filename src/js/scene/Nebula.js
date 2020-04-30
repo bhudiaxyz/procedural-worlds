@@ -13,6 +13,7 @@ export default class Nebula extends THREE.Object3D {
     this.params = {
       rotate: true,
       rotationSpeed: 0.0002,
+      wireframe: false,
       res1: this.randRange(1.0, 3.0),
       res2: this.randRange(1.0, 3.0),
       resMix: this.randRange(1.0, 3.0),
@@ -31,11 +32,12 @@ export default class Nebula extends THREE.Object3D {
         color: new THREE.Color(0xFFFFFF),
         side: THREE.BackSide,
         transparent: true,
-        opacity: this.params.opacity
+        opacity: this.params.opacity,
+        wireframe: this.params.wireframe
       }));
     }
 
-    this.geometry = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
+    this.geometry = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
     for (var i in this.geometry.vertices) {
       this.geometry.vertices[i].normalize().multiplyScalar(this.radius);
     }
@@ -52,6 +54,10 @@ export default class Nebula extends THREE.Object3D {
     nebulaFolder.add(this.params, "rotate");
     nebulaFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
     nebulaFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).onChange(value => {
+      this.updateMaterial();
+    });
+
+    nebulaFolder.add(this.params, "wireframe").onChange(value => {
       this.updateMaterial();
     });
 
@@ -99,6 +105,7 @@ export default class Nebula extends THREE.Object3D {
       let material = this.materials[i];
       material.map = this.skyMaps[i];
       material.opacity = this.params.opacity;
+      material.wireframe = this.params.wireframe;
     }
   }
 
