@@ -68,7 +68,6 @@ export default class Clouds extends THREE.Object3D {
     cloudsFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").listen().onChange(value => {
       this.updateMaterial();
     });
-
   }
 
   update() {

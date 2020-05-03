@@ -11,11 +11,8 @@
 uniform vec3 v3LightPosition;// The direction vector to the light source
 uniform vec3 v3InvWavelength;// 1 / pow(wavelength, 4) for the red, green, and blue channels
 uniform float fCameraHeight;// The camera's current height
-uniform float fCameraHeight2;// fCameraHeight^2
 uniform float fOuterRadius;// The outer (atmosphere) radius
-uniform float fOuterRadius2;// fOuterRadius^2
 uniform float fInnerRadius;// The inner (planetary) radius
-uniform float fInnerRadius2;// fInnerRadius^2
 uniform float fKrESun;// Kr * ESun
 uniform float fKmESun;// Km * ESun
 uniform float fKr4PI;// Kr * 4 * PI
@@ -47,7 +44,7 @@ void main(void)
 
     // Calculate the closest intersection of the ray with the outer atmosphere (which is the near point of the ray passing through the atmosphere)
     float B = 2.0 * dot(cameraPosition, v3Ray);
-    float C = fCameraHeight2 - fOuterRadius2;
+    float C = (fCameraHeight * fCameraHeight) - (fOuterRadius * fOuterRadius);
     float fDet = max(0.0, B*B - 4.0 * C);
     float fNear = 0.5 * (-B - sqrt(fDet));
 

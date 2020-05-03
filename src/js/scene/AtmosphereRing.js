@@ -5,7 +5,6 @@ import ColorGUIHelper from "../utils/ColorGUIHelper";
 import vertShader from '!raw-loader!glslify-loader!../shaders/atmosRing.vert'
 import fragShader from '!raw-loader!glslify-loader!../shaders/atmosRing.frag'
 
-const ORIGIN = new THREE.Vector3(0, 0, 0);
 
 export default class AtmosphereRing extends THREE.Object3D {
 
@@ -29,14 +28,10 @@ export default class AtmosphereRing extends THREE.Object3D {
 
     this.material = new THREE.ShaderMaterial({
       uniforms: {
-        v3LightPosition: {type: "v3", value: new THREE.Vector3(window.light.position.x * radius, window.light.position.y * radius, window.light.position.z * radius)},
+        v3LightPosition: {type: "v3", value: new THREE.Vector3(window.light.position.x, window.light.position.y, window.light.position.z)},
         v3InvWavelength: {type: "v3", value: new THREE.Vector3(1 / Math.pow(this.params.color.r, 4), 1 / Math.pow(this.params.color.g, 4), 1 / Math.pow(this.params.color.b, 4))},
-        fCameraHeight: {type: "f", value: 0},
-        fCameraHeight2: {type: "f", value: 0},
         fInnerRadius: {type: "f", value: this.params.innerRadius},
-        fInnerRadius2: {type: "f", value: this.params.innerRadius * this.params.innerRadius},
         fOuterRadius: {type: "f", value: this.params.outerRadius},
-        fOuterRadius2: {type: "f", value: this.params.outerRadius * this.params.outerRadius},
         fKrESun: {type: "f", value: this.params.Kr * this.params.ESun},
         fKmESun: {type: "f", value: this.params.Km * this.params.ESun},
         fKr4PI: {type: "f", value: this.params.Kr * 4.0 * Math.PI},
@@ -46,13 +41,8 @@ export default class AtmosphereRing extends THREE.Object3D {
         fScaleOverScaleDepth: {type: "f", value: 1 / (this.params.outerRadius - this.params.innerRadius) / this.params.scaleDepth},
         g: {type: "f", value: this.params.g},
         g2: {type: "f", value: this.params.g * this.params.g},
-        nSamples: {type: "i", value: 3},
-        fSamples: {type: "f", value: 3.0},
-        atmosphereColor: {type: "v3", value: new THREE.Vector4(this.params.color.r, this.params.color.g, this.params.color.b, 1)},
-        tDisplacement: {type: "t", value: 0},
-        tSkyboxDiffuse: {type: "t", value: 0},
-        fNightScale: {type: "f", value: 1},
-        level: {type: "f", value: window.camera.position.length()}
+        atmosphereColor: {type: "c", value: this.params.color},
+        fCameraHeight: {type: "f", value: window.camera.position.length()}
       },
       vertexShader: vertShader,
       fragmentShader: fragShader,
@@ -97,11 +87,11 @@ export default class AtmosphereRing extends THREE.Object3D {
   }
 
   update() {
-    this.updateMaterial();
+    // No-op
   }
 
   updateMaterial() {
-    this.material.uniforms.atmosphereColor.value.set(this.params.color.r, this.params.color.g, this.params.color.b, 1.0);
+    this.material.uniforms.v3InvWavelength.value.set(1 / Math.pow(this.params.color.r, 4), 1 / Math.pow(this.params.color.g, 4), 1 / Math.pow(this.params.color.b, 4));
     this.material.uniforms.fKrESun.value = this.params.Kr * this.params.ESun;
     this.material.uniforms.fKmESun.value = this.params.Km * this.params.ESun;
     this.material.uniforms.fKr4PI.value = this.params.Kr * 4.0 * Math.PI;
@@ -110,12 +100,8 @@ export default class AtmosphereRing extends THREE.Object3D {
     this.material.uniforms.fScaleOverScaleDepth.value = 1 / (this.params.outerRadius - this.params.innerRadius) / this.params.scaleDepth;
     this.material.uniforms.g.value = this.params.g;
     this.material.uniforms.g2.value = this.params.g * this.params.g;
-
-    let cameraHeight = window.camera.position.length();
-    this.material.uniforms.fCameraHeight.value = cameraHeight;
-    this.material.uniforms.fCameraHeight2.value = cameraHeight * cameraHeight;
-    this.material.uniforms.v3InvWavelength.value.set(1 / Math.pow(this.params.color.r, 4), 1 / Math.pow(this.params.color.g, 4), 1 / Math.pow(this.params.color.b, 4));
-    this.material.uniforms.level.value = window.camera.position.distanceTo(ORIGIN);
+    this.material.uniforms.atmosphereColor.value = this.params.color;
+    this.material.uniforms.fCameraHeight.value = window.camera.position.length();
   }
 
   randRange(low, high) {
