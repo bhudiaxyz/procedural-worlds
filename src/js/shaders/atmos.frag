@@ -1,20 +1,18 @@
 #pragma glslify: noise = require('glsl-noise/periodic/4d')
 
-varying vec3 vNormal;
-varying vec3 vPosition;
-varying vec3 cameraVector;
-
 uniform float time;
-
 uniform float atmo1;
 uniform float atmo2;
 uniform float atmo3;
 uniform float atmo4;
 uniform float atmo5;
-
 uniform float alpha;
-
 uniform vec3 color;
+
+varying vec3 vNormal;
+varying vec3 vPosition;
+varying vec3 cameraVector;
+
 
 void main() {
     vec3 newColor = vec3(0.0);

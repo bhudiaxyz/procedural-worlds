@@ -1,7 +1,8 @@
-varying vec2 vUv;
 uniform float resolution;
 uniform sampler2D heightMap;
 uniform float waterLevel;
+
+varying vec2 vUv;
 
 float getBrightness(vec4 color) {
     return 1.0 - (0.2126*color.r + 0.7152*color.g + 0.0722*color.b);

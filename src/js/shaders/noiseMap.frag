@@ -1,6 +1,5 @@
 #pragma glslify: noise = require('glsl-noise/classic/4d')
 
-varying vec2 vUv;
 uniform int index;
 uniform float seed;
 uniform float resolution;
@@ -9,6 +8,8 @@ uniform float res2;
 uniform float resMix;
 uniform float mixScale;
 uniform int ridgesType;
+
+varying vec2 vUv;
 
 vec3 getSphericalCoord(int index, float x, float y, float width) {
     width /= 2.0;

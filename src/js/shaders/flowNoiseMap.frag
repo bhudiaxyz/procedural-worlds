@@ -1,7 +1,6 @@
 #pragma glslify: noise = require('glsl-noise/classic/3d')
 #pragma glslify: PI = require('glsl-pi');
 
-varying vec2 vUv;
 uniform int index;
 uniform float seed;
 uniform float resolution;
@@ -10,6 +9,9 @@ uniform float res2;
 uniform float resMix;
 uniform float mixScale;
 uniform int ridgesType;
+
+varying vec2 vUv;
+
 const int octaves = 16;
 
 

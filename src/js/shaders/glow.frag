@@ -1,4 +1,5 @@
 uniform vec3 glowColor;
+
 varying float intensity;
 
 void main()

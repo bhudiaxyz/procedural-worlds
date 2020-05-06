@@ -1,7 +1,6 @@
 #pragma glslify: noise = require('glsl-noise/classic/3d')
 #pragma glslify: worley3D = require('glsl-worley/worley3D')
 
-varying vec2 vUv;
 uniform int index;
 uniform float seed;
 uniform float resolution;
@@ -10,6 +9,9 @@ uniform float res2;
 uniform float resMix;
 uniform float mixScale;
 uniform sampler2D nebulaMap;
+
+varying vec2 vUv;
+
 const int octaves = 16;
 
 

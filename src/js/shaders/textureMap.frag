@@ -1,12 +1,12 @@
 #pragma glslify: noise = require('glsl-noise/classic/4d')
 
-varying vec2 vUv;
-
 uniform sampler2D biomeMap;
 uniform sampler2D heightMap;
 uniform sampler2D moistureMap;
 uniform float waterLevel;
 uniform vec3 waterColor;
+
+varying vec2 vUv;
 
 void main() {
     float x = vUv.x;

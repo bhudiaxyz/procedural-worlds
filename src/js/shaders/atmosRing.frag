@@ -36,5 +36,5 @@ void main (void)
     vec3 color =  getRayleighPhase(fCos2) * c0 + getMiePhase(fCos, fCos2) * c1;
 
     gl_FragColor = vec4(color, 1.0);
-//    gl_FragColor.a = gl_FragColor.b;
+    //    gl_FragColor.a = gl_FragColor.b;
 }

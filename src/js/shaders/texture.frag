@@ -1,7 +1,8 @@
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 
-varying vec2 vUv;
 uniform int index;
+
+varying vec2 vUv;
 
 int mod(int x, int m) {
     return int(mod(float(x), float(m)));

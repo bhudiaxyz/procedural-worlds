@@ -1,16 +1,15 @@
 #pragma glslify: noise = require('glsl-noise/simplex/4d')
 
-varying vec3 vNormal;
-varying vec3 vPosition;
-varying vec3 cameraVector;
-
 uniform float time;
-
 uniform float atmo1;
 uniform float atmo2;
 uniform float atmo3;
 uniform float atmo4;
 uniform float atmo5;
+
+varying vec3 vNormal;
+varying vec3 vPosition;
+varying vec3 cameraVector;
 
 void main() {
     // float brightness = noise(gl_FragCoord.xx);
