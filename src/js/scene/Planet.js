@@ -29,6 +29,7 @@ export default class Planet extends THREE.Object3D {
     this.roughnessMaps = [];
 
     this.params = {
+      visible: true,
       rotate: true,
       rotationSpeed: 0.0005,
       wireframe: false,
@@ -103,8 +104,8 @@ export default class Planet extends THREE.Object3D {
       this.geometry.vertices[i].normalize().multiplyScalar(this.radius);
     }
     this.computeGeometry(this.geometry);
-    this.ground = new THREE.Mesh(this.geometry, this.materials);
-    this.add(this.ground);
+    this.sphere = new THREE.Mesh(this.geometry, this.materials);
+    this.add(this.sphere);
   }
 
 
@@ -125,8 +126,11 @@ export default class Planet extends THREE.Object3D {
   createControls() {
     let planetFolder = gui.addFolder('Planet');
 
-    planetFolder.add(this.params, "rotate");
+    planetFolder.add(this.params, "visible").onChange(value => {
+      this.sphere.visible = value;
+    });
 
+    planetFolder.add(this.params, "rotate");
     planetFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
 
     planetFolder.add(this.params, "wireframe").onChange(value => {
@@ -165,7 +169,7 @@ export default class Planet extends THREE.Object3D {
 
   update() {
     if (this.params.rotate) {
-      this.ground.rotation.y += this.params.rotationSpeed;
+      this.sphere.rotation.y += this.params.rotationSpeed;
       this.clouds.update();
     }
 

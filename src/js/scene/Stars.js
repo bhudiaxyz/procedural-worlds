@@ -10,6 +10,7 @@ export default class Stars extends THREE.Object3D {
     this.radius = 50000;
 
     this.params = {
+      visible: true,
       rotate: true,
       rotationSpeed: 0.0003,
       res1: this.randRange(0.5, 2.0),
@@ -43,6 +44,10 @@ export default class Stars extends THREE.Object3D {
 
   createControls() {
     let starsFolder = window.gui.addFolder('Stars');
+
+    starsFolder.add(this.params, "visible").onChange(value => {
+      this.sphere.visible = value;
+    });
 
     starsFolder.add(this.params, "rotate");
     starsFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);

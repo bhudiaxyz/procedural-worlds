@@ -90,7 +90,6 @@ export default class Clouds extends THREE.Object3D {
       res2: this.randRange(0.1, 1.0),
       resMix: this.randRange(0.1, 1.0),
       mixScale: this.randRange(0.1, 1.0)
-      // mixScale: mixScale
     });
 
   }

@@ -55,7 +55,6 @@ export default class Atmosphere extends THREE.Object3D {
 
     atmosFolder.add(this.params, "visible").onChange(value => {
       this.sphere.visible = value;
-      this.updateMaterial();
     });
 
     atmosFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").listen().onChange(value => {

@@ -11,7 +11,6 @@
 uniform vec3 v3LightPosition;
 uniform float g;
 uniform float g2;
-uniform vec3 atmosphereColor;
 
 varying vec3 v3Direction;
 varying vec3 c0;
@@ -37,5 +36,5 @@ void main (void)
     vec3 color =  getRayleighPhase(fCos2) * c0 + getMiePhase(fCos, fCos2) * c1;
 
     gl_FragColor = vec4(color, 1.0);
-    gl_FragColor.a = gl_FragColor.b;
+//    gl_FragColor.a = gl_FragColor.b;
 }

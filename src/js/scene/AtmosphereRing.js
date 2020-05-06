@@ -15,7 +15,7 @@ export default class AtmosphereRing extends THREE.Object3D {
 
     this.params = {
       visible: true,
-      color: new THREE.Color(0.72, 0.27, 0.35),
+      color: new THREE.Color(0.650, 0.570, 0.475),
       Kr: 0.0025,
       Km: 0.0010,
       ESun: 20.0,
@@ -28,7 +28,7 @@ export default class AtmosphereRing extends THREE.Object3D {
 
     this.material = new THREE.ShaderMaterial({
       uniforms: {
-        v3LightPosition: {type: "v3", value: new THREE.Vector3(window.light.position.x, window.light.position.y, window.light.position.z)},
+        v3LightPosition: {type: "v3", value: new THREE.Vector3(window.light.position.x, window.light.position.y, window.light.position.z).multiplyScalar(radius)},
         v3InvWavelength: {type: "v3", value: new THREE.Vector3(1 / Math.pow(this.params.color.r, 4), 1 / Math.pow(this.params.color.g, 4), 1 / Math.pow(this.params.color.b, 4))},
         fInnerRadius: {type: "f", value: this.params.innerRadius},
         fOuterRadius: {type: "f", value: this.params.outerRadius},
@@ -41,13 +41,13 @@ export default class AtmosphereRing extends THREE.Object3D {
         fScaleOverScaleDepth: {type: "f", value: 1 / (this.params.outerRadius - this.params.innerRadius) / this.params.scaleDepth},
         g: {type: "f", value: this.params.g},
         g2: {type: "f", value: this.params.g * this.params.g},
-        atmosphereColor: {type: "c", value: this.params.color},
         fCameraHeight: {type: "f", value: window.camera.position.length()}
       },
       vertexShader: vertShader,
       fragmentShader: fragShader,
       transparent: true,
-      side: THREE.BackSide
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending
     });
 
     this.geometry = new THREE.IcosahedronGeometry(this.radius, 6);
@@ -80,7 +80,7 @@ export default class AtmosphereRing extends THREE.Object3D {
       this.updateMaterial();
     });
 
-    atmosRingFolder.add(this.params, "ESun", -100.0, 100.0).step(0.001).listen().onChange(value => {
+    atmosRingFolder.add(this.params, "ESun", -2000.0, 2000.0).listen().onChange(value => {
       this.updateMaterial();
     });
 
@@ -100,7 +100,6 @@ export default class AtmosphereRing extends THREE.Object3D {
     this.material.uniforms.fScaleOverScaleDepth.value = 1 / (this.params.outerRadius - this.params.innerRadius) / this.params.scaleDepth;
     this.material.uniforms.g.value = this.params.g;
     this.material.uniforms.g2.value = this.params.g * this.params.g;
-    this.material.uniforms.atmosphereColor.value = this.params.color;
     this.material.uniforms.fCameraHeight.value = window.camera.position.length();
   }
 

@@ -17,7 +17,7 @@ export default class Glow extends THREE.Object3D {
       color: new THREE.Color(0x55ffff),
       glow: 1.0,
       c: 0.41,
-      p: 1.7
+      p: 0.53
     };
 
     this.material = new THREE.ShaderMaterial({
@@ -61,7 +61,7 @@ export default class Glow extends THREE.Object3D {
     glowFolder.add(this.params, "c", 0, 1).step(0.01).listen().onChange(value => {
       this.updateMaterial();
     });
-    glowFolder.add(this.params, "p", 0, 6).step(0.01).listen().onChange(value => {
+    glowFolder.add(this.params, "p", 0, 1).step(0.01).listen().onChange(value => {
       this.updateMaterial();
     });
 
@@ -95,8 +95,8 @@ export default class Glow extends THREE.Object3D {
 
   randomize() {
     this.params.glow = this.randRange(0.25, 1.0);
-    this.params.c = this.randRange(0.01, 1.0);
-    this.params.p = this.randRange(0.01, 6.0);
+    this.params.c = this.randRange(0.4, 1.0);
+    this.params.p = this.randRange(0.4, 1.0);
 
     this.randomizeColor();
   }

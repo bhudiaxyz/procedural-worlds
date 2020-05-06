@@ -11,6 +11,7 @@ export default class Nebula extends THREE.Object3D {
     this.radius = 45000;
 
     this.params = {
+      visible: true,
       rotate: true,
       rotationSpeed: 0.0002,
       wireframe: false,
@@ -51,8 +52,13 @@ export default class Nebula extends THREE.Object3D {
   createControls() {
     let nebulaFolder = window.gui.addFolder('Nebula');
 
+    nebulaFolder.add(this.params, "visible").onChange(value => {
+      this.sphere.visible = value;
+    });
+
     nebulaFolder.add(this.params, "rotate");
     nebulaFolder.add(this.params, 'rotationSpeed', -0.01, 0.01);
+
     nebulaFolder.add(this.params, "opacity", 0.0, 1.0).step(0.01).listen().onChange(value => {
       this.updateMaterial();
     });
