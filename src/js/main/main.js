@@ -200,8 +200,8 @@ export default class Main extends AbstractApplication {
   }
 
   changeResolution() {
-    this.stars.resolution = this.params.resolution;
-    this.nebula.resolution = this.params.resolution;
+    // this.stars.resolution = this.params.resolution;
+    // this.nebula.resolution = this.params.resolution;
     this.planet.resolution = this.params.resolution;
   }
 
@@ -261,6 +261,7 @@ export default class Main extends AbstractApplication {
     }
   }
 
+  // Implement
   update() {
     this.nebula.update();
     this.stars.update();
