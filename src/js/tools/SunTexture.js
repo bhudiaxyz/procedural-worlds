@@ -8,7 +8,8 @@ export default class SunTexture extends AbstractCanvasTexture {
     super("sunCanvas", 1024, "200px");
   }
 
-  generateTexture() {
+  // Implement
+  generateTexture(props) {
     let h = this.randRange(0.0, 1.0);
     let s = this.randRange(0.0, 0.5);
     let l = this.randRange(0.2, 0.5);

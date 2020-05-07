@@ -8,6 +8,7 @@ export default class BiomeTexture extends AbstractCanvasTexture {
     super("biomeCanvas", 512, "200px");
   }
 
+  // Implement
   generateTexture(props) {
     this.waterLevel = props.waterLevel;
 

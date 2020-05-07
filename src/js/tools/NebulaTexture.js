@@ -8,7 +8,8 @@ export default class NebulaTexture extends AbstractCanvasTexture {
     super("nebulaeCanvas", 512, "200px");
   }
 
-  generateTexture() {
+  // Implement
+  generateTexture(props) {
     let h = this.randRange(0.0, 1.0);
     let s = this.randRange(0.2, 0.8);
     let l = this.randRange(0.2, 0.6);

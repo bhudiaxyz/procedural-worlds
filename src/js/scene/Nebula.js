@@ -88,7 +88,7 @@ export default class Nebula extends THREE.Object3D {
   }
 
   generateTexture() {
-    this.nebulaTexture.generateTexture();
+    this.nebulaTexture.generateTexture({});
   }
 
   render(props = {}) {

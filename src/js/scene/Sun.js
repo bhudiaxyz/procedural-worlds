@@ -120,7 +120,7 @@ export default class Sun extends THREE.Object3D {
   }
 
   generateTexture() {
-    this.sunTexture.generateTexture();
+    this.sunTexture.generateTexture({});
   }
 
   updateMaterial() {

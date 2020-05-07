@@ -72,6 +72,10 @@ export default class AbstractApplication {
     // No-op - initialise this app before we start animate()
   }
 
+  update() {
+    // Abstract - update scene within animate()
+  }
+
   _createControls() {
     let lightFolder = this.gui.addFolder('Lighting');
 
@@ -140,12 +144,13 @@ export default class AbstractApplication {
 
   animate(timestamp) {
     this.stats.begin();
-    requestAnimationFrame(this.animate.bind(this));
 
     this._controls.update();
     this._renderer.render(this._scene, this._camera);
-
     window.renderQueue.update();
+    this.update(); // Derived app scene update
+
+    requestAnimationFrame(this.animate.bind(this));
     this.stats.end();
   }
 

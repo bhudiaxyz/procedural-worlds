@@ -276,12 +276,6 @@ export default class Main extends AbstractApplication {
 
     this.stars.position.copy(window.camera.position);
     this.nebula.position.copy(window.camera.position);
-  }
-
-  animate() {
-    super.animate();
-
-    this.update();
 
     if (this.params.bloom) {
       this.composer.reset();
@@ -291,5 +285,4 @@ export default class Main extends AbstractApplication {
       this.composer.toScreen();
     }
   }
-
 }
