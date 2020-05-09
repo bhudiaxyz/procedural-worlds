@@ -210,11 +210,10 @@ void main() {
     nebula += vec4(vec3(n2), 1.0);
 
     float c4 = invRidgedNoise(sphericalCoord, 1.0, seed+38.476);
-
-    // c4 = ((c4 - 0.5) * 1.5) + 0.5;
-    // nebula.rgb += c4*0.3;
+    c4 = ((c4 - 0.5) * 1.5) + 0.5;
+    nebula.rgb += c4*0.3;
     nebula.a = pow(c2, 1.0);
-    // nebula.rgb = ((nebula.rgb - 0.5) * (1.0+c2*1.0)) + 0.5;
+    nebula.rgb = ((nebula.rgb - 0.5) * (1.0+c2*1.0)) + 0.5;
 
     gl_FragColor = nebula;
 }
