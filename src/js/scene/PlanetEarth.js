@@ -32,8 +32,9 @@ export default class PlanetEarth extends THREE.Object3D {
 
       // Earth
       earth: {
+        visible: true,
         radius: radius,
-        speed: 0.00002,
+        speed: 0.000005,
         roughness: 0.01137,
         lacunarity: 0.00125,
         rotation: new THREE.Vector3(0.0, 0.003, 0.000)
@@ -41,16 +42,16 @@ export default class PlanetEarth extends THREE.Object3D {
 
       // Ocean
       ocean: {
-        radius: radius * 0.9999,
-        waterLevel: 0.0,
         visible: true,
+        radius: radius * 0.9999,
         speed: 0.0000275963,
+        waterLevel: 0.0,
       },
 
       // Clouds
       clouds: {
-        radius: radius * 1.035,
         visible: true,
+        radius: radius * 1.035,
         speed: 0.00002140,
         rangeFactor: 0.29,
         smoothness: 2.6,
@@ -59,15 +60,17 @@ export default class PlanetEarth extends THREE.Object3D {
 
       // Atmosphere
       atmosphere: {
-        radius: radius * 1.025
+        visible: true,
+        radius: radius * 1.025,
+        speed: 0.00002140
       },
 
       // Moon
       moon: {
         visible: true,
         radius: radius * 0.27,
-        positionX: radius * 5.36,
         speed: 0.00015,
+        positionX: radius * 5.36,
         roughness: 0.031,
         lacunarity: 0.076
       },
@@ -236,9 +239,12 @@ export default class PlanetEarth extends THREE.Object3D {
 
   createControls() {
     let f = window.gui.addFolder('Planet');
+    f.add(this.params.earth, "visible").onChange(value => {
+      this.earthMesh.visible = value;
+    });
     f.add(this.params, 'rotate');
     f.add(this.params.earth, 'speed', -0.001, 0.001);
-    f.add(this.params.earth, 'roughness', 0.0, 1.0).onChange(value => {
+    f.add(this.params.earth, 'roughness', 0.0, 0.1).onChange(value => {
       this.updateMaterial();
     });
     f.add(this.params.earth, 'lacunarity', -1.0, 1.0).onChange(value => {
@@ -268,6 +274,12 @@ export default class PlanetEarth extends THREE.Object3D {
     f.add(this.params.clouds.rotation, 'x').name('Rotation X').min(-0.05).max(0.05);
     f.add(this.params.clouds.rotation, 'y').name('Rotation Y').min(-0.05).max(0.05);
     f.add(this.params.clouds.rotation, 'z').name('Rotation Z').min(-0.05).max(0.05);
+    f.close();
+
+    f = window.gui.addFolder("Atmosphere");
+    f.add(this.params.atmosphere, 'visible').onChange(value => {
+      this.atmosphereMesh.visible = value;
+    });
     f.close();
 
     f = window.gui.addFolder("Moon");
@@ -335,8 +347,9 @@ export default class PlanetEarth extends THREE.Object3D {
 
     // Planet Earth
     this.earthMesh.material.uniforms.time.value = this.params.earth.speed * 0.1;
-    this.oceanMesh.material.uniforms.time.value = this.params.ocean.speed * 0.15;
-    this.cloudsMesh.material.uniforms.time.value = this.params.clouds.speed * 0.2;
+    this.oceanMesh.material.uniforms.time.value += this.params.ocean.speed * 0.15;
+    this.atmosphereMesh.material.uniforms.time.value = this.params.atmosphere.speed * 0.1;
+    this.cloudsMesh.material.uniforms.time.value += this.params.clouds.speed * 0.2;
 
     this.cloudsMesh.rotation.x += this.params.clouds.rotation.x;
     this.cloudsMesh.rotation.y += this.params.clouds.rotation.y;

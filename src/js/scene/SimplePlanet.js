@@ -24,7 +24,7 @@ export default class SimplePlanet extends THREE.Object3D {
     };
 
     this.waterTexture = new BiomeTexture();
-    this.sandTexture = new NebulaTexture();
+    this.sandTexture = new BiomeTexture();
     this.grassTexture = new NebulaTexture();
     this.stoneTexture = new NebulaTexture();
 
@@ -56,10 +56,11 @@ export default class SimplePlanet extends THREE.Object3D {
   }
 
   generateTexture() {
-    this.waterTexture.generateTexture({waterLevel: this.params.waterLevel});
-    this.sandTexture.generateTexture();
-    this.grassTexture.generateTexture();
-    this.stoneTexture.generateTexture();
+    const props = {waterLevel: this.params.waterLevel};
+    this.waterTexture.generateTexture(props);
+    this.sandTexture.generateTexture(props);
+    this.grassTexture.generateTexture(props);
+    this.stoneTexture.generateTexture(props);
   }
 
   updateMaterial() {

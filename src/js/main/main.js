@@ -11,6 +11,8 @@ import Planet from '../scene/Planet'
 import Stars from "../scene/Stars";
 import Nebula from "../scene/Nebula";
 import Sun from "../scene/Sun";
+import PlanetEarth from '../scene/PlanetEarth'
+import SimplePlanet from "../scene/SimplePlanet";
 
 const N = 6;
 const TWO_N = Math.pow(2, N); // detail of the spheres
@@ -47,6 +49,7 @@ export default class Main extends AbstractApplication {
 
     this.planet = new Planet();
     // this.planet = new PlanetEarth(this.random, EARTH_RADIUS, N, TWO_N, TWO_N);
+    // this.planet = new SimplePlanet(this.random, EARTH_RADIUS, N, TWO_N, TWO_N);
     this.scene.add(this.planet);
 
     this.setupControlsUI();
