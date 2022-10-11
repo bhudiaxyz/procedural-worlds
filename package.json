@@ -24,7 +24,7 @@
     "watch": "npm run dev"
   },
   "dependencies": {
-    "@superguigui/wagner": "^0.1.5",
+    "@superguigui/wagner": "^0.1.25",
     "alea": "^1.0.0",
     "bootstrap": "^4.6.0",
     "crypto-random-string": "^1.0.0",

@@ -24,7 +24,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(ts|js)$/,
         exclude: /node_modules/,
         include: [
           path.resolve(__dirname, 'src')

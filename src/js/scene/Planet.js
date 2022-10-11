@@ -12,6 +12,8 @@ import Glow from './Glow'
 import AtmosphereRing from './AtmosphereRing'
 
 const BASE_WATER_COLOR = new THREE.Color(0.0, 0.4, 0.9);
+const NUM_MAP_PLANE_ON_SPHERE = 6
+const PLANET_RESOLUTION = 1024
 
 export default class Planet extends THREE.Object3D {
 
@@ -20,7 +22,7 @@ export default class Planet extends THREE.Object3D {
 
     this.radius = radius;
     this.materials = [];
-    this.resolution = 1024;
+    this.resolution = PLANET_RESOLUTION;
 
     this.heightMaps = [];
     this.moistureMaps = [];
@@ -87,7 +89,7 @@ export default class Planet extends THREE.Object3D {
     this.roughnessMaps = this.roughnessMap.maps;
 
     this.materials = [];
-    for (let i = 0; i < 6; ++i) {
+    for (let i = 0; i < NUM_MAP_PLANE_ON_SPHERE; ++i) {
       this.materials.push(new THREE.MeshStandardMaterial({
         color: new THREE.Color(0xffffff),
         wireframe: this.params.wireframe,
@@ -276,7 +278,7 @@ export default class Planet extends THREE.Object3D {
   updateMaterial() {
     this.params.normalScaleV2.set(this.params.normalScale, this.params.normalScale);
 
-    for (let i = 0; i < 6; ++i) {
+    for (let i = 0; i < NUM_MAP_PLANE_ON_SPHERE; ++i) {
       let material = this.materials[i];
       material.wireframe = this.params.wireframe;
       material.roughness = this.params.roughness;
@@ -314,11 +316,17 @@ export default class Planet extends THREE.Object3D {
   }
 
   updateNormalScaleForRes(value) {
-    if (value === 256) this.params.normalScale = 0.25;
-    if (value === 512) this.params.normalScale = 0.5;
-    if (value === 1024) this.params.normalScale = 1.0;
-    if (value === 2048) this.params.normalScale = 1.5;
-    if (value === 4096) this.params.normalScale = 3.0;
+    if (value === 256) {
+      this.params.normalScale = 0.25;
+    } else if (value === 512) {
+      this.params.normalScale = 0.5;
+    } else if (value === 1024) {
+      this.params.normalScale = 1.0;
+    } else if (value === 2048) {
+      this.params.normalScale = 1.5;
+    } else if (value === 4096) {
+      this.params.normalScale = 3.0;
+    }
   }
 
   randRange(low, high) {
