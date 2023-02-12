@@ -96,7 +96,7 @@
     "husky": "^2.7.0",
     "ify-loader": "^1.0.4",
     "image-webpack-loader": "^5.0.0",
-    "lint-staged": "^8.2.1",
+    "lint-staged": "^13.0.3",
     "lodash.template": ">=4.5.0",
     "mini-css-extract-plugin": "^0.7.0",
     "nice-color-palettes": "^3.0.0",
