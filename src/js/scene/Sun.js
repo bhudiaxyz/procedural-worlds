@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 import SunTexture from '../tools/SunTexture'
+import ColorGUIHelper from "../utils/ColorGUIHelper";
+
+const SUN_COLOR = new THREE.Color(1.0, 1.0, 1.0);
 
 export default class Sun extends THREE.Object3D {
 
@@ -15,7 +18,7 @@ export default class Sun extends THREE.Object3D {
     this.params = {
       showTextureMap: false,
       sunSize: 1500,
-      color: new THREE.Color(0xffffff),
+      color: SUN_COLOR.clone(),
     };
 
     this.sunTexture = new SunTexture();
@@ -27,9 +30,9 @@ export default class Sun extends THREE.Object3D {
   createControls() {
     let sunFolder = window.gui.addFolder('Sun');
 
-    // glowFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").onChange(value => {
-    //   this.updateMaterial();
-    // });
+    sunFolder.addColor(new ColorGUIHelper(this.params, "color"), "color").onChange(value => {
+      this.updateMaterial();
+    });
 
     sunFolder.add(this.params, "showTextureMap").onChange(value => {
       if (this.sunTexture) {
@@ -43,10 +46,7 @@ export default class Sun extends THREE.Object3D {
   }
 
   createLensFlare() {
-    let h = this.randRange(0, 1);
-    let s = 1.0;
-    let l = 1.0;
-    var sunColor = new THREE.Color().setHSL(h, s, l);
+    var sunColor = new THREE.Color().setHSL(this.randRange(0, 1), 1,0, 1.0);
     // var sunColor2 = new THREE.Color().setHSL(this.randRange(0, 1), s, 0.5);
     this.params.sunSize = Math.round(this.randRange(1000, 2500));
 
@@ -107,10 +107,9 @@ export default class Sun extends THREE.Object3D {
   }
 
   randomColor() {
-    return new THREE.Color().setHSL(
-      this.randRange(0, 1),
-      this.randRange(0, 0.9),
-      0.5);
+    // return new THREE.Color().setHSL(this.randRange(0, 1), this.randRange(0, 0.9), 0.5);
+    let sunColor = this.params.color.getHSL();
+    return new THREE.Color().setHSL(this.randRange(0, sunColor.h), this.randRange(0, sunColor.s), 0.5);
   }
 
   randRange(low, high) {
@@ -128,11 +127,7 @@ export default class Sun extends THREE.Object3D {
   }
 
   randomizeColor() {
-    this.params.color.setHSL(
-      this.randRange(0.0, 1.0),
-      1.0,
-      1.0
-    );
+    this.params.color.setHSL(this.randRange(0.0, 1.0), 1.0, 1.0);
 
     this.updateMaterial();
   }
