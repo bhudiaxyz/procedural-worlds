@@ -46,8 +46,7 @@ export default class Sun extends THREE.Object3D {
   }
 
   createLensFlare() {
-    var sunColor = new THREE.Color().setHSL(this.randRange(0, 1), 1,0, 1.0);
-    // var sunColor2 = new THREE.Color().setHSL(this.randRange(0, 1), s, 0.5);
+    let sunColor = new THREE.Color().setHSL(this.randRange(0.6, 1), 1, 0, 0.6);
     this.params.sunSize = Math.round(this.randRange(1000, 2500));
 
     this.lensFlare = new THREE.LensFlare(this.sunTexture.texture, this.params.sunSize, 0.0, THREE.AdditiveBlending, sunColor);
@@ -55,50 +54,38 @@ export default class Sun extends THREE.Object3D {
 
     const numSuns = this.randRange(1, 3);
     for (let i = 0; i < numSuns; ++i) {
-      let size = this.randRange(100, 600);
-      let offset = this.randRange(-0.1, 0.2);
-      let color = this.randomColor();
-      let alpha = this.randRange(0.05, 0.25);
-      this.lensFlare.add(this.textureSun, size, offset, THREE.AdditiveBlending, color, alpha);
+      // let size = Math.pow(this.randRange(5, 200), 2) * 10;
+      this.lensFlare.add(this.textureSun,
+        this.randRange(100, 600), this.randRange(-0.1, 0.2),
+        THREE.AdditiveBlending, this.randomColor(), this.randRange(0.05, 0.25));
     }
 
     const numFlares = this.randRange(5, 10);
     for (let i = 0; i < numFlares; ++i) {
-      let size = this.randRange(200, 500);
-      let offset = this.randRange(-0.1, 0.2);
-      let color = this.randomColor();
-      let alpha = this.randRange(0.1, 0.23);
-      this.lensFlare.add(this.textureFlare, size, offset, THREE.AdditiveBlending, color, alpha);
+      this.lensFlare.add(this.textureFlare,
+        this.randRange(200, 500), this.randRange(-0.1, 0.2),
+        THREE.AdditiveBlending, this.randomColor(), this.randRange(0.1, 0.23));
     }
 
     const numLargeFlares = this.randRange(5, 15);
     for (let i = 0; i < numLargeFlares; ++i) {
-      let size = this.randRange(5, 200);
-      // size = Math.pow(size, 2) * 200;
-      let offset = this.randRange(0.05, 0.4);
-      let color = this.randomColor();
-      let alpha = this.randRange(0.1, 0.3);
-      this.lensFlare.add(this.textureBlur, size, offset, THREE.AdditiveBlending, color, alpha);
+      this.lensFlare.add(this.textureBlur,
+        this.randRange(5, 200) * 4, this.randRange(0.05, 0.4),
+        THREE.AdditiveBlending, this.randomColor(), this.randRange(0.1, 0.3));
     }
 
     const numSmallFlares = this.randRange(5, 25);
     for (let i = 0; i < numSmallFlares; ++i) {
-      let size = this.randRange(5, 200);
-      // size = Math.pow(size, 2) * 200;
-      let offset = this.randRange(-0.05, -0.2);
-      let color = this.randomColor();
-      let alpha = this.randRange(0.1, 0.3);
-      this.lensFlare.add(this.textureBlur, size, offset, THREE.AdditiveBlending, color, alpha);
+      this.lensFlare.add(this.textureBlur,
+        this.randRange(5, 200), this.randRange(-0.05, -0.2),
+        THREE.AdditiveBlending, this.randomColor(), this.randRange(0.1, 0.3));
     }
 
     const numRings = this.randRange(10, 30);
     for (let i = 0; i < numRings; ++i) {
-      let size = this.randRange(200, 400);
-      // size = Math.pow(size, 2) * 200;
-      let offset = this.randRange(-0.1, 0.3);
-      let color = this.randomColor();
-      let alpha = this.randRange(0, 0.1);
-      this.lensFlare.add(this.textureRing, size, offset, THREE.AdditiveBlending, color, alpha);
+      this.lensFlare.add(this.textureRing,
+       this.randRange(200, 400), this.randRange(-0.1, 0.3),
+        THREE.AdditiveBlending, this.randomColor(), this.randRange(0, 0.1));
     }
 
     this.lensFlare.position.set(-20000, 20000, 20000);
@@ -109,7 +96,7 @@ export default class Sun extends THREE.Object3D {
   randomColor() {
     // return new THREE.Color().setHSL(this.randRange(0, 1), this.randRange(0, 0.9), 0.5);
     let sunColor = this.params.color.getHSL();
-    return new THREE.Color().setHSL(this.randRange(0, sunColor.h), this.randRange(0, sunColor.s), 0.5);
+    return new THREE.Color().setHSL(this.randRange(0, sunColor.h), this.randRange(0.5, 0.9), 0.7);
   }
 
   randRange(low, high) {
