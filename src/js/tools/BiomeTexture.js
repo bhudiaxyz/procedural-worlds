@@ -21,7 +21,7 @@ export default class BiomeTexture extends AbstractCanvasTexture {
     this.lightnessRange = this.randRange(0.3, 0.5);
     this.circleSize = this.randRange(30, 250);
 
-    // this.blackWhiteGradient();
+    this.blackWhiteGradient();
     this.drawBase();
     this.drawCircles();
     this.drawDetail();
