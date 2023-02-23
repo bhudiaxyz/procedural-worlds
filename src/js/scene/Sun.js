@@ -46,7 +46,8 @@ export default class Sun extends THREE.Object3D {
   }
 
   createLensFlare() {
-    let sunColor = new THREE.Color().setHSL(this.randRange(0.6, 1), 1, 0, 0.6);
+    // let sunColor = new THREE.Color().setHSL(this.randRange(0.6, 1), 1, 0, 0.6);
+    let sunColor = this.randomColor()
     this.params.sunSize = Math.round(this.randRange(1000, 2500));
 
     this.lensFlare = new THREE.LensFlare(this.sunTexture.texture, this.params.sunSize, 0.0, THREE.AdditiveBlending, sunColor);
@@ -64,7 +65,7 @@ export default class Sun extends THREE.Object3D {
     for (let i = 0; i < numFlares; ++i) {
       this.lensFlare.add(this.textureFlare,
         this.randRange(200, 500), this.randRange(-0.1, 0.2),
-        THREE.AdditiveBlending, this.randomColor(), this.randRange(0.1, 0.23));
+        THREE.AdditiveBlending, this.randomColor(true), this.randRange(0.1, 0.23));
     }
 
     const numLargeFlares = this.randRange(5, 15);
@@ -78,7 +79,7 @@ export default class Sun extends THREE.Object3D {
     for (let i = 0; i < numSmallFlares; ++i) {
       this.lensFlare.add(this.textureBlur,
         this.randRange(5, 200), this.randRange(-0.05, -0.2),
-        THREE.AdditiveBlending, this.randomColor(), this.randRange(0.1, 0.3));
+        THREE.AdditiveBlending, this.randomColor(true), this.randRange(0.1, 0.3));
     }
 
     const numRings = this.randRange(10, 30);
@@ -93,10 +94,13 @@ export default class Sun extends THREE.Object3D {
     this.add(this.lensFlare);
   }
 
-  randomColor() {
-    // return new THREE.Color().setHSL(this.randRange(0, 1), this.randRange(0, 0.9), 0.5);
-    let sunColor = this.params.color.getHSL();
-    return new THREE.Color().setHSL(this.randRange(sunColor.h, 1.0), this.randRange(0.5, 0.9), 0.7);
+  randomColor(use_base = false) {
+    if (use_base) {
+      let sunColor = this.params.color.getHSL();
+      return new THREE.Color().setHSL(this.randRange(sunColor.h, 1.0), this.randRange(0.5, 0.9), 0.7);
+    } else {
+      return new THREE.Color().setHSL(this.randRange(0, 1), this.randRange(0, 0.9), 0.5);
+    }
   }
 
   randRange(low, high) {
