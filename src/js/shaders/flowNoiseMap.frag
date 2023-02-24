@@ -1,5 +1,5 @@
 #pragma glslify: noise = require('glsl-noise/classic/3d')
-#pragma glslify: PI = require('glsl-pi');
+#pragma glslify: PI = require('glsl-pi')
 
 uniform int index;
 uniform float seed;

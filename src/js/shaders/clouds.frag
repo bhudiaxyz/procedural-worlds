@@ -1,6 +1,6 @@
 precision highp float;
 
-#pragma glslify: PI = require('glsl-pi');
+#pragma glslify: PI = require('glsl-pi')
 
 uniform float time;
 uniform vec4 lightColor;

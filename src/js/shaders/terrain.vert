@@ -2,6 +2,7 @@ precision highp float;
 
 #pragma glslify: turbulence = require('./noise/turbulence')
 #pragma glslify: pnoise = require('glsl-noise/periodic/3d')
+#pragma glslify: PI = require('glsl-pi')
 
 uniform vec3 lightPosition;
 uniform vec4 lightColor;
@@ -21,7 +22,7 @@ varying vec3 vNewPosition;
 varying float displacement;
 varying vec3 lightDirection;
 
-const float PI = 3.14159265358979323846264;
+// const float PI = 3.14159265358979323846264;
 const vec3 noiseVec3 = vec3(PI);
 
 float random(vec3 p){

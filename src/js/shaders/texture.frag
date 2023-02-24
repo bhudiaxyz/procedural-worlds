@@ -1,4 +1,5 @@
-#pragma glslify: noise = require('glsl-noise/simplex/3d')
+#pragma glslify: noise = require('glsl-noise/simplex/3d');
+#pragma glslify: PI = require('glsl-pi')
 
 uniform int index;
 
@@ -22,7 +23,7 @@ float random4(int x, int y, int z) {
 }
 
 float interpolation(float a, float b, float x) {
-    float ft = x * 3.1415927;
+    float ft = x * PI;
     float f = (1.0 - cos(ft)) * 0.5;
     return a*(1.0-f) + b*f;
 }

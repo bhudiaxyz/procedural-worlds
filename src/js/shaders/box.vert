@@ -1,6 +1,6 @@
 #pragma glslify: turbulence = require('./noise/turbulence')
 #pragma glslify: pnoise = require('glsl-noise/periodic/3d')
-#pragma glslify: PI = require('glsl-pi');
+#pragma glslify: PI = require('glsl-pi')
 
 #if defined(FLAT_SHADED) || defined(USE_BUMPMAP) || defined(USE_NORMALMAP)
 

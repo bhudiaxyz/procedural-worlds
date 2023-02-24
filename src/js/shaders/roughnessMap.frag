@@ -18,7 +18,7 @@ void main() {
     float roughness = 0.0;
 
     if (n < waterLevel) {
-        roughness = 0.45;
+        roughness = 0.35;
     } else {
         roughness = 0.85;
     }

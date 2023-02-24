@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import AbstractEnvMap from './AbstractEnvMap';
 
 import vertShader from '!raw-loader!glslify-loader!../shaders/texture.vert'
-import fragShader from '!raw-loader!glslify-loader!../shaders/nebula.frag'
+import fragShader from '!raw-loader!glslify-loader!../shaders/nebulaMap.frag'
 
 export default class NebulaEnvMap extends AbstractEnvMap {
 

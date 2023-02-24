@@ -1,4 +1,5 @@
 #pragma glslify: noise = require('glsl-noise/periodic/4d')
+#pragma glslify: PI = require('glsl-pi')
 
 uniform float time;
 uniform float atmo1;
@@ -61,7 +62,7 @@ void main() {
 
     /////////////////////////
 
-    float PI = 3.14159265358979323846264;
+    // float PI = 3.14159265358979323846264;
     // light = light - vPosition;
     vec3 cameraDir = normalize(cameraVector);
 
