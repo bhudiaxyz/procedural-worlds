@@ -17,6 +17,9 @@ const config = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+    alias: {
+      three: path.resolve(__dirname, 'node_modules/three/build/three.module.js'),
+    },
   },
   output: {
     filename: 'js/[name].[contenthash].js',
