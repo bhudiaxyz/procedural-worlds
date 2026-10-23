@@ -39,7 +39,7 @@ export default class Planet extends THREE.Object3D {
       waterLevel: 0.2,
       waterColor: BASE_WATER_COLOR.clone(),
       roughness: 0.8,
-      metalness: 0.5,
+      metalness: 0.0,
       normalScale: 4.14,
       bumpScale: 1.0,
       displacementScale: 1.0,
@@ -304,8 +304,8 @@ export default class Planet extends THREE.Object3D {
         material.normalMap = this.normalMaps[i];
         material.roughnessMap = this.roughnessMaps[i];
         material.metalnessMap = this.moistureMaps[i];
-        material.displacementMap = this.normalMap[i];
-        material.bumpMap = this.roughnessMap[i];
+        material.displacementMap = this.normalMaps[i] || null;
+        material.bumpMap = this.roughnessMaps[i] || null;
       } else if (this.params.displayMap === "heightMap") {
         material.map = this.heightMaps[i];
       } else if (this.params.displayMap === "moistureMap") {

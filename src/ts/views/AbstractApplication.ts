@@ -29,14 +29,18 @@ export default class AbstractApplication {
     this._renderer = new THREE.WebGLRenderer({antialias: false, alpha: true});
     this._renderer.setPixelRatio(window.devicePixelRatio);
     this._renderer.sortObjects = false;
+    this._renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this._renderer.toneMappingExposure = 1.0;
     this._renderer.setSize(window.innerWidth, window.innerHeight);
     window.renderer = this._renderer;
     document.body.appendChild(this._renderer.domElement);
 
-    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+    // Intensities multiplied by π: Three.js r162+ uses physical light units;
+    // legacy values (pre-r162) need ×π to produce the same apparent brightness.
+    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.1 * Math.PI);
     this._scene.add(this.ambientLight);
 
-    this.directionalLight = new THREE.DirectionalLight(0xffffff, 1.6);
+    this.directionalLight = new THREE.DirectionalLight(0xffffff, 1.6 * Math.PI);
     this.directionalLight.position.set(-1, 1.0, 1);
     this._scene.add(this.directionalLight);
     window.light = this.directionalLight;
