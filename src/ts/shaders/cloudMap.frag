@@ -194,12 +194,17 @@ void main() {
     n1 = 1.0-n1;
 
     n2 = 1.0-n2;
-    n2 = pow(n2, 5.0);
+    n2 = pow(n2, 2.0);
     n2 *= 0.314;
     n2 = 1.0-n2;
-    n2 = pow(n2, 5.0);
+    n2 = pow(n2, 2.0);
 
-    gl_FragColor = vec4(vec3(n1), n2);
+    // Fade cloud density to 0 at UV face boundaries so adjacent
+    // cube faces always meet at zero density — hides seam completely.
+    float edgeDist = min(min(vUv.x, 1.0 - vUv.x), min(vUv.y, 1.0 - vUv.y));
+    n2 *= smoothstep(0.0, 0.1, edgeDist);
+
+    gl_FragColor = vec4(vec3(n2), n2);
     ///////////////////
 
     // float sub1 = perlinNoise(sphericalCoord, 1.0, seed);

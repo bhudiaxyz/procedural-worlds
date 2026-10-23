@@ -1,94 +1,50 @@
-#pragma glslify: noise = require('glsl-noise/classic/3d')
-#pragma glslify: worley3D = require('glsl-worley/worley3D')
-
-uniform int index;
 uniform float seed;
-uniform float resolution;
-uniform float res1;
-uniform float res2;
-uniform float resMix;
-uniform float mixScale;
-uniform sampler2D nebulaMap;
+uniform float time;
 
 varying vec2 vUv;
 
-
-vec3 getSphericalCoord(int index, float x, float y, float width) {
-    width /= 2.0;
-    x -= width;
-    y -= width;
-    vec3 coord = vec3(0.0, 0.0, 0.0);
-
-    if (index == 0) { coord.x=width; coord.y=-y; coord.z=-x; }
-    else if (index == 1) { coord.x=-width; coord.y=-y; coord.z=x; }
-    else if (index == 2) { coord.x=x; coord.y=width; coord.z=y; }
-    else if (index == 3) { coord.x=x; coord.y=-width; coord.z=-y; }
-    else if (index == 4) { coord.x=x; coord.y=-y; coord.z=width; }
-    else if (index == 5) { coord.x=-x; coord.y=-y; coord.z=-width; }
-
-    return normalize(coord);
+float hash(vec2 p) {
+    p = fract(p * vec2(127.1 + seed, 311.7 + seed * 0.3));
+    p += dot(p, p + 19.19);
+    return fract(p.x * p.y);
 }
-
-
-float simplex(vec3 pos, float seed) {
-    float n = noise(vec3(pos + seed));
-    // return (n + 1.0) * 0.5;
-    n = (n + 1.0) * 0.5;
-    // n = 2.0 * (0.5 - abs(0.5 - n));
-    return n;
-}
-
-float baseNoise(vec3 pos, float frq, float seed) {
-    const int octaves = 16;
-    float amp = 0.5;
-
-    float n = 0.0;
-    float gain = 1.0;
-    for (int i=0; i<octaves; ++i) {
-        n +=  simplex(vec3(pos.x*gain/frq, pos.y*gain/frq, pos.z*gain/frq), seed+float(i)*10.0) * amp/gain;
-        gain *= 2.0;
-    }
-
-    // increase contrast
-    n = ((n - 0.5) * 3.0) + 0.6;
-    return n;
-}
-
 
 void main() {
-    float x = vUv.x;
-    float y = 1.0 - vUv.y;
-    vec3 sphericalCoord = getSphericalCoord(index, x*resolution, y*resolution, resolution);
+    // Multi-scale grid: large sparse bright stars + small dense dim stars
+    vec3 color = vec3(0.0);
 
-    // create base stars
-    vec2 F = worley3D((sphericalCoord * 200.0) + vec3(seed), 1.0, true);
-    float F1 = F.x;
-    float F2 = F.y;
+    // Layer 1: bright stars, sparse
+    float cs1 = 0.012;
+    vec2 cell1 = floor(vUv / cs1);
+    vec2 uv1   = fract(vUv / cs1);
+    float h1 = hash(cell1);
+    if (h1 > 0.88) {
+        vec2 pos1 = vec2(hash(cell1 + 0.1), hash(cell1 + 0.2));
+        float dist1 = length(uv1 - pos1);
+        float sz1 = 0.06 + hash(cell1 + 0.4) * 0.08;
+        float b1 = smoothstep(sz1, 0.0, dist1);
+        float temp1 = hash(cell1 + 0.5);
+        vec3 c1 = mix(vec3(1.0, 0.85, 0.6), vec3(0.7, 0.85, 1.0), temp1);
+        // Subtle twinkle
+        b1 *= 0.8 + 0.2 * sin(time * (2.0 + hash(cell1 + 0.6) * 4.0) + hash(cell1 + 0.7) * 6.28);
+        color += c1 * b1 * (0.6 + hash(cell1 + 0.8) * 0.4);
+    }
 
-    float n = F1;
-    n = 1.0 - n;
-    n *= 1.2;
-    n = pow(n, 4.0);
+    // Layer 2: dim background stars, dense
+    float cs2 = 0.004;
+    vec2 cell2 = floor(vUv / cs2);
+    vec2 uv2   = fract(vUv / cs2);
+    float h2 = hash(cell2 + 100.0);
+    if (h2 > 0.75) {
+        vec2 pos2 = vec2(hash(cell2 + 10.1), hash(cell2 + 10.2));
+        float dist2 = length(uv2 - pos2);
+        float b2 = smoothstep(0.15, 0.0, dist2);
+        float temp2 = hash(cell2 + 10.5);
+        vec3 c2 = mix(vec3(0.9, 0.8, 0.7), vec3(0.75, 0.85, 1.0), temp2);
+        color += c2 * b2 * 0.35;
+    }
 
+    if (length(color) < 0.01) discard;
 
-    float sub1 = baseNoise(sphericalCoord, 0.003, seed+32.284);
-    n *= sub1;
-    vec3 starsColor = vec3(n);
-
-    //    float n = 0.0;
-    //    float res = 200.0;
-    //    float mag = 0.7;
-    //    for (int i=0; i<4; ++i) {
-    //        vec2 F = worley3D((sphericalCoord * res) + vec3(seed), 1.0, true);
-    //        float F1 = F.x;
-    //        float F2 = F.y;
-    //        n += pow(F1, 1.0) * mag;
-    //       res *= 3.0;
-    //       mag *= 0.5;
-    //     }
-    //     n = 1.0-n;
-    //     n = pow(n, 3.0);
-    //     vec3 starsColor = vec3(n);
-
-    gl_FragColor = vec4(starsColor, 1.0);
+    gl_FragColor = vec4(color, 1.0);
 }

@@ -1,12 +1,12 @@
 // @ts-nocheck
 import * as THREE from 'three';
 import CloudEnvMap from '../tools/CloudEnvMap'
-
 import ColorGUIHelper from "../utils/ColorGUIHelper";
+
 
 export default class Clouds extends THREE.Object3D {
 
-  constructor(radius = 1005.0) {
+  constructor(radius = 1008.0) {
     super();
 
     this.radius = radius;
@@ -19,7 +19,7 @@ export default class Clouds extends THREE.Object3D {
       color: new THREE.Color(0xffffff),
       opacity: 1.0,
       roughness: 0.9,
-      metalness: 0.5,
+      metalness: 0.0,
       bumpScale: 1.0
     };
 
@@ -113,7 +113,7 @@ export default class Clouds extends THREE.Object3D {
       material.color = this.params.color;
       material.map = this.cloudMaps[i];
       material.alphaMap = this.cloudMaps[i];
-      material.bumpMap = this.cloudMaps[i];
+      material.needsUpdate = true;
     }
   }
 

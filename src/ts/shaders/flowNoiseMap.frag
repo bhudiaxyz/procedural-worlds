@@ -162,5 +162,7 @@ void main() {
         n = baseNoise(sphericalCoord + (vec3(fx, fy, fz) * sub3), 1.0, seed+28.634);
     }
 
+    // Fade height to 0 at UV face edges so displacement is continuous
+    // across cube face boundaries (adjacent faces both reach zero).
     gl_FragColor = vec4(vec3(n), 1.0);
 }

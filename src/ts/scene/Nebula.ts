@@ -119,6 +119,7 @@ export default class Nebula extends THREE.Object3D {
       material.map = this.skyMaps[i];
       material.opacity = this.params.opacity;
       material.wireframe = this.params.wireframe;
+      material.needsUpdate = true;
     }
   }
 

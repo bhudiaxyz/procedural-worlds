@@ -39,10 +39,10 @@ export default class Planet extends THREE.Object3D {
       waterLevel: 0.2,
       waterColor: BASE_WATER_COLOR.clone(),
       roughness: 0.8,
-      metalness: 0.0,
+      metalness: 0.1,
       normalScale: 4.14,
       bumpScale: 1.0,
-      displacementScale: 1.0,
+      displacementScale: 12.0,
       displayMap: "textureMap",
       showBiomeMap: false
     };
@@ -102,7 +102,7 @@ export default class Planet extends THREE.Object3D {
       }));
     }
 
-    this.geometry = new THREE.BoxGeometry(1, 1, 1, 128, 128, 128);
+    this.geometry = new THREE.BoxGeometry(1, 1, 1, 192, 192, 192);
     const pos = this.geometry.attributes.position.array;
     const v = new THREE.Vector3();
     for (let i = 0; i < pos.length; i += 3) {
@@ -152,12 +152,15 @@ export default class Planet extends THREE.Object3D {
     });
 
 
-    const planetFields = ["roughness", "metalness", "bumpScale", "displacementScale"];
-    for (let i = 0; i < planetFields.length; ++i) {
-      planetFolder.add(this.params, planetFields[i], 0.0, 1.0).listen().onChange(value => {
+    const unitFields = ["roughness", "metalness", "bumpScale"];
+    for (let i = 0; i < unitFields.length; ++i) {
+      planetFolder.add(this.params, unitFields[i], 0.0, 1.0).listen().onChange(value => {
         this.updateMaterial();
       });
     }
+    planetFolder.add(this.params, "displacementScale", 0.0, 200.0).listen().onChange(value => {
+      this.updateMaterial();
+    });
 
     planetFolder.add(this.params, "normalScale", -6.0, 6.0).listen().onChange(value => {
       this.updateMaterial();
@@ -215,6 +218,10 @@ export default class Planet extends THREE.Object3D {
     this.biome.generateTexture({waterLevel: this.params.waterLevel});
     this.clouds.randomize();
     this.atmosphere.randomize();
+    // Tint atmosphere toward water colour for visual cohesion
+    const waterHSL = this.params.waterColor.getHSL({ h: 0, s: 0, l: 0 });
+    this.atmosphere.params.color.setHSL(waterHSL.h, Math.min(waterHSL.s + 0.2, 1.0), 0.6);
+    this.atmosphere.updateMaterial();
     this.atmosphereRing.randomize();
     this.glow.randomize();
 
@@ -303,9 +310,9 @@ export default class Planet extends THREE.Object3D {
         material.map = this.textureMaps[i];
         material.normalMap = this.normalMaps[i];
         material.roughnessMap = this.roughnessMaps[i];
-        material.metalnessMap = this.moistureMaps[i];
-        material.displacementMap = this.normalMaps[i] || null;
-        material.bumpMap = this.roughnessMaps[i] || null;
+        material.metalnessMap = null;
+        material.displacementMap = this.heightMaps[i];
+        material.bumpMap = null;
       } else if (this.params.displayMap === "heightMap") {
         material.map = this.heightMaps[i];
       } else if (this.params.displayMap === "moistureMap") {

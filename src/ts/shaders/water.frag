@@ -1,65 +1,40 @@
-precision highp float;
-
-uniform sampler2D texWater;
-uniform float radius;
-uniform vec3 lightPosition;
-uniform vec4 lightColor;
-uniform float lightIntensity;
+uniform sampler2D heightMap;
+uniform float waterLevel;
 uniform float time;
-uniform float seed;
+uniform vec3 shallowColor;
+uniform vec3 deepColor;
 
 varying vec2 vUv;
-varying vec3 vPosition01;
-varying vec3 vPosition;
 varying vec3 vNormal;
-varying vec3 lightDirection;
+varying vec3 vWorldPos;
 
-float random(vec3 p) {
-    return fract(sin(dot(p.xyz, vec3(12.9898, 78.233, 1.23456))) * (5356.5453+ seed*1234.7582));
-}
+void main() {
+  float height = texture2D(heightMap, vUv).r;
+  if (height > waterLevel) discard;
 
-vec4 getNormal(vec2 uv, float speed) {
-    float scaleFactor = 0.06;
-    float sint = sin(time*speed)*scaleFactor/2.0;
-    float cost = cos(time*speed)*scaleFactor/3.0;
+  float depth = clamp(1.0 - height / max(waterLevel, 0.001), 0.0, 1.0);
 
-    float x1 = uv.x + sint;
-    float y1 = uv.y + cost;
+  // Two overlapping ripple waves at different frequencies/speeds
+  float r1 = sin(vUv.x * 40.0 + time * 0.6) * cos(vUv.y * 35.0 + time * 0.4);
+  float r2 = sin(vUv.x * 25.0 - time * 0.5) * cos(vUv.y * 50.0 - time * 0.3);
+  vec3 rippleNormal = normalize(vNormal + vec3(r1 * 0.05, r2 * 0.05, 0.0));
 
-    float x2 = uv.x - sint;
-    float y2 = uv.y - cost;
+  vec3 viewDir = normalize(cameraPosition - vWorldPos);
 
-    float x3 = uv.x - sint;
-    float y3 = uv.y + cost;
+  // Fresnel — edge-on = more reflective
+  float fresnel = pow(1.0 - clamp(dot(rippleNormal, viewDir), 0.0, 1.0), 4.0);
 
-    float x4 = uv.x + sint;
-    float y4 = uv.y - cost;
+  // Specular highlight matching scene directional light (-1, 1, 1)
+  vec3 lightDir = normalize(vec3(-1.0, 1.0, 1.0));
+  vec3 halfVec = normalize(lightDir + viewDir);
+  float spec = pow(clamp(dot(rippleNormal, halfVec), 0.0, 1.0), 128.0);
 
-    vec4 normal = texture2D(texWater, vec2(x1, y2)) + texture2D(texWater, vec2(x2, y2)) +
-    texture2D(texWater, vec2(x3, y3)) + texture2D(texWater, vec2(x4, y4));
-    normal.xyz = normal.xyz/3.74;
-    return normal;
-}
+  vec3 color = mix(shallowColor, deepColor, depth * 0.6);
+  // Fresnel tints toward dark space at glancing angles
+  color = mix(color, vec3(0.02, 0.06, 0.2), fresnel * 0.5);
+  color += vec3(spec);
 
-void main(void) {
-    vec3 blending = abs(vNormal);
-    blending = (blending - 0.2) * 3.14 * random(vNormal);
-    blending = max(blending, 0.0);// Force weights to sum to 1.0
-    float b = (blending.x + blending.y + blending.z);
-    blending /= vec3(b, b, b);
+  float alpha = 0.65 + fresnel * 0.25;
 
-    vec4 vec_texx = getNormal(vPosition01.yz, 30.0);
-    vec4 vec_texy = getNormal(vPosition01.xz, 32.0);
-    vec4 vec_texz = getNormal(vPosition01.xy, 34.0);
-
-    vec4 normalTex = vec_texx * blending.x + vec_texy * blending.y + vec_texz * blending.z;
-
-    float a = max(0.27, dot(((normalTex.rgb*2.0-1.0)+vNormal)/2.0, lightDirection));
-
-    vec4 color = vec4(0.0, 0.35, 0.471, 1.0);
-    color.xyz = color.xyz*lightIntensity;
-
-    vec4 finalColor = lightColor*color*a;
-
-    gl_FragColor = vec4(finalColor.xyz, 0.75);
+  gl_FragColor = vec4(color, alpha);
 }

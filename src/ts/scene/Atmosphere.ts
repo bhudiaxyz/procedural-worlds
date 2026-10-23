@@ -8,7 +8,7 @@ import fragShader from '!raw-loader!glslify-loader!../shaders/atmos.frag'
 
 export default class Atmosphere extends THREE.Object3D {
 
-  constructor(radius = 1010.0) {
+  constructor(radius = 1020.0) {
     super();
 
     this.radius = radius;
@@ -43,7 +43,7 @@ export default class Atmosphere extends THREE.Object3D {
       blending: THREE.AdditiveBlending
     });
 
-    this.geometry = new THREE.IcosahedronGeometry(this.radius, 6);
+    this.geometry = new THREE.IcosahedronGeometry(this.radius, 7);
     this.sphere = new THREE.Mesh(this.geometry, this.material);
     // this.sphere.scale.set(this.radius, this.radius, this.radius);
     this.add(this.sphere);
@@ -76,6 +76,7 @@ export default class Atmosphere extends THREE.Object3D {
 
   update() {
     this.time += this.params.speed;
+    this.material.uniforms.time.value = this.time;
   }
 
   updateMaterial() {

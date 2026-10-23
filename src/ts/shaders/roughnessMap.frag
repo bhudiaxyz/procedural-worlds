@@ -14,7 +14,8 @@ void main() {
 
     float pixelSize = 1.0 / resolution;
 
-    float n = texture2D(heightMap, vec2(x, y)).r;
+    vec2 sampUv = clamp(vec2(x, y), 0.04, 0.96);
+    float n = texture2D(heightMap, sampUv).r;
     float roughness = 0.0;
 
     if (n < waterLevel) {

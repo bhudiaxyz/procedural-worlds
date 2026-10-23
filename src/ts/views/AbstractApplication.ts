@@ -30,7 +30,7 @@ export default class AbstractApplication {
     this._renderer.setPixelRatio(window.devicePixelRatio);
     this._renderer.sortObjects = false;
     this._renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this._renderer.toneMappingExposure = 1.0;
+    this._renderer.toneMappingExposure = 0.9;
     this._renderer.setSize(window.innerWidth, window.innerHeight);
     window.renderer = this._renderer;
     document.body.appendChild(this._renderer.domElement);

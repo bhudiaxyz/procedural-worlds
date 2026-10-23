@@ -61,7 +61,7 @@ const config = {
           filename: 'assets/textures/[name][ext]',
         },
       },
-      { test: /node_modules/, loader: 'ify-loader' },
+      { test: /node_modules/, exclude: /node_modules\/popper\.js/, loader: 'ify-loader' },
       {
         test: /\.(glsl|frag|vert)$/,
         include: [path.join(__dirname, 'src', 'ts', 'shaders')],

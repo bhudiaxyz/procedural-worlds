@@ -9,7 +9,7 @@ import fragShader from '!raw-loader!glslify-loader!../shaders/atmosRing.frag'
 
 export default class AtmosphereRing extends THREE.Object3D {
 
-  constructor(radius = 1030.0) {
+  constructor(radius = 1050.0) {
     super();
 
     this.radius = radius;
@@ -51,7 +51,7 @@ export default class AtmosphereRing extends THREE.Object3D {
       blending: THREE.AdditiveBlending
     });
 
-    this.geometry = new THREE.IcosahedronGeometry(this.radius, 6);
+    this.geometry = new THREE.IcosahedronGeometry(this.radius, 7);
     this.sphere = new THREE.Mesh(this.geometry, this.material);
     // this.sphere.scale.set(this.radius, this.radius, this.radius);
     this.add(this.sphere);
@@ -88,7 +88,7 @@ export default class AtmosphereRing extends THREE.Object3D {
   }
 
   update() {
-    // No-op
+    this.material.uniforms.fCameraHeight.value = window.camera.position.length();
   }
 
   updateMaterial() {
@@ -121,12 +121,12 @@ export default class AtmosphereRing extends THREE.Object3D {
   }
 
   randomize() {
-    this.params.Kr = this.randRange(0.01, 1.0);
-    this.params.Km = this.randRange(0.01, 1.0);
-    this.params.scaleDepth = this.randRange(0.0, 1.0);
-    this.params.mieScaleDepth = this.randRange(0.01, 1.0);
-    this.params.g = this.randRange(-1.0, 1.0);
-    this.params.ESun = this.randRange(-100.0, 100.0);
+    this.params.Kr = this.randRange(0.001, 0.008);
+    this.params.Km = this.randRange(0.0005, 0.003);
+    this.params.scaleDepth = this.randRange(0.1, 0.4);
+    this.params.mieScaleDepth = this.randRange(0.05, 0.3);
+    this.params.g = this.randRange(-0.95, 0.95);
+    this.params.ESun = this.randRange(10.0, 40.0);
 
     this.randomizeColor();
   }
