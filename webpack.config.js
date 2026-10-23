@@ -5,8 +5,6 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const PreloadWebpackPlugin = require('preload-webpack-plugin');
-const CssUrlRelativePlugin = require('css-url-relative-plugin');
 
 const IS_DEV = process.env.NODE_ENV === 'dev';
 
@@ -15,82 +13,55 @@ const config = {
   devtool: IS_DEV ? 'eval' : 'source-map',
 
   entry: {
-    main: path.join(__dirname, 'src', 'js', 'index.js'),
+    main: path.join(__dirname, 'src', 'ts', 'index.ts'),
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
   },
   output: {
-    filename: 'js/[name].[hash].js',
+    filename: 'js/[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   module: {
     rules: [
       {
         test: /\.(ts|js)$/,
         exclude: /node_modules/,
-        include: [
-          path.resolve(__dirname, 'src')
-        ],
+        include: [path.resolve(__dirname, 'src')],
         loader: 'babel-loader',
         options: {
-          presets: [
-            '@babel/preset-env',
-            {
-              plugins: [
-                '@babel/plugin-proposal-class-properties'
-              ]
-            }
-          ]
+          presets: ['@babel/preset-env'],
+          plugins: ['@babel/plugin-transform-class-properties'],
         },
       },
       {
         test: /\.scss$/,
         use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'sass-loader',
             options: {
-              hmr: IS_DEV,
+              sassOptions: { silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'slash-div', 'if-function'] },
             },
           },
-          'css-loader',
-          'sass-loader',
         ],
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-              name: '[name].[ext]',
-              fallback: 'file-loader',
-              outputPath: 'assets/textures',
-            },
-          },
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              mozjpeg: {
-                progressive: true,
-                quality: 65,
-              },
-              pngquant: {
-                quality: '65-90',
-                speed: 4,
-              },
-              gifsicle: {
-                interlaced: false,
-              },
-              webp: {
-                quality: 75,
-              },
-            },
-          },
-        ],
+        type: 'asset',
+        parser: {
+          dataUrlCondition: { maxSize: 8192 },
+        },
+        generator: {
+          filename: 'assets/textures/[name][ext]',
+        },
       },
       { test: /node_modules/, loader: 'ify-loader' },
       {
         test: /\.(glsl|frag|vert)$/,
-        include: [path.join(__dirname, 'src', 'js', 'shaders')],
+        include: [path.join(__dirname, 'src', 'ts', 'shaders')],
         exclude: /node_modules/,
         use: [
           'raw-loader',
@@ -98,22 +69,19 @@ const config = {
             loader: 'glslify-loader',
             options: {
               transform: [
-                ['glslify-hex', { 'option-1': true, 'option-2': 42 }]
-              ]
-            }
-          }
-        ]
+                ['glslify-hex', { 'option-1': true, 'option-2': 42 }],
+              ],
+            },
+          },
+        ],
       },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: './src/assets',
-        to: 'assets',
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [{ from: './src/assets', to: 'assets' }],
+    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
@@ -123,16 +91,12 @@ const config = {
       filename: IS_DEV ? 'css/[name].css' : 'css/[name].[contenthash].css',
       chunkFilename: 'css/[id].css',
     }),
-    new webpack.HashedModuleIdsPlugin(),
-    new PreloadWebpackPlugin({
-      include: 'initial',
-    }),
-    new CssUrlRelativePlugin(),
   ],
   devServer: {
-    contentBase: path.join(__dirname, 'src'),
+    static: path.join(__dirname, 'src'),
   },
   optimization: {
+    moduleIds: 'deterministic',
     runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
@@ -145,18 +109,18 @@ const config = {
         },
       },
     },
-    minimizer: [],
+    minimizer: ['...'],
   },
 };
 
 if (!IS_DEV) {
   const TerserPlugin = require('terser-webpack-plugin');
-  const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+  const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
-  config.optimization.minimizer.push(
+  config.optimization.minimizer = [
     new TerserPlugin(),
-    new OptimizeCSSAssetsPlugin({})
-  );
+    new CssMinimizerPlugin(),
+  ];
 }
 
 const files = glob.sync('./src/templates/*.html');

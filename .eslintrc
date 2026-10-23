@@ -1,6 +1,13 @@
 {
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false
+  },
   "extends": [
-    "eslint:recommended",
-    "airbnb"
-  ]
+    "eslint:recommended"
+  ],
+  "env": {
+    "browser": true,
+    "es2021": true
+  }
 }
