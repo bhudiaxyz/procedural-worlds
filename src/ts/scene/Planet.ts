@@ -58,7 +58,7 @@ export default class Planet extends THREE.Object3D {
 
     let newColor = new THREE.Color();
 
-    let hsl = BASE_WATER_COLOR.getHSL();
+    let hsl = BASE_WATER_COLOR.getHSL({ h: 0, s: 0, l: 0 });
     newColor.setHSL(
       hsl.h,
       hsl.s + window.rng() * 0.4 - 0.2,

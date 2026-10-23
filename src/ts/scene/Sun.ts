@@ -98,7 +98,7 @@ export default class Sun extends THREE.Object3D {
 
   randomColor(use_base = false) {
     if (use_base) {
-      let sunColor = this.params.color.getHSL();
+      let sunColor = this.params.color.getHSL({ h: 0, s: 0, l: 0 });
       return new THREE.Color().setHSL(this.randRange(sunColor.h, 1.0), this.randRange(0.5, 0.9), 0.7);
     } else {
       return new THREE.Color().setHSL(this.randRange(0, 1), this.randRange(0, 0.9), 0.5);

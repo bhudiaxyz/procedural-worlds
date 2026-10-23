@@ -261,7 +261,7 @@ export default class BiomeTexture extends AbstractCanvasTexture {
     // let sOffset = this.randRange(-this.satRange, this.satRange);
     // let lOffset = this.randRange(-this.lightRange, this.lightRange);
 
-    let c = newColor.getHSL();
+    let c = newColor.getHSL({ h: 0, s: 0, l: 0 });
     c.h += hOffset;
     c.s = this.randRange(0.0, 0.6);
     c.l = this.randRange(0.1, 0.4);
@@ -294,7 +294,7 @@ export default class BiomeTexture extends AbstractCanvasTexture {
     let sOffset = this.randRange(-this.saturationRange, this.saturationRange);
     let lOffset = this.randRange(-this.lightnessRange, this.lightnessRange);
 
-    let c = newColor.getHSL();
+    let c = newColor.getHSL({ h: 0, s: 0, l: 0 });
     c.h += hOffset;
     c.s += sOffset;
     c.l += lOffset;
@@ -337,7 +337,7 @@ export default class BiomeTexture extends AbstractCanvasTexture {
   //   }
   //
   //   newColor.offsetHSL(hOffset, 0, 0);
-  //   let c = newColor.getHSL();
+  //   let c = newColor.getHSL({ h: 0, s: 0, l: 0 });
   //   newColor.setHSL(c.h, this.randRange(0.0, 0.8), this.randRange(0.0, 0.6));
   //
   //   return {r: Math.round(newColor.r*255),
