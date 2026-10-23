@@ -55,7 +55,7 @@ export default class AbstractApplication {
     this._controls.zoomSpeed = 0.5;
     this._controls.enableZoom = true;
 
-    this.gui = new GUI();
+    this.gui = new GUI({ closeFolders: true });
     window.gui = this.gui;
     this._createControls();
     this.gui.open();
