@@ -17,15 +17,10 @@ interface Window {
   THREE: any;
 }
 
-declare module 'three' { const v: any; export = v; }
-declare module 'three-orbit-controls' { const v: any; export = v; }
-declare module 'orbit-controls-es6' { const v: any; export = v; }
 declare module 'three.meshline' { const v: any; export = v; }
 declare module 'stats.js' { const v: any; export = v; }
-declare module '@superguigui/wagner' { const v: any; export = v; }
 declare module 'webvr-polyfill' { const v: any; export = v; }
 declare module 'webvr-ui' { const v: any; export = v; }
-declare module 'dat.gui' { const v: any; export = v; }
 declare module '*.glsl' { const v: string; export default v; }
 declare module '*.frag' { const v: string; export default v; }
 declare module '*.vert' { const v: string; export default v; }

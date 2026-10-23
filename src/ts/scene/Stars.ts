@@ -33,9 +33,13 @@ export default class Stars extends THREE.Object3D {
     }
 
     this.geometry = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
-    for (var i in this.geometry.vertices) {
-      this.geometry.vertices[i].normalize().multiplyScalar(this.radius);
+    const pos = this.geometry.attributes.position.array;
+    const v = new THREE.Vector3();
+    for (let i = 0; i < pos.length; i += 3) {
+      v.set(pos[i], pos[i + 1], pos[i + 2]).normalize().multiplyScalar(this.radius);
+      pos[i] = v.x; pos[i + 1] = v.y; pos[i + 2] = v.z;
     }
+    this.geometry.attributes.position.needsUpdate = true;
     this.computeGeometry(this.geometry);
     this.sphere = new THREE.Mesh(this.geometry, this.materials);
     this.add(this.sphere);
@@ -96,23 +100,9 @@ export default class Stars extends THREE.Object3D {
   }
 
   computeGeometry(geometry) {
-    // geometry.makeGroups();
     geometry.computeVertexNormals();
-    geometry.computeFaceNormals();
-    geometry.computeMorphNormals();
     geometry.computeBoundingSphere();
     geometry.computeBoundingBox();
-    // geometry.computeLineDistances();
-
-    geometry.verticesNeedUpdate = true;
-    geometry.elementsNeedUpdate = true;
-    geometry.uvsNeedUpdate = true;
-    geometry.normalsNeedUpdate = true;
-    // geometry.tangentsNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-    geometry.lineDistancesNeedUpdate = true;
-    // geometry.buffersNeedUpdate = true;
-    geometry.groupsNeedUpdate = true;
   }
 
 }

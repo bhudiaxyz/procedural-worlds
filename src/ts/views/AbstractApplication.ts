@@ -1,8 +1,8 @@
 // @ts-nocheck
 import * as THREE from "three";
-import OrbitControls from 'orbit-controls-es6';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-import * as dat from 'dat.gui';
+import GUI from 'lil-gui';
 import * as Stats from 'stats.js';
 import RenderQueue from "../utils/RenderQueue";
 
@@ -51,7 +51,7 @@ export default class AbstractApplication {
     this._controls.zoomSpeed = 0.5;
     this._controls.enableZoom = true;
 
-    this.gui = new dat.GUI();
+    this.gui = new GUI();
     window.gui = this.gui;
     this._createControls();
     this.gui.open();

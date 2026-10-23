@@ -18,7 +18,7 @@ export default class SkyStars extends THREE.Object3D {
     const textureLoader = new THREE.TextureLoader();
     const bgTexture = textureLoader.load(imgSpaceStar);
 
-    const geometry = new THREE.Geometry();
+    const positions: number[] = [];
 
     for (let i = 0; i < count; i += 1) {
       // Generate a random point around a (randomized) sphere (using polar co-ords) - http://corysimon.github.io/articles/uniformdistn-on-sphere/
@@ -29,8 +29,11 @@ export default class SkyStars extends THREE.Object3D {
       const y = Math.sin(phi) * Math.sin(theta);
       const z = Math.cos(phi);
 
-      geometry.vertices.push(new THREE.Vector3(sphere * x, sphere * y, sphere * z));
+      positions.push(sphere * x, sphere * y, sphere * z);
     }
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
 
     const material = new THREE.PointsMaterial({
       size: 32,
