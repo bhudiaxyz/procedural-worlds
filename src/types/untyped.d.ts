@@ -19,7 +19,7 @@ interface Window {
 
 declare module 'three' { const v: any; export = v; }
 declare module 'three-orbit-controls' { const v: any; export = v; }
-declare module 'orbit-controls-es6' { const v: any; export = v; }
+declare module 'three/examples/jsm/controls/OrbitControls.js' { export class OrbitControls { constructor(camera: any, domElement?: any); [k: string]: any; } }
 declare module 'three.meshline' { const v: any; export = v; }
 declare module 'stats.js' { const v: any; export = v; }
 declare module '@superguigui/wagner' { const v: any; export = v; }

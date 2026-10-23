@@ -1,6 +1,6 @@
 // @ts-nocheck
 import * as THREE from "three";
-import OrbitControls from 'orbit-controls-es6';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import GUI from 'lil-gui';
 import * as Stats from 'stats.js';

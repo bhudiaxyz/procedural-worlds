@@ -38,7 +38,6 @@
     "jquery": "^3.5.1",
     "lil-gui": "^0.21.0",
     "load-img": "^1.0.0",
-    "orbit-controls-es6": "^2.0.1",
     "popper.js": "^1.15.0",
     "random-lorem": "^1.0.4",
     "seedrandom": "^2.4.3",
