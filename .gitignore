@@ -1,6 +1,17 @@
 # Node.js related files
-node_modules/
-dist/
+node_modules
+dist
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# AI tooling files
+.cursorrules
+.cursor
+.claude
+.codex
 
 # OS generated files
 .DS_Store
@@ -8,7 +19,8 @@ dist/
 Thumbs.db
 *.log
 
-# editor
+# Editor files
+*.code-workspace
 .vscode/
 .idea/
 *.iml
@@ -21,6 +33,7 @@ build/
 # linters
 .eslintrc.json
 .sass-lint.yml
+.husky/
 
 # Build
 output/*.png
