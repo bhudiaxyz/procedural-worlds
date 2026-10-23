@@ -1,5 +1,6 @@
 // @ts-nocheck
 import * as THREE from 'three';
+import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare.js';
 import SunTexture from '../tools/SunTexture'
 import ColorGUIHelper from "../utils/ColorGUIHelper";
 
@@ -51,43 +52,43 @@ export default class Sun extends THREE.Object3D {
     let sunColor = this.randomColor()
     this.params.sunSize = Math.round(this.randRange(1000, 2500));
 
-    this.lensFlare = new THREE.LensFlare(this.sunTexture.texture, this.params.sunSize, 0.0, THREE.AdditiveBlending, sunColor);
-    this.lensFlare.add(this.sunTexture.texture, this.params.sunSize * 2, 0.1, THREE.AdditiveBlending, sunColor, 0.2);
+    this.lensFlare = new Lensflare();
+    this.lensFlare.addElement(new LensflareElement(this.sunTexture.texture, this.params.sunSize, 0.0, sunColor));
+    this.lensFlare.addElement(new LensflareElement(this.sunTexture.texture, this.params.sunSize * 2, 0.1, sunColor));
 
     const numSuns = this.randRange(1, 3);
     for (let i = 0; i < numSuns; ++i) {
-      // let size = Math.pow(this.randRange(5, 200), 2) * 10;
-      this.lensFlare.add(this.textureSun,
+      this.lensFlare.addElement(new LensflareElement(this.textureSun,
         this.randRange(100, 600), this.randRange(-0.1, 0.2),
-        THREE.AdditiveBlending, this.randomColor(), this.randRange(0.05, 0.25));
+        this.randomColor()));
     }
 
     const numFlares = this.randRange(5, 10);
     for (let i = 0; i < numFlares; ++i) {
-      this.lensFlare.add(this.textureFlare,
+      this.lensFlare.addElement(new LensflareElement(this.textureFlare,
         this.randRange(200, 500), this.randRange(-0.1, 0.2),
-        THREE.AdditiveBlending, this.randomColor(true), this.randRange(0.1, 0.23));
+        this.randomColor(true)));
     }
 
     const numLargeFlares = this.randRange(5, 15);
     for (let i = 0; i < numLargeFlares; ++i) {
-      this.lensFlare.add(this.textureBlur,
+      this.lensFlare.addElement(new LensflareElement(this.textureBlur,
         this.randRange(5, 200) * 4, this.randRange(0.05, 0.4),
-        THREE.AdditiveBlending, this.randomColor(), this.randRange(0.1, 0.3));
+        this.randomColor()));
     }
 
     const numSmallFlares = this.randRange(5, 25);
     for (let i = 0; i < numSmallFlares; ++i) {
-      this.lensFlare.add(this.textureBlur,
+      this.lensFlare.addElement(new LensflareElement(this.textureBlur,
         this.randRange(5, 200), this.randRange(-0.05, -0.2),
-        THREE.AdditiveBlending, this.randomColor(true), this.randRange(0.1, 0.3));
+        this.randomColor(true)));
     }
 
     const numRings = this.randRange(10, 30);
     for (let i = 0; i < numRings; ++i) {
-      this.lensFlare.add(this.textureRing,
-       this.randRange(200, 400), this.randRange(-0.1, 0.3),
-        THREE.AdditiveBlending, this.randomColor(), this.randRange(0, 0.1));
+      this.lensFlare.addElement(new LensflareElement(this.textureRing,
+        this.randRange(200, 400), this.randRange(-0.1, 0.3),
+        this.randomColor()));
     }
 
     this.lensFlare.position.set(-20000, 20000, 20000);

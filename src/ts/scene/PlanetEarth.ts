@@ -98,7 +98,7 @@ export default class PlanetEarth extends THREE.Object3D {
 
     // Earth sphere
     this.earthMesh = new THREE.Mesh(
-      new THREE.IcosahedronBufferGeometry(this.params.earth.radius, detail),
+      new THREE.IcosahedronGeometry(this.params.earth.radius, detail),
       new THREE.ShaderMaterial({
         uniforms: {
           texWater: {type: "t", value: textureLoader.load(imgWater)},
@@ -128,7 +128,7 @@ export default class PlanetEarth extends THREE.Object3D {
     const waterNormals = textureLoader.load(imgWaterNormals);
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
     this.oceanMesh = new THREE.Mesh(
-      new THREE.IcosahedronBufferGeometry(this.params.ocean.radius, detail),
+      new THREE.IcosahedronGeometry(this.params.ocean.radius, detail),
       new THREE.ShaderMaterial({
         uniforms: {
           texWater: {type: "t", value: waterNormals},
@@ -211,7 +211,7 @@ export default class PlanetEarth extends THREE.Object3D {
     // Moon
     const moonTexture = textureLoader.load(imgMoon);
     this.moonMesh = new THREE.Mesh(
-      new THREE.IcosahedronBufferGeometry(this.params.moon.radius, detail),
+      new THREE.IcosahedronGeometry(this.params.moon.radius, detail),
       new THREE.ShaderMaterial({
         uniforms: {
           texWater: {type: "t", value: moonTexture},

@@ -31,7 +31,7 @@ export default class SimplePlanet extends THREE.Object3D {
 
     this.generateTexture();
 
-    this.geometry = new THREE.IcosahedronBufferGeometry(radius, detail);
+    this.geometry = new THREE.IcosahedronGeometry(radius, detail);
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         texWater: {type: "t", value: this.waterTexture.texture},

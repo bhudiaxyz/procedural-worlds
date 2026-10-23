@@ -36,7 +36,7 @@ export default class Glow extends THREE.Object3D {
     this.material.blending = THREE.AdditiveBlending;
     this.material.side = THREE.BackSide;
 
-    this.geometry = new THREE.IcosahedronBufferGeometry(this.radius, 6);
+    this.geometry = new THREE.IcosahedronGeometry(this.radius, 6);
     this.sphere = new THREE.Mesh(this.geometry, this.material);
     // this.sphere.scale.set(this.radius, this.radius, this.radius);
     this.add(this.sphere);
