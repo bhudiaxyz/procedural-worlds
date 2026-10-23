@@ -32,7 +32,7 @@ export default class Stars extends THREE.Object3D {
       }));
     }
 
-    this.geometry = new THREE.BoxBufferGeometry(1, 1, 1, 32, 32, 32);
+    this.geometry = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
     const pos = this.geometry.attributes.position.array;
     const v = new THREE.Vector3();
     for (let i = 0; i < pos.length; i += 3) {

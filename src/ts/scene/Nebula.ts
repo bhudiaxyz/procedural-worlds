@@ -39,7 +39,7 @@ export default class Nebula extends THREE.Object3D {
       }));
     }
 
-    this.geometry = new THREE.BoxBufferGeometry(1, 1, 1, 64, 64, 64);
+    this.geometry = new THREE.BoxGeometry(1, 1, 1, 64, 64, 64);
     const pos = this.geometry.attributes.position.array;
     const v = new THREE.Vector3();
     for (let i = 0; i < pos.length; i += 3) {
