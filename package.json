@@ -43,7 +43,7 @@
     "random-lorem": "^1.0.4",
     "seedrandom": "^2.4.3",
     "simple-line-icons": "^2.5.5",
-    "simplex-noise": "^2.4.0",
+    "simplex-noise": "^4.0.3",
     "sprintf": "^0.1.5",
     "stats.js": "^0.17.0",
     "three": "^0.89.0",

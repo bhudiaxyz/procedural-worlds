@@ -5,7 +5,7 @@ import GodrayPass from '@superguigui/wagner/src/passes/godray/godraypass'
 import seedrandom from "seedrandom";
 import randomLorem from "random-lorem";
 import * as Alea from 'alea';
-import * as SimplexNoise from 'simplex-noise';
+import { createNoise2D, createNoise3D } from 'simplex-noise';
 
 import AbstractApplication from '../views/AbstractApplication'
 import Planet from '../scene/Planet'
@@ -145,7 +145,8 @@ export default class Main extends AbstractApplication {
     window.rng = seedrandom(this.params.seedString);
 
     this.random = new Alea(this.params.seedString);
-    this.noise = new SimplexNoise(this.random);
+    this.noise2D = createNoise2D(this.random);
+    this.noise3D = createNoise3D(this.random);
   }
 
   // Implement
