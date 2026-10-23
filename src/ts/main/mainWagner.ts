@@ -3,11 +3,12 @@
 
 import * as THREE from 'three';
 import dat from 'dat-gui'
-import WAGNER from '@superguigui/wagner/'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
 import AbstractApplication from '../views/AbstractApplication'
-import BoxBlurPass from '@superguigui/wagner/src/passes/box-blur/BoxBlurPass'
-import FXAAPass from '@superguigui/wagner/src/passes/fxaa/FXAAPass'
-import MultiPassBloomPass from '@superguigui/wagner/src/passes/bloom/MultiPassBloomPass'
 
 export default class Main extends AbstractApplication {
 
@@ -58,13 +59,13 @@ export default class Main extends AbstractApplication {
 
   initPostprocessing() {
     this._renderer.autoClearColor = true;
-    this.composer = new WAGNER.Composer(this._renderer);
-    this.fxaaPass = new FXAAPass();
-    this.boxBlurPass = new BoxBlurPass(3, 3);
-    this.bloomPass = new MultiPassBloomPass({
-      blurAmount: 2,
-      applyZoomBlur: true
-    });
+    this.composer = new EffectComposer(this._renderer);
+    const renderPass = new RenderPass(this._scene, this._camera);
+    this.fxaaPass = new ShaderPass(FXAAShader);
+    this.bloomPass = new UnrealBloomPass(undefined, 1.5, 0.4, 0.85);
+    this.composer.addPass(renderPass);
+    this.composer.addPass(this.fxaaPass);
+    this.composer.addPass(this.bloomPass);
   }
 
   initGui() {
@@ -86,12 +87,9 @@ export default class Main extends AbstractApplication {
     }
 
     if (this.params.usePostProcessing) {
-      this.composer.reset();
-      this.composer.render(this._scene, this._camera);
-      if (this.params.useFXAA) this.composer.pass(this.fxaaPass);
-      if (this.params.useBlur) this.composer.pass(this.boxBlurPass);
-      if (this.params.useBloom) this.composer.pass(this.bloomPass);
-      this.composer.toScreen();
+      this.fxaaPass.enabled = this.params.useFXAA;
+      this.bloomPass.enabled = this.params.useBloom;
+      this.composer.render();
     } else {
       this._renderer.render(this._scene, this._camera);
     }

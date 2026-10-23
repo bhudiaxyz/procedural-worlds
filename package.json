@@ -26,7 +26,6 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@superguigui/wagner": "^0.1.25",
     "@types/three": "^0.186.0",
     "alea": "^1.0.0",
     "bootstrap": "^4.6.0",

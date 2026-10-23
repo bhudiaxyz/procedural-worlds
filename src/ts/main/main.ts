@@ -1,7 +1,7 @@
 // @ts-nocheck
-import WAGNER from '@superguigui/wagner'
-import MultiPassBloomPass from '@superguigui/wagner/src/passes/bloom/MultiPassBloomPass'
-import GodrayPass from '@superguigui/wagner/src/passes/godray/godraypass'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import seedrandom from "seedrandom";
 import randomLorem from "random-lorem";
 import * as Alea from 'alea';
@@ -87,19 +87,12 @@ export default class Main extends AbstractApplication {
 
   setupPostprocessing() {
     this.renderer.autoClearColor = true;
-    this.composer = new WAGNER.Composer(this.renderer);
-    this.bloomPass = new MultiPassBloomPass({
-      blurAmount: 0.1,
-      applyZoomBlur: true,
-      zoomBlurStrength: 3.3
-    });
-    this.godrayPass = new GodrayPass();
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.addPass(new RenderPass(this.scene, this.camera));
+    this.bloomPass = new UnrealBloomPass(undefined, 1.5, 0.4, 0.85);
 
     let postProcessFolder = window.gui.addFolder("Post Processing");
     postProcessFolder.add(this.params, "bloom");
-    postProcessFolder.add(this.bloomPass.params, "blurAmount", 0, 5);
-    postProcessFolder.add(this.bloomPass.params, "applyZoomBlur");
-    postProcessFolder.add(this.bloomPass.params, "zoomBlurStrength", 0, 5);
   }
 
   updateQueryString(key, value, url) {
@@ -284,11 +277,9 @@ export default class Main extends AbstractApplication {
     this.nebula.position.copy(window.camera.position);
 
     if (this.params.bloom) {
-      this.composer.reset();
-      this.composer.render(this.scene, this.camera);
-      this.composer.pass(this.bloomPass);
-      this.composer.pass(this.godrayPass);
-      this.composer.toScreen();
+      this.composer.addPass(this.bloomPass);
+      this.composer.render();
+      this.composer.removePass(this.bloomPass);
     }
   }
 }
