@@ -17,6 +17,8 @@ export default class RoughnessEnvMap extends AbstractEnvMap {
     for (let i = 0; i < 6; ++i) {
       this.materials.push(new THREE.ShaderMaterial({
         uniforms: {
+          index: {type: "i", value: i},
+          seed: {type: "f", value: 0},
           resolution: {type: "f", value: 0},
           waterLevel: {type: "f", value: 0},
           heightMap: {type: "t", value: new THREE.Texture()}
@@ -36,6 +38,7 @@ export default class RoughnessEnvMap extends AbstractEnvMap {
     // props.waterLevel
 
     for (let i = 0; i < 6; ++i) {
+      this.materials[i].uniforms.seed.value = props.seed;
       this.materials[i].uniforms.resolution.value = props.resolution;
       this.materials[i].uniforms.waterLevel.value = props.waterLevel;
       this.materials[i].uniforms.heightMap.value = props.heightMaps[i];

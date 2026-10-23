@@ -6,7 +6,7 @@ import ColorGUIHelper from "../utils/ColorGUIHelper";
 
 export default class Clouds extends THREE.Object3D {
 
-  constructor(radius = 1008.0) {
+  constructor(radius = 1060.0) {
     super();
 
     this.radius = radius;
@@ -31,6 +31,7 @@ export default class Clouds extends THREE.Object3D {
       this.materials.push(new THREE.MeshStandardMaterial({
         color: this.params.color,
         transparent: true,
+        depthWrite: false,
         roughness: this.params.roughness,
         metalness: this.params.metalness,
         opacity: this.params.opacity,
@@ -113,6 +114,7 @@ export default class Clouds extends THREE.Object3D {
       material.color = this.params.color;
       material.map = this.cloudMaps[i];
       material.alphaMap = this.cloudMaps[i];
+      material.bumpMap = this.cloudMaps[i];
       material.needsUpdate = true;
     }
   }

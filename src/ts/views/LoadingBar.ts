@@ -23,6 +23,8 @@ export default class LoadingBar {
   }
 
   hide() {
-    document.body.removeChild(this.base);
+    if (this.base.parentNode) {
+      this.base.parentNode.removeChild(this.base);
+    }
   }
 }

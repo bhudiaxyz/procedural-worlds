@@ -42,11 +42,15 @@ export default class Planet extends THREE.Object3D {
       metalness: 0.1,
       normalScale: 4.14,
       bumpScale: 1.0,
-      displacementScale: 12.0,
+      displacementScale: 60.0,
       displayMap: "textureMap",
       showBiomeMap: false
     };
     this.params.normalScaleV2 = new THREE.Vector2(this.params.normalScale, this.params.normalScale);
+
+    // Noise params — populated on first render(), tweakable via GUI
+    this.heightNoise   = { res1: 1.0, res2: 1.0, resMix: 1.0, mixScale: 0.75, ridgesType: 0 };
+    this.moistureNoise = { res1: 1.0, res2: 1.0, resMix: 1.0, mixScale: 0.75, ridgesType: 0 };
 
     this.createInnerPlanet();
     this.createOuterPlanet();
@@ -132,6 +136,7 @@ export default class Planet extends THREE.Object3D {
 
   createControls() {
     let planetFolder = gui.addFolder('Planet');
+    planetFolder.open();
 
     planetFolder.add(this.params, "visible").onChange(value => {
       this.sphere.visible = value;
@@ -175,6 +180,22 @@ export default class Planet extends THREE.Object3D {
         this.biome.visibleCanvas(value);
       }
     });
+
+    const noiseTypes = { Cloud: 0, Ridged: 1, InvRidged: 2, DomainWarp: 3 };
+
+    const heightFolder = planetFolder.addFolder('Height Noise');
+    heightFolder.add(this.heightNoise, 'ridgesType', noiseTypes).name('type').onChange(() => this.reRenderHeight());
+    heightFolder.add(this.heightNoise, 'res1', 0.01, 25.0).name('res1').onChange(() => this.reRenderHeight());
+    heightFolder.add(this.heightNoise, 'res2', 0.01, 25.0).name('res2').onChange(() => this.reRenderHeight());
+    heightFolder.add(this.heightNoise, 'resMix', 0.01, 25.0).name('resMix').onChange(() => this.reRenderHeight());
+    heightFolder.add(this.heightNoise, 'mixScale', 0.1, 5.0).name('mixScale').onChange(() => this.reRenderHeight());
+
+    const moistureFolder = planetFolder.addFolder('Moisture Noise');
+    moistureFolder.add(this.moistureNoise, 'ridgesType', noiseTypes).name('type').onChange(() => this.reRenderMoisture());
+    moistureFolder.add(this.moistureNoise, 'res1', 0.01, 25.0).name('res1').onChange(() => this.reRenderMoisture());
+    moistureFolder.add(this.moistureNoise, 'res2', 0.01, 25.0).name('res2').onChange(() => this.reRenderMoisture());
+    moistureFolder.add(this.moistureNoise, 'resMix', 0.01, 25.0).name('resMix').onChange(() => this.reRenderMoisture());
+    moistureFolder.add(this.moistureNoise, 'mixScale', 0.1, 5.0).name('mixScale').onChange(() => this.reRenderMoisture());
   }
 
   update() {
@@ -231,15 +252,14 @@ export default class Planet extends THREE.Object3D {
     this.updateMaterial();
 
     // GROUND
-    this.heightMap.render({
-      seed: this.seed,
-      resolution: this.resolution,
+    Object.assign(this.heightNoise, {
       res1: this.randRange(resMin, resMax),
       res2: this.randRange(resMin, resMax),
       resMix: this.randRange(resMin, resMax),
       mixScale: this.randRange(0.5, 1.0),
       ridgesType: Math.floor(this.randRange(0, 4))
     });
+    this.heightMap.render({ seed: this.seed, resolution: this.resolution, ...this.heightNoise });
 
     this.textureMap.render({
       resolution: this.resolution,
@@ -251,6 +271,7 @@ export default class Planet extends THREE.Object3D {
     });
 
     this.roughnessMap.render({
+      seed: this.seed,
       resolution: this.resolution,
       heightMaps: this.heightMaps,
       waterLevel: this.params.waterLevel
@@ -260,15 +281,14 @@ export default class Planet extends THREE.Object3D {
     resMax *= resMod;
     resMin *= resMod;
 
-    this.moistureMap.render({
-      seed: this.seed * this.seed,
-      resolution: this.resolution,
+    Object.assign(this.moistureNoise, {
       res1: this.randRange(resMin, resMax),
       res2: this.randRange(resMin, resMax),
       resMix: this.randRange(resMin, resMax),
       mixScale: this.randRange(0.5, 1.0),
       ridgesType: Math.floor(this.randRange(0, 4))
     });
+    this.moistureMap.render({ seed: this.seed * this.seed, resolution: this.resolution, ...this.moistureNoise });
 
     this.normalMap.render({
       resolution: this.resolution,
@@ -310,9 +330,9 @@ export default class Planet extends THREE.Object3D {
         material.map = this.textureMaps[i];
         material.normalMap = this.normalMaps[i];
         material.roughnessMap = this.roughnessMaps[i];
-        material.metalnessMap = null;
+        material.metalnessMap = this.roughnessMaps[i];
         material.displacementMap = this.heightMaps[i];
-        material.bumpMap = null;
+        material.bumpMap = this.heightMaps[i];
       } else if (this.params.displayMap === "heightMap") {
         material.map = this.heightMaps[i];
       } else if (this.params.displayMap === "moistureMap") {
@@ -325,6 +345,36 @@ export default class Planet extends THREE.Object3D {
 
       material.needsUpdate = true;
     }
+  }
+
+  reRenderHeight() {
+    this.heightMap.render({ seed: this.seed, resolution: this.resolution, ...this.heightNoise });
+    window.renderQueue.addCallback(() => {
+      this.textureMap.render({
+        resolution: this.resolution, heightMaps: this.heightMaps, moistureMaps: this.moistureMaps,
+        biomeMap: this.biome.texture, waterLevel: this.params.waterLevel, waterColor: this.params.waterColor
+      });
+      this.normalMap.render({
+        resolution: this.resolution, waterLevel: this.params.waterLevel,
+        heightMaps: this.heightMaps, textureMaps: this.textureMaps
+      });
+      this.roughnessMap.render({
+        seed: this.seed, resolution: this.resolution,
+        heightMaps: this.heightMaps, waterLevel: this.params.waterLevel
+      });
+      window.renderQueue.addCallback(() => this.updateMaterial());
+    });
+  }
+
+  reRenderMoisture() {
+    this.moistureMap.render({ seed: this.seed * this.seed, resolution: this.resolution, ...this.moistureNoise });
+    window.renderQueue.addCallback(() => {
+      this.textureMap.render({
+        resolution: this.resolution, heightMaps: this.heightMaps, moistureMaps: this.moistureMaps,
+        biomeMap: this.biome.texture, waterLevel: this.params.waterLevel, waterColor: this.params.waterColor
+      });
+      window.renderQueue.addCallback(() => this.updateMaterial());
+    });
   }
 
   updateNormalScaleForRes(value) {

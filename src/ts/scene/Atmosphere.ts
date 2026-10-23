@@ -8,7 +8,7 @@ import fragShader from '!raw-loader!glslify-loader!../shaders/atmos.frag'
 
 export default class Atmosphere extends THREE.Object3D {
 
-  constructor(radius = 1020.0) {
+  constructor(radius = 1120.0) {
     super();
 
     this.radius = radius;
@@ -109,8 +109,8 @@ export default class Atmosphere extends THREE.Object3D {
   randomize() {
     this.params.atmo1 = this.randRange(0.0, 1.0);
     this.params.atmo2 = this.randRange(0.0, 1.0);
-    this.params.atmo3 = this.randRange(0.0, 1.0);
-    this.params.atmo4 = this.randRange(0.0, 1.0);
+    this.params.atmo3 = this.randRange(0.3, 1.5); // floor: limb scattering term must survive
+    this.params.atmo4 = this.randRange(0.2, 1.0); // floor: final multiplier, 0 = invisible
     this.params.atmo5 = this.randRange(0.1, 2.0);
 
     this.randomizeColor();
