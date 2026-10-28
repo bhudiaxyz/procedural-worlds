@@ -1,8 +1,7 @@
 const path = require('path');
-const glob = require('glob');
+const { globSync } = require('glob');
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -81,7 +80,6 @@ const config = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [{ from: './src/assets', to: 'assets' }],
     }),
@@ -126,7 +124,7 @@ if (!IS_DEV) {
   ];
 }
 
-const files = glob.sync('./src/templates/*.html');
+const files = globSync('./src/templates/*.html');
 
 files.forEach(file => {
   config.plugins.push(
